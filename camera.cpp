@@ -24,12 +24,13 @@ set_cancel (int signal)
 }
 
 int filenum = 0;
-
+int calledTimes = 0;
 static void
 new_buffer_cb (ArvStream *stream, ApplicationData *data)
 {
     ArvBuffer *buffer;
-
+    calledTimes++;
+    
     buffer = arv_stream_try_pop_buffer (stream);
     if (buffer != NULL) {
         if (arv_buffer_get_status (buffer) == ARV_BUFFER_STATUS_SUCCESS)
@@ -38,7 +39,7 @@ new_buffer_cb (ArvStream *stream, ApplicationData *data)
         char name[20];
         sprintf(name, "%d.png", filenum++);
         arv_save_png(buffer, name);
-        if (filenum == 100) set_cancel(4372198321);
+        if (filenum == 100) g_main_loop_quit(data->main_loop);
         arv_stream_push_buffer (stream, buffer);
     }
 }
@@ -84,12 +85,8 @@ void arv_save_png(ArvBuffer * buffer, const char * filename)
 	int bit_depth = ARV_PIXEL_FORMAT_BIT_PER_PIXEL(arv_buffer_get_image_pixel_format(buffer)); // bit(s) per pixel
 	//TODO: Deal with non-png compliant pixel formats?
 	// EG: ARV_PIXEL_FORMAT_MONO_14 is 14 bits per pixel, so conversion to PNG loses data
-	printf("bit depth %d\n", bit_depth);
-	printf("height %d width %d size %d\n", height, width, buffer_size);
 	int arv_row_stride = width * bit_depth/8; // bytes per row, for constructing row pointers
-	printf("stride %d\n", arv_row_stride);
 	int color_type = PNG_COLOR_TYPE_GRAY; //TODO: Check for other types?
-	printf("format %x\n", arv_buffer_get_image_pixel_format(buffer));
 	// boilerplate libpng stuff without error checking (setjmp? Seriously? How many kittens have to die?)
 	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	png_infop info_ptr = png_create_info_struct(png_ptr);
@@ -125,7 +122,7 @@ Camera::~Camera() {
 	g_clear_object(&arvCamera);
 }
 
-void Camera::saveVideo(float frameRate, int windowHeight, int windowWidth) {
+void Camera::saveVideo(float frameRate, int windowWidth, int windowHeight) {
 	ArvCamera *camera = arvCamera;
 	ArvStream *stream;
 	ApplicationData data;
@@ -135,9 +132,9 @@ void Camera::saveVideo(float frameRate, int windowHeight, int windowWidth) {
     int i;
     
     /* Set region of interrest to a 200x200 pixel area */
-    arv_camera_set_region (camera, 0, 0, 200, 200);
+    arv_camera_set_region (camera, 0, 0, windowWidth, windowHeight);
     /* Set frame rate to 10 Hz */
-    arv_camera_set_frame_rate (camera, 10.0);
+    arv_camera_set_frame_rate (camera, frameRate);
     /* retrieve image payload (number of bytes per image) */
     payload = arv_camera_get_payload (camera);
 	
@@ -145,7 +142,7 @@ void Camera::saveVideo(float frameRate, int windowHeight, int windowWidth) {
 	stream = arv_camera_create_stream (camera, NULL, NULL);
 	if (stream != NULL) {
 		/* Push 50 buffer in the stream input buffer queue */
-		for (i = 0; i < 50; i++)
+		for (i = 0; i < 100; i++)
 			arv_stream_push_buffer (stream, arv_buffer_new (payload, NULL));
 
 		/* Start the video stream */
@@ -173,15 +170,27 @@ void Camera::saveVideo(float frameRate, int windowHeight, int windowWidth) {
 		signal (SIGINT, old_sigint_handler);
 		g_main_loop_unref (data.main_loop);
 
-
+		ArvBuffer *buffer;
+		int successes = 0;
+		int failures = 0;
 		printf("made it here\n");
-
+		do {
+			
+			buffer = arv_stream_timeout_pop_buffer (stream, 10000000);
+			if (buffer != NULL) {
+				if (arv_buffer_get_status (buffer) == ARV_BUFFER_STATUS_SUCCESS)
+					successes++;
+				else failures++;
+			}
+		} while (buffer != NULL);
+		printf("successes %d failures %d\n", successes, failures);
+		printf("called %d\n", calledTimes);
 		/* Stop the video stream */
 		arv_camera_stop_acquisition (camera);
 		/* Signal must be inhibited to avoid stream thread running after the last unref */
 		arv_stream_set_emit_signals (stream, FALSE);
 		
-		system("ffmpeg -r 10 -f image2 -i %d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p test.mp4");
+		//system("ffmpeg -r 10 -f image2 -i %d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p test.mp4");
 
         g_object_unref (stream);
     } else

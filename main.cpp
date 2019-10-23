@@ -31,6 +31,6 @@ int main(int argc, char *argv[]){
 	*/
 	//g_clear_object (&buffer);
 	Camera camera = Camera();
-	camera.saveVideo(0, 0, 0);
+	camera.saveVideo(10.0, 200, 200);
 	return 0;
 }
