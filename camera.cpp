@@ -190,7 +190,7 @@ void Camera::saveVideo(float frameRate, int windowWidth, int windowHeight) {
 		/* Signal must be inhibited to avoid stream thread running after the last unref */
 		arv_stream_set_emit_signals (stream, FALSE);
 		
-		//system("ffmpeg -r 10 -f image2 -i %d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p test.mp4");
+		system("ffmpeg -r 10 -f image2 -i %d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p test.mp4");
 
         g_object_unref (stream);
     } else
