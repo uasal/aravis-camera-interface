@@ -1,6 +1,11 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+typedef struct {
+    GMainLoop *main_loop;
+    int buffer_count;
+} ApplicationData;
+
 class Camera {
 public: 
 	// constructor/destructor
@@ -8,11 +13,21 @@ public:
 	~Camera();
 	
 	// video capture
-	void saveVideo(float frameRate, int windowHeight, int windowWidth);
-
+	void configureStream(float frameRate, gint windowHeight, gint windowWidth);
+	void startStream();
+	void stopStream();
+	void freeStream();
+	
+	// getters
+	ArvCamera* getArvInstance();
+	
 private:
 	ArvCamera *arvCamera;
+	ArvChunkParser *parser;
 	
+	// for video stream
+	ArvStream *stream;
+	ApplicationData data;
 };
 
 #endif

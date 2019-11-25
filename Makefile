@@ -8,7 +8,8 @@ LIBS=-laravis-0.6 \
 	-laravis-0.6 \
 	-lglib-2.0 \
 	`pkg-config --libs --cflags glib-2.0` \
-	-lm -pthread -lgio-2.0 -lgobject-2.0 -lxml2 -lgthread-2.0 -lglib-2.0 -lz -lpng
+	`pkg-config --libs --cflags gtk+-2.0` \
+	-lm -pthread -lgio-2.0 -lgobject-2.0 -lxml2 -lgthread-2.0 -lglib-2.0 -lz -lpng 
 DEPS=camera.h
 CFLAGS=-O0 -g3 -Wall -fmessage-length=0 -MMD -MP
 
@@ -21,5 +22,5 @@ main: main.o camera.o
 clean:
 	rm -rf *.o *.d
 	rm -rf main
-
+	rm -rf *.png
 
