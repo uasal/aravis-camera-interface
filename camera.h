@@ -4,6 +4,9 @@
 typedef struct {
     GMainLoop *main_loop;
     int buffer_count;
+    int maxBufferCount;
+    int totalBufferCount;
+    bool done;
 } ApplicationData;
 
 class Camera {
@@ -14,9 +17,11 @@ public:
 	
 	// video capture
 	void configureStream(float frameRate, gint windowHeight, gint windowWidth);
-	void startStream();
+	void startStream(int maxBufferCount = -1);
 	void stopStream();
 	void freeStream();
+	ArvBuffer* getSnapshot();
+
 	
 	// getters
 	ArvCamera* getArvInstance();

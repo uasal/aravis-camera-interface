@@ -35,14 +35,7 @@ new_buffer_cb (ArvStream *stream, ApplicationData *data)
 	ArvBufferStatus status = arv_buffer_get_status (buffer);
         if (status == ARV_BUFFER_STATUS_SUCCESS){
             data->buffer_count++;
-
-	    if ((arv_buffer_get_payload_type (buffer) == ARV_BUFFER_PAYLOAD_TYPE_CHUNK_DATA ||
-		     arv_buffer_get_payload_type (buffer) == ARV_BUFFER_PAYLOAD_TYPE_EXTENDED_CHUNK_DATA)) {
-		size_t size;
-		cout << "IN HERE" << endl;
-		arv_buffer_get_chunk_data(buffer, 0, &size);
-		cout << "payload size " << size << endl;
-	    }
+	    data->totalBufferCount++;
 
 	    //cout << "type " << arv_buffer_get_payload_type(buffer) << endl;
 	    /* Image processing here */
@@ -54,7 +47,10 @@ new_buffer_cb (ArvStream *stream, ApplicationData *data)
 	    //size_t buffer_size;
 	    //char * buffer_data = (char*)arv_buffer_get_data(buffer, &buffer_size); // raw data
 	    
-	    //if (filenum == 100) g_main_loop_quit(data->main_loop);
+	    if (data->totalBufferCount == data->maxBufferCount) {
+		g_main_loop_quit(data->main_loop);
+		data->done = TRUE;
+	    }
 	}
 
 	//printf("status %d\n", status == ARV_BUFFER_STATUS_TIMEOUT);
@@ -66,7 +62,7 @@ static gboolean
 periodic_task_cb (void *abstract_data)
 {
     ApplicationData *data = (ApplicationData*) abstract_data;
-
+    
     printf ("Frame rate = %d Hz\n", data->buffer_count);
     data->buffer_count = 0;
 
@@ -75,7 +71,7 @@ periodic_task_cb (void *abstract_data)
         return FALSE;
     }
 
-    return TRUE;
+    return data->done;
 }
 
 static void
@@ -179,12 +175,14 @@ void Camera::configureStream(float frameRate, gint windowWidth, gint windowHeigh
     stream = arv_camera_create_stream (camera, NULL, NULL);
 }
 
-void Camera::startStream() {
+void Camera::startStream(int maxBufferCount) {
     int i;
     cancel = FALSE;
     /* retrieve image payload (number of bytes per image) */
     gint payload = arv_camera_get_payload (arvCamera);
-
+    data.maxBufferCount = maxBufferCount;
+    data.totalBufferCount = 0;
+    data.done = FALSE;
     if (stream != NULL) {
 	/* Push 50 buffer in the stream input buffer queue */
 	for (i = 0; i < 50; i++)
@@ -220,22 +218,6 @@ void Camera::startStream() {
 	signal (SIGINT, old_sigint_handler);
 	g_main_loop_unref (data.main_loop);
 	
-	/*
-	ArvBuffer *buffer;
-	int successes = 0;
-	int failures = 0;
-
-	do {
-	    buffer = arv_stream_timeout_pop_buffer (stream, 10000000);
-	    if (buffer != NULL) {
-		if (arv_buffer_get_status (buffer) == ARV_BUFFER_STATUS_SUCCESS)
-		    successes++;
-		else failures++;
-	    }
-	} while (buffer != NULL);
-	printf("successes %d failures %d\n", successes, failures);
-	printf("called %d\n", calledTimes);
-	*/
 	// Stop the video stream 
 	arv_camera_stop_acquisition (arvCamera);
 	// Signal must be inhibited to avoid stream thread running after the last unref 
@@ -248,6 +230,14 @@ void Camera::startStream() {
 
 void Camera::stopStream() { set_cancel(TRUE); }
 void Camera::freeStream() { g_object_unref(stream); }
+
+ArvBuffer* Camera::getSnapshot() {
+    ArvBuffer *buffer = arv_camera_acquisition(arvCamera, 0);
+    if (ARV_IS_BUFFER(buffer)) {
+	arv_save_png(buffer, "capture.png");
+    }
+    return buffer;
+}
 
 ArvCamera* Camera::getArvInstance() { return arvCamera; }
 

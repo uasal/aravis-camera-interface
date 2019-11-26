@@ -21,13 +21,16 @@ gboolean keypressHandler(GtkWidget *widget, GdkEventKey *event, gpointer user_da
 	printf("%x\n", event->keyval);
 	switch(event->keyval) {
 		case GDK_KEY_s: 
-			camera.startStream();
+			camera.startStream(50);
 			break;
 		case GDK_KEY_q:
 			camera.stopStream();
 			break;
 		case GDK_KEY_f:
 			camera.freeStream();
+			break;
+		case GDK_KEY_n:
+			camera.getSnapshot();
 			break;
 		case GDK_KEY_d:
 			gtk_main_quit();
