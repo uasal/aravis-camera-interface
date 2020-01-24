@@ -8,6 +8,8 @@
 #include <assert.h>
 #include "camera.h"
 #include <iostream>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 void arv_save_png(ArvBuffer * buffer, const char * filename);
 
@@ -71,7 +73,7 @@ periodic_task_cb (void *abstract_data)
         return FALSE;
     }
 
-    return data->done;
+    return !data->done;
 }
 
 static void
@@ -127,7 +129,7 @@ cout << "here" << endl;
     fclose(f);
 }
 
-Camera::Camera(char *name) {
+Camera::Camera(int *status, char *name) {
     arvCamera = arv_camera_new(name);
     if (arvCamera == NULL) {
 	char errorMsg[50];
@@ -146,7 +148,36 @@ Camera::Camera(char *name) {
     arv_device_get_integer_feature_bounds(device, "Zoom", &min, &max);
     cout << "min " << min << " max " << max << endl;
     arv_device_set_integer_feature_value(device, "Zoom", 2);
-
+    
+    GSocketAddress *ip = arv_gv_device_get_device_address(ARV_GV_DEVICE (device));
+    gssize ipsize = g_socket_address_get_native_size(ip);
+    gpointer res = malloc(ipsize);
+    gboolean rc = g_socket_address_to_native(ip, res, ipsize, NULL);
+    cout << "success " << rc << endl;
+    struct sockaddr *ipstruct = (struct sockaddr*) res;
+    cout << "ip data " << ipstruct->sa_data << endl;
+    
+    char *s = NULL;
+    switch(ipstruct->sa_family) {
+	case AF_INET: {
+	    struct sockaddr_in *addr_in = (struct sockaddr_in *)res;
+	    s = (char*) malloc(INET_ADDRSTRLEN);
+	    inet_ntop(AF_INET, &(addr_in->sin_addr), s, INET_ADDRSTRLEN);
+	    break;
+	}
+	case AF_INET6: {
+	    struct sockaddr_in6 *addr_in6 = (struct sockaddr_in6 *)res;
+	    s = (char*) malloc(INET6_ADDRSTRLEN);
+	    inet_ntop(AF_INET6, &(addr_in6->sin6_addr), s, INET6_ADDRSTRLEN);
+	    break;
+	}
+	default:
+	    break;
+    }
+    printf("IP address: %s\n", s);
+    free(s);
+    free(res);
+    
     cout << "zoom " << arv_device_get_integer_feature_value(device, "Zoom") << endl;
 }
 

@@ -6,13 +6,13 @@ typedef struct {
     int buffer_count;
     int maxBufferCount;
     int totalBufferCount;
-    bool done;
+    int done;
 } ApplicationData;
 
 class Camera {
 public: 
 	// constructor/destructor
-	Camera(char *cameraName = NULL);
+	Camera(int *status, char *cameraName = NULL);
 	~Camera();
 	
 	// video capture
@@ -21,7 +21,6 @@ public:
 	void stopStream();
 	void freeStream();
 	ArvBuffer* getSnapshot();
-
 	
 	// getters
 	ArvCamera* getArvInstance();

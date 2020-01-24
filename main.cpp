@@ -1,69 +1,40 @@
-// system and aravis includes
-#include "glib.h"
 #include "arv.h"
-#include <stdlib.h>
-#include <signal.h>
-#include <stdio.h>
-#include <iostream>
-#include <png.h> // Requires libpng1.2
-#include <assert.h>
 #include "camera.h"
-#include <pthread.h>
-#include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
+#include "config.h"
+#include <iostream>
 
 using namespace std;
 
-Camera camera = Camera();
-bool done = false;
+// parameters for camera
+gint packetSize = 1500;
+gint windowHeight = 1024;
+gint windowWidth = 1280;
+gint frameRate = -1;
+gint numFrames = -1;
+gboolean snapshot = FALSE;
 
-gboolean keypressHandler(GtkWidget *widget, GdkEventKey *event, gpointer user_data) {
-	printf("%x\n", event->keyval);
-	switch(event->keyval) {
-		case GDK_KEY_s: 
-			camera.startStream(50);
-			break;
-		case GDK_KEY_q:
-			camera.stopStream();
-			break;
-		case GDK_KEY_f:
-			camera.freeStream();
-			break;
-		case GDK_KEY_n:
-			camera.getSnapshot();
-			break;
-		case GDK_KEY_d:
-			gtk_main_quit();
-			break;
-		default:
-			cout << "excuse me?" << endl;
-			break;
-	}
-	return false;
-}
-
-void *saveThread(void *vargp) 
+static const GOptionEntry cameraCommandOptionEntries[] =
 {
-	gint minH, maxH, minW, maxW;
-	arv_camera_get_height_bounds(camera.getArvInstance(), &minH, &maxH);
-	arv_camera_get_width_bounds(camera.getArvInstance(), &minW, &maxW);
-	printf("width %d %d height %d %d\n", minW, maxW, minH, maxH);
-	camera.configureStream(3.0, maxW/2, maxH/2);
-	
-	return NULL;
-} 
+	{ "packet-size", 'p', 0, G_OPTION_ARG_INT, &packetSize, "Packet size of ethernet connection, in bytes", NULL },
+	{ "window-height", 'h', 0, G_OPTION_ARG_INT, &windowHeight, "Window height of recorded images, in pixels", NULL },
+	{ "window-width", 'w', 0, G_OPTION_ARG_INT, &windowWidth, "Window width of recorded images, in pixels", NULL },
+	{ "frame-rate", 'f', 0, G_OPTION_ARG_INT, &frameRate, "Frame rate of camera stream", NULL },
+	{ "num-frames", 'n', 0, G_OPTION_ARG_INT, &numFrames, "Number of frames for camera to capture", NULL },
+	{ "snapshot", 's', 0, G_OPTION_ARG_NONE, &snapshot, "Have camera stream a single snapshot", NULL },
+	{ NULL }
+};
 
-int main(int argc, char *argv[]){
-	pthread_t id;
-	pthread_create(&id, NULL, saveThread, NULL); 
-	printf("middle of main\n");
-	pthread_join(id, NULL);
-	gtk_init(&argc, &argv);
-	GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
-	g_signal_connect(G_OBJECT(window), "key_press_event", G_CALLBACK(keypressHandler), NULL);
-	gtk_widget_show_all(window);
-	gtk_main();
-	printf("done here\n"); 
+int main(int argc, char *argv[]) {
+	GError *error = NULL;
+	GOptionContext *context = g_option_context_new("Camera configuration parameters");
+	g_option_context_add_main_entries(context, cameraCommandOptionEntries, NULL);
+	
+	if (!g_option_context_parse(context, &argc, &argv, &error)) {
+		g_print("Could not properly parse command line argument: %s\n", error->message);
+		return ERROR_COMMAND_LINE_PARSE_FAILED; 
+	}
+	cout << packetSize << " " << windowHeight << " " << windowWidth << " " << frameRate << " " << numFrames << " " << snapshot << endl;
+	
+	Camera camera = Camera(NULL);
 	return 0;
 }
