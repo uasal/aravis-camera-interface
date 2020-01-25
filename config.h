@@ -1,9 +1,16 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+// default camera config
+#define DEFAULT_PACKET_SIZE 1500
+#define DEFAULT_WINDOW_WIDTH 1280
+#define DEFAULT_WINDOW_HEIGHT 1024 
+#define DEFAULT_FRAME_RATE 10.0
+#define FEATURE_NOT_DEFINED -666
+
 // error codes
 #define SUCCESS 0
-#define ERROR_CAMERA_NOT_FOUND -1
-#define ERROR_COMMAND_LINE_PARSE_FAILED -2
+#define ERROR_CAMERA_NOT_FOUND 1
+#define ERROR_COMMAND_LINE_PARSE_FAILED 2
 
 #endif

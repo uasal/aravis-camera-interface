@@ -6,11 +6,11 @@
 using namespace std;
 
 // parameters for camera
-gint packetSize = 1500;
-gint windowHeight = 1024;
-gint windowWidth = 1280;
-gint frameRate = -1;
-gint numFrames = -1;
+gint packetSize = DEFAULT_PACKET_SIZE;
+gint windowHeight = DEFAULT_WINDOW_HEIGHT;
+gint windowWidth = DEFAULT_WINDOW_WIDTH;
+gint frameRate = DEFAULT_FRAME_RATE;
+gint numFrames = FEATURE_NOT_DEFINED;
 gboolean snapshot = FALSE;
 
 static const GOptionEntry cameraCommandOptionEntries[] =
@@ -25,6 +25,11 @@ static const GOptionEntry cameraCommandOptionEntries[] =
 };
 
 int main(int argc, char *argv[]) {
+	int status;
+	Camera camera = Camera(&status);
+	if (status != SUCCESS) return status;
+
+	// parse command
 	GError *error = NULL;
 	GOptionContext *context = g_option_context_new("Camera configuration parameters");
 	g_option_context_add_main_entries(context, cameraCommandOptionEntries, NULL);
@@ -33,8 +38,13 @@ int main(int argc, char *argv[]) {
 		g_print("Could not properly parse command line argument: %s\n", error->message);
 		return ERROR_COMMAND_LINE_PARSE_FAILED; 
 	}
-	cout << packetSize << " " << windowHeight << " " << windowWidth << " " << frameRate << " " << numFrames << " " << snapshot << endl;
 	
-	Camera camera = Camera(NULL);
+	if (snapshot) {
+		camera.getSnapshot();
+	} else {
+		camera.configureStream(frameRate, windowWidth, windowHeight);
+		camera.startStream();
+	}
+	
 	return 0;
 }

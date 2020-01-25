@@ -4,12 +4,13 @@
 #include <signal.h>
 #include <stdio.h>
 #include <iostream>
-#include <png.h> // Requires libpng1.2
+//#include <png.h> // Requires libpng1.2
 #include <assert.h>
 #include "camera.h"
 #include <iostream>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include "config.h"
 
 void arv_save_png(ArvBuffer * buffer, const char * filename);
 
@@ -23,7 +24,7 @@ set_cancel (int signal)
     cancel = TRUE;
 }
 
-int filenum = 0;
+int imagecount = 0;
 int calledTimes = 0;
 static void
 new_buffer_cb (ArvStream *stream, ApplicationData *data)
@@ -42,7 +43,7 @@ new_buffer_cb (ArvStream *stream, ApplicationData *data)
 	    //cout << "type " << arv_buffer_get_payload_type(buffer) << endl;
 	    /* Image processing here */
 	    char name[20];
-	    sprintf(name, "%d.png", filenum++);
+	    sprintf(name, "%d.png", imagecount++);
 
 	    //arv_save_png(buffer, name); // segfault
 
@@ -79,31 +80,23 @@ periodic_task_cb (void *abstract_data)
 static void
 control_lost_cb (ArvGvDevice *gv_device)
 {
-    /* Control of the device is lost. Display a message and force application exit */
-    printf ("Control lost\n");
-
     cancel = TRUE;
 }
 
-/**
- * Reads image data from an Aravis ArvBuffer and saves a png file to filename
- * TODO: Add error checking and all that stuff (this code is demonstrative)
- */
+/*
 void arv_save_png(ArvBuffer * buffer, const char * filename)
 {
-    // TODO: This only works on image buffers
     assert(arv_buffer_get_payload_type(buffer) == ARV_BUFFER_PAYLOAD_TYPE_IMAGE);
 
     size_t buffer_size;
-    char * buffer_data = (char*)arv_buffer_get_data(buffer, &buffer_size); // raw data
+    char * buffer_data = (char*)arv_buffer_get_data(buffer, &buffer_size); 
     int width; int height;
-    arv_buffer_get_image_region(buffer, NULL, NULL, &width, &height); // get width/height
-    int bit_depth = ARV_PIXEL_FORMAT_BIT_PER_PIXEL(arv_buffer_get_image_pixel_format(buffer)); // bit(s) per pixel
-    //TODO: Deal with non-png compliant pixel formats?
-    // EG: ARV_PIXEL_FORMAT_MONO_14 is 14 bits per pixel, so conversion to PNG loses data
-    int arv_row_stride = width * bit_depth/8; // bytes per row, for constructing row pointers
-    int color_type = PNG_COLOR_TYPE_GRAY; //TODO: Check for other types?
-    // boilerplate libpng stuff without error checking (setjmp? Seriously? How many kittens have to die?)
+    arv_buffer_get_image_region(buffer, NULL, NULL, &width, &height); 
+    int bit_depth = ARV_PIXEL_FORMAT_BIT_PER_PIXEL(arv_buffer_get_image_pixel_format(buffer)); 
+
+    int arv_row_stride = width * bit_depth/8; 
+    int color_type = PNG_COLOR_TYPE_GRAY; 
+
     png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
     png_infop info_ptr = png_create_info_struct(png_ptr);
 
@@ -118,7 +111,7 @@ void arv_save_png(ArvBuffer * buffer, const char * filename)
     int i =0;
     for (i = 0; i < height; ++i)
 	rows[i] = (png_bytep)(buffer_data + (height - i)*arv_row_stride);
-    // Actually write image
+    // write image
 cout << "here" << endl;
     png_write_image(png_ptr, rows); // segfault line
     cout << "here1" << endl;
@@ -127,28 +120,20 @@ cout << "here" << endl;
     png_destroy_write_struct(&png_ptr, &info_ptr);
 
     fclose(f);
-}
+}*/
 
 Camera::Camera(int *status, char *name) {
     arvCamera = arv_camera_new(name);
     if (arvCamera == NULL) {
-	char errorMsg[50];
-	sprintf(errorMsg, "Camera %s not found", name ? name : "");
-	throw std::runtime_error(errorMsg);
-    }
-    stream = NULL;
-    arv_camera_gv_set_packet_size(arvCamera, 1500); // necessary for acceptable performance
-    parser = arv_camera_create_chunk_parser(arvCamera);
-    arv_camera_set_chunks(arvCamera, "Width,Height");
-    arv_camera_set_chunk_mode(arvCamera, true);
+	*status = ERROR_CAMERA_NOT_FOUND;
+    } else {
+	stream = NULL;
+	arv_camera_gv_set_packet_size(arvCamera, 1500); // necessary for acceptable performance
+
+	
+    
+/*
     ArvDevice *device = arv_camera_get_device(arvCamera);
-    
-    gint64 min;
-    gint64 max;
-    arv_device_get_integer_feature_bounds(device, "Zoom", &min, &max);
-    cout << "min " << min << " max " << max << endl;
-    arv_device_set_integer_feature_value(device, "Zoom", 2);
-    
     GSocketAddress *ip = arv_gv_device_get_device_address(ARV_GV_DEVICE (device));
     gssize ipsize = g_socket_address_get_native_size(ip);
     gpointer res = malloc(ipsize);
@@ -177,8 +162,8 @@ Camera::Camera(int *status, char *name) {
     printf("IP address: %s\n", s);
     free(s);
     free(res);
-    
-    cout << "zoom " << arv_device_get_integer_feature_value(device, "Zoom") << endl;
+*/
+    }
 }
 
 Camera::~Camera() {
@@ -189,20 +174,9 @@ void Camera::configureStream(float frameRate, gint windowWidth, gint windowHeigh
     ArvCamera *camera = arvCamera;
     data.buffer_count = 0;
 
-    gint minH, maxH, minW, maxW;
-    arv_camera_get_height_bounds(camera, &minH, &maxH);
-    arv_camera_get_width_bounds(camera, &minW, &maxW);
-    gint x = maxW/2 - windowWidth/2;
-    gint y = maxH/2 - windowHeight/2;
-    gint width = maxW/2 + windowWidth/2;
-    gint height = maxH/2 + windowHeight/2;
-    cout << "windowwidth " << windowWidth << " windowHeight " << windowHeight;
-    cout << "x " << x << " y " << y << " width " << width << " height " << height << endl;
-    arv_camera_set_region (camera, x, y, width, height);
-    /* Set frame rate to 10 Hz */
+    arv_camera_set_region (camera, 0, 0, windowWidth, windowHeight);
     arv_camera_set_frame_rate (camera, frameRate);
-
-    /* Create a new stream object */
+    
     stream = arv_camera_create_stream (camera, NULL, NULL);
 }
 
@@ -226,7 +200,8 @@ void Camera::startStream(int maxBufferCount) {
 		
 	/* Connect the new-buffer signal */
 	g_signal_connect (stream, "new-buffer", G_CALLBACK (new_buffer_cb), &data);
-	/* And enable emission of this signal (it's disabled by default for performance reason) */
+	
+	/* Enable emission of this signal (it's disabled by default for performance reasons) */
 	arv_stream_set_emit_signals (stream, TRUE);
 	
 	/* Connect the control-lost signal */
@@ -244,13 +219,14 @@ void Camera::startStream(int maxBufferCount) {
 	g_main_loop_run (data.main_loop);
 	
 	// stream cleanup
-	cout << "files " << filenum << endl;
+	cout << "images captured" << imagecount << endl;
 
 	signal (SIGINT, old_sigint_handler);
 	g_main_loop_unref (data.main_loop);
 	
 	// Stop the video stream 
 	arv_camera_stop_acquisition (arvCamera);
+	
 	// Signal must be inhibited to avoid stream thread running after the last unref 
 	arv_stream_set_emit_signals (stream, FALSE);
 		
@@ -263,9 +239,10 @@ void Camera::stopStream() { set_cancel(TRUE); }
 void Camera::freeStream() { g_object_unref(stream); }
 
 ArvBuffer* Camera::getSnapshot() {
+    // TODO: Error checking
     ArvBuffer *buffer = arv_camera_acquisition(arvCamera, 0);
     if (ARV_IS_BUFFER(buffer)) {
-	arv_save_png(buffer, "capture.png");
+	/*arv_save_png(buffer, "capture.png");*/
     }
     return buffer;
 }
