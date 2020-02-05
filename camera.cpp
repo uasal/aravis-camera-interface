@@ -1,3 +1,10 @@
+/*
+  Init the crap out of everything.
+  Contents on left for == 
+  No more void *.
+  Move all commented test code in whatever.test.cpp
+*/
+
 #include "glib.h"
 #include "arv.h"
 #include <stdlib.h>
