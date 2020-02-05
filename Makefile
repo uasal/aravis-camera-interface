@@ -1,3 +1,6 @@
+# Please use relative paths.  Tidy!
+# Link to aravis in a comment, download, notes, etc.
+
 CXX=g++
 LIBS=-laravis-0.6 \
 	-L/usr/lib -L/usr/local/lib \
