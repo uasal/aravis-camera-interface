@@ -27,8 +27,11 @@ static const GOptionEntry cameraCommandOptionEntries[] =
 int main(int argc, char *argv[]) {
 	int status;
 	Camera camera = Camera(&status);
+	cout << "camera done" << endl;
 	if (status != SUCCESS) return status;
-
+	
+	cout << "in here" << endl;
+	
 	// parse command
 	GError *error = NULL;
 	GOptionContext *context = g_option_context_new("Camera configuration parameters");
@@ -39,6 +42,7 @@ int main(int argc, char *argv[]) {
 		return ERROR_COMMAND_LINE_PARSE_FAILED; 
 	}
 	
+	cout << "made it here" << endl;
 	if (snapshot) {
 		camera.getSnapshot();
 	} else {

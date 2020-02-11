@@ -41,9 +41,9 @@ new_buffer_cb (ArvStream *stream, ApplicationData *data)
     
     buffer = arv_stream_try_pop_buffer (stream);
 
-    if (buffer != NULL) {
+    if (NULL != buffer) {
 	ArvBufferStatus status = arv_buffer_get_status (buffer);
-        if (status == ARV_BUFFER_STATUS_SUCCESS){
+        if (ARV_BUFFER_STATUS_SUCCESS == status){
             data->buffer_count++;
 	    data->totalBufferCount++;
 
@@ -130,9 +130,12 @@ cout << "here" << endl;
 }*/
 
 Camera::Camera(int *status, char *name) {
-    arvCamera = arv_camera_new(name);
+    *status = SUCCESS;
+
+	arvCamera = arv_camera_new(name);
     if (arvCamera == NULL) {
 	*status = ERROR_CAMERA_NOT_FOUND;
+	cout << "status " << status << endl;
     } else {
 	stream = NULL;
 	arv_camera_gv_set_packet_size(arvCamera, 1500); // necessary for acceptable performance
@@ -170,7 +173,8 @@ Camera::Camera(int *status, char *name) {
     free(s);
     free(res);
 */
-    }
+	
+	}
 }
 
 Camera::~Camera() {
