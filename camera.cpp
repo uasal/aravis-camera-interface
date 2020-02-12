@@ -46,20 +46,10 @@ new_buffer_cb (ArvStream *stream, ApplicationData *data)
         if (ARV_BUFFER_STATUS_SUCCESS == status){
             data->buffer_count++;
 	    data->totalBufferCount++;
-
-	    //cout << "type " << arv_buffer_get_payload_type(buffer) << endl;
-	    /* Image processing here */
-	    char name[20];
-	    sprintf(name, "%d.png", imagecount++);
-
-	    //arv_save_png(buffer, name); // segfault
-
-	    //size_t buffer_size;
-	    //char * buffer_data = (char*)arv_buffer_get_data(buffer, &buffer_size); // raw data
 	    
 	    if (data->totalBufferCount == data->maxBufferCount) {
-		g_main_loop_quit(data->main_loop);
-		data->done = TRUE;
+			g_main_loop_quit(data->main_loop);
+			data->done = TRUE;
 	    }
 	}
 
@@ -129,51 +119,14 @@ cout << "here" << endl;
     fclose(f);
 }*/
 
-Camera::Camera(int *status, char *name) {
+Camera::Camera(int *status, int packetSize, char *name) {
     *status = SUCCESS;
 
 	arvCamera = arv_camera_new(name);
     if (arvCamera == NULL) {
-	*status = ERROR_CAMERA_NOT_FOUND;
-	cout << "status " << status << endl;
+		*status = ERROR_CAMERA_NOT_FOUND;
     } else {
-	stream = NULL;
-	arv_camera_gv_set_packet_size(arvCamera, 1500); // necessary for acceptable performance
-
-	
-    
-/*
-    ArvDevice *device = arv_camera_get_device(arvCamera);
-    GSocketAddress *ip = arv_gv_device_get_device_address(ARV_GV_DEVICE (device));
-    gssize ipsize = g_socket_address_get_native_size(ip);
-    gpointer res = malloc(ipsize);
-    gboolean rc = g_socket_address_to_native(ip, res, ipsize, NULL);
-    cout << "success " << rc << endl;
-    struct sockaddr *ipstruct = (struct sockaddr*) res;
-    cout << "ip data " << ipstruct->sa_data << endl;
-    
-    char *s = NULL;
-    switch(ipstruct->sa_family) {
-	case AF_INET: {
-	    struct sockaddr_in *addr_in = (struct sockaddr_in *)res;
-	    s = (char*) malloc(INET_ADDRSTRLEN);
-	    inet_ntop(AF_INET, &(addr_in->sin_addr), s, INET_ADDRSTRLEN);
-	    break;
-	}
-	case AF_INET6: {
-	    struct sockaddr_in6 *addr_in6 = (struct sockaddr_in6 *)res;
-	    s = (char*) malloc(INET6_ADDRSTRLEN);
-	    inet_ntop(AF_INET6, &(addr_in6->sin6_addr), s, INET6_ADDRSTRLEN);
-	    break;
-	}
-	default:
-	    break;
-    }
-    printf("IP address: %s\n", s);
-    free(s);
-    free(res);
-*/
-	
+		arv_camera_gv_set_packet_size(arvCamera, packetSize); // necessary for acceptable performance	
 	}
 }
 
@@ -181,18 +134,20 @@ Camera::~Camera() {
     g_clear_object(&arvCamera);
 }
 
-void Camera::configureStream(float frameRate, gint windowWidth, gint windowHeight) {
+void Camera::configureAttributes(gint windowWidth, gint windowHeight, double exposureTime) {
+	arv_camera_set_region(arvCamera, 0, 0, windowWidth, windowHeight);
+	if (FEATURE_NOT_DEFINED != exposureTime) arv_camera_set_exposure_time(arvCamera, exposureTime);
+}
+
+void Camera::startStream(int maxBufferCount, float frameRate) {
     ArvCamera *camera = arvCamera;
     data.buffer_count = 0;
 
-    arv_camera_set_region (camera, 0, 0, windowWidth, windowHeight);
     arv_camera_set_frame_rate (camera, frameRate);
     
-    stream = arv_camera_create_stream (camera, NULL, NULL);
-}
+    ArvStream *stream = arv_camera_create_stream (camera, NULL, NULL);
 
-void Camera::startStream(int maxBufferCount) {
-    int i;
+	int i;
     cancel = FALSE;
     /* retrieve image payload (number of bytes per image) */
     gint payload = arv_camera_get_payload (arvCamera);
@@ -259,10 +214,6 @@ ArvBuffer* Camera::getSnapshot() {
 }
 
 ArvCamera* Camera::getArvInstance() { return arvCamera; }
-
-/*
- * Private methods
- */
  
 
 

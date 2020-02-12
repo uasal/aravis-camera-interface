@@ -12,12 +12,13 @@ typedef struct {
 class Camera {
 public: 
 	// constructor/destructor
-	Camera(int *status, char *cameraName = NULL);
+	Camera(int *status, int packetSize, char *name = NULL);
 	~Camera();
 	
 	// video capture
-	void configureStream(float frameRate, gint windowHeight, gint windowWidth);
-	void startStream(int maxBufferCount = -1);
+	
+	void configureAttributes(gint windowWidth, gint windowHeight, double exposureTime);
+	void startStream(int maxBufferCount, float frameRate);
 	void stopStream();
 	void freeStream();
 	ArvBuffer* getSnapshot();
