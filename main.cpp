@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 	
 	int status;
 	Camera camera = Camera(&status, ethernetPacketSize);
-	if (status != SUCCESS) return status;
+	if (SUCCESS != status) return status;
 
 	cout << "made it here" << endl;
 	if (snapshotMode) {
