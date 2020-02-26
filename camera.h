@@ -22,7 +22,8 @@ public:
 	void stopStream();
 	void freeStream();
 	ArvBuffer* getSnapshot();
-	
+	int sendCameraStartStreamCommand(int maxBufferCount, float frameRate);
+
 	// getters
 	ArvCamera* getArvInstance();
 	
