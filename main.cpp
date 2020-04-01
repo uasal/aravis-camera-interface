@@ -11,8 +11,10 @@ gint windowHeight = DEFAULT_CAMERA_WINDOW_HEIGHT;
 gint windowWidth = DEFAULT_CAMERA_WINDOW_WIDTH;
 gint frameRate = DEFAULT_CAMERA_FRAME_RATE;
 gint numFrames = FEATURE_NOT_DEFINED;
-gboolean snapshotMode = FALSE;
 gdouble exposureTime = FEATURE_NOT_DEFINED;
+gboolean snapshotMode = FALSE;
+gboolean acceptDataFromCamera = FALSE;
+
 
 static const GOptionEntry cameraCommandOptionEntries[] =
 {
@@ -44,7 +46,7 @@ int main(int argc, char *argv[]) {
 
 	cout << "made it here" << endl;
 	if (snapshotMode) {
-		camera.getSnapshot();
+		camera.getSnapshot(10000000, 1, &status);
 	} else {
 		camera.configureAttributes(windowWidth, windowHeight, exposureTime);
 		camera.startStream(numFrames, frameRate);

@@ -7,6 +7,7 @@
 
 #include "glib.h"
 #include "arv.h"
+#include "arvgvstream.h"
 #include <stdlib.h>
 #include <signal.h>
 #include <stdio.h>
@@ -63,16 +64,19 @@ cout << "here" << endl;
 }*/
 
 Camera::Camera(int *status, int packetSize, char *name) {
-    *status = SUCCESS;
+  *status = SUCCESS;
 
 	arvCamera = arv_camera_new(name);
-    if (arvCamera == NULL) {
-		*status = ERROR_CAMERA_NOT_FOUND;
-    } else {
-		arv_camera_gv_set_packet_size(arvCamera, packetSize); // necessary for acceptable performance
+  if (arvCamera == NULL) {
+    *status = ERROR_CAMERA_NOT_FOUND;
+  } else {
+		arv_camera_gv_set_packet_size(arvCamera, packetSize);
+    arv_camera_set_trigger(arvCamera, "Software");
+    /*
 		ArvDevice *device = arv_camera_get_device(arvCamera);
-		cout << "sensor temperature: " << arv_device_get_float_feature_value(device, "SensorTemperature");
-	}
+		cout << "sensor temperature: " << arv_device_get_float_feature_value(device, "SensorTemperature") << endl;
+	  */
+  }
 }
 
 Camera::~Camera() {
@@ -86,54 +90,82 @@ void Camera::configureAttributes(gint windowWidth, gint windowHeight, double exp
 
 void Camera::startStream(int maxBufferCount, float frameRate) {
     ArvCamera *camera = arvCamera;
-    data.buffer_count = 0;
 
     arv_camera_set_frame_rate (camera, frameRate);
     arv_camera_set_trigger(camera, "Software");
-    ArvStream *stream = arv_camera_create_stream (camera, NULL, NULL);
 
+    ArvStream *stream = arv_camera_create_stream(arvCamera, NULL, NULL);
+    if (NULL == stream) {
+      cout << "stream creation failed" << endl;
+      return;
+    }
 	int i;
 
     // retrieve image payload (number of bytes per image) 
     gint payload = arv_camera_get_payload (arvCamera);
-    data.maxBufferCount = maxBufferCount;
-    data.totalBufferCount = 0;
-    data.done = FALSE;
+    
     if (stream != NULL) {
 	// Push 50 buffer in the stream input buffer queue 
 	for (i = 0; i < 50; i++)
 	    arv_stream_push_buffer (stream, arv_buffer_new (payload, NULL));
 
-	arv_camera_set_frame_count (camera, maxBufferCount);
-	arv_camera_set_acquisition_mode (arvCamera, ARV_ACQUISITION_MODE_MULTI_FRAME);
-
+	arv_camera_set_frame_count (arvCamera, maxBufferCount);
+	//arv_camera_set_acquisition_mode (arvCamera, ARV_ACQUISITION_MODE_MULTI_FRAME);
+  arv_camera_set_acquisition_mode(arvCamera, ARV_ACQUISITION_MODE_CONTINUOUS);
 	// Start the video stream 
 	arv_camera_start_acquisition (arvCamera);
-	cout << "here" << endl;
-	while (1) {
-		sleep(10000);
-		arv_camera_software_trigger(camera);
+	arv_stream_set_emit_signals(stream, TRUE);
+  cout << "here" << endl;
+   
+  while (1) {
+    sleep(10);
+    cout << "made it here" << endl;
+		//arv_camera_software_trigger(camera);
+		ArvBuffer *buffer = arv_stream_timeout_pop_buffer (stream, 2000);
+		if (!buffer) cout << "no buffer" << endl;
+    else cout << "buffer found" << endl;
 	}
 	//system("ffmpeg -r 10 -f image2 -i %d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p test.mp4");
-
+  arv_camera_stop_acquisition(arvCamera);
     } else
 	printf ("Stream thread was unintialized (check if the device is not already used, or if stream was configured)\n");
+ 
 }
 
 void Camera::stopStream() { }
-void Camera::freeStream() { g_object_unref(stream); }
+void Camera::freeStream() { }
 
-ArvBuffer* Camera::getSnapshot() {
-    // TODO: Error checking
-    ArvBuffer *buffer = arv_camera_acquisition(arvCamera, 0);
-    if (ARV_IS_BUFFER(buffer)) {
-	//arv_save_png(buffer, "capture.png");
+ArvBuffer* Camera::getSnapshot(guint64 timeout, int toggleDataRetrieval, int *status) {
+  ArvBuffer *buffer = NULL;
+  ArvStream *stream = NULL;
+  gint payload;
+  *status = SUCCESS;
+
+  g_return_val_if_fail(ARV_IS_CAMERA(arvCamera), NULL);
+
+  payload = arv_camera_get_payload(arvCamera);
+  stream = arv_camera_create_stream(arvCamera, NULL, NULL);
+  if (NULL != stream) {
+    arv_stream_push_buffer(stream, arv_buffer_new(payload, NULL));
+    arv_camera_start_acquisition(arvCamera);
+    
+    arv_camera_software_trigger(arvCamera);
+    cout << "triggered" << endl;
+    if (toggleDataRetrieval) {
+      buffer = arv_stream_timeout_pop_buffer(stream, timeout);
+      if (buffer != NULL) cout << "buffer" << endl;
+      else cout << "no buffer" << endl;
     }
-    return buffer;
-}
-
-int Camera::sendCameraStartStreamCommand(int maxBufferCount, float frameRate) {
-	return SUCCESS;
+    else {
+      usleep(timeout);
+    }
+    arv_camera_stop_acquisition(arvCamera);
+    g_object_unref(stream);
+  }
+  else {
+    *status = ERROR_STREAM_CREATION_FAILED;
+  }
+  return buffer;
 }
 
 ArvCamera* Camera::getArvInstance() { return arvCamera; }

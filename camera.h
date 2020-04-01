@@ -21,8 +21,7 @@ public:
 	void startStream(int maxBufferCount, float frameRate);
 	void stopStream();
 	void freeStream();
-	ArvBuffer* getSnapshot();
-	int sendCameraStartStreamCommand(int maxBufferCount, float frameRate);
+	ArvBuffer* getSnapshot(guint64 timeout, int toggleDataRetrieval, int *status);
 
 	// getters
 	ArvCamera* getArvInstance();
@@ -30,10 +29,6 @@ public:
 private:
 	ArvCamera *arvCamera;
 	ArvChunkParser *parser;
-	
-	// for video stream
-	ArvStream *stream;
-	ApplicationData data;
 };
 
 #endif
