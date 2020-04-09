@@ -90,46 +90,34 @@ void Camera::configureAttributes(gint windowWidth, gint windowHeight, double exp
 
 void Camera::startStream(int maxBufferCount, float frameRate) {
     ArvCamera *camera = arvCamera;
-
     arv_camera_set_frame_rate (camera, frameRate);
-    arv_camera_set_trigger(camera, "Software");
+    
+    ArvStream *stream = arv_camera_create_stream (camera, NULL, NULL);
 
-    ArvStream *stream = arv_camera_create_stream(arvCamera, NULL, NULL);
-    if (NULL == stream) {
-      cout << "stream creation failed" << endl;
-      return;
-    }
 	int i;
 
-    // retrieve image payload (number of bytes per image) 
+    // retrieve image payload (number of bytes per image)
     gint payload = arv_camera_get_payload (arvCamera);
-    
+
     if (stream != NULL) {
-	// Push 50 buffer in the stream input buffer queue 
 	for (i = 0; i < 50; i++)
 	    arv_stream_push_buffer (stream, arv_buffer_new (payload, NULL));
 
-	arv_camera_set_frame_count (arvCamera, maxBufferCount);
-	//arv_camera_set_acquisition_mode (arvCamera, ARV_ACQUISITION_MODE_MULTI_FRAME);
-  arv_camera_set_acquisition_mode(arvCamera, ARV_ACQUISITION_MODE_CONTINUOUS);
-	// Start the video stream 
+	// arv_camera_set_frame_count(arvCamera, 2);
+	// arv_camera_set_acquisition_mode (arvCamera, ARV_ACQUISITION_MODE_MULTI_FRAME);
+	arv_camera_set_acquisition_mode (arvCamera, ARV_ACQUISITION_MODE_CONTINUOUS);
+	
+/* Start the video stream */
 	arv_camera_start_acquisition (arvCamera);
-	arv_stream_set_emit_signals(stream, TRUE);
-  cout << "here" << endl;
-   
-  while (1) {
-    sleep(10);
-    cout << "made it here" << endl;
-		//arv_camera_software_trigger(camera);
-		ArvBuffer *buffer = arv_stream_timeout_pop_buffer (stream, 2000);
-		if (!buffer) cout << "no buffer" << endl;
-    else cout << "buffer found" << endl;
-	}
+
+	sleep(30);
+	
+	// Stop the video stream 
+	arv_camera_stop_acquisition (arvCamera);
+		
 	//system("ffmpeg -r 10 -f image2 -i %d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p test.mp4");
-  arv_camera_stop_acquisition(arvCamera);
     } else
 	printf ("Stream thread was unintialized (check if the device is not already used, or if stream was configured)\n");
- 
 }
 
 void Camera::stopStream() { }
