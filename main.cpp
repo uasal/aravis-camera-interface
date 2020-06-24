@@ -45,6 +45,52 @@ int main(int argc, char *argv[]) {
 	if (SUCCESS != status) return status;
 
 	cout << "made it here" << endl;
+	ArvCamera* arvCamera = camera.getArvInstance();
+	ArvDevice* device = arv_camera_get_device(arvCamera);
+	cout << "prev status " << (arv_device_get_status(device) == ARV_DEVICE_STATUS_SUCCESS) << endl;
+	cout << "feature " << arv_device_get_boolean_feature_value(device, "AutoFrameRate") << endl;
+	cout << "after status " << (arv_device_get_status(device) == ARV_DEVICE_STATUS_SUCCESS) << endl;
+
+	guint numVals;
+	gint64 *featVals = arv_device_get_available_enumeration_feature_values
+                               (device,
+                                "AutoFrameRate",
+                                &numVals);
+	cout << "values" << endl;
+	for (int i = 0; i < numVals; i++) {
+		cout << featVals[i] << endl;	
+	}
+
+	//double min, max;
+	//arv_device_get_float_feature_bounds(device, "Brightness", &min, &max);
+	//cout << "min " << min << " max " << max << endl;
+
+	error = NULL;
+	guint32 val;
+	gboolean ret = arv_device_read_register (device,
+                          0xE8E8,
+                          &val,
+                          &error);
+	if (!ret) cout << "read not successful" << endl;
+	else cout << "read successful " << val << endl;
+
+	ret = arv_device_write_register (device,
+                          0xE8E8,
+                          1,
+                          &error);
+	if (!ret) {
+		cout << "write not successful" << endl;
+		cout << error->message << endl;
+	}
+	else cout << "write successful" << endl;
+
+	ret = arv_device_read_register (device,
+                          0xE8E8,
+                          &val,
+                          &error);
+	if (!ret) cout << "read not successful" << endl;
+	else cout << "read successful " << val << endl;
+
 	if (snapshotMode) {
 		camera.getSnapshot(10000000, 1, &status);
 	} else {
