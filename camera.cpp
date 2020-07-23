@@ -14,10 +14,9 @@
 #include <iostream>
 //#include <png.h> // Requires libpng1.2
 #include <assert.h>
+#include <unistd.h>
 #include "camera.h"
 #include <iostream>
-#include <sys/socket.h>
-#include <arpa/inet.h>
 #include "config.h"
 
 void arv_save_png(ArvBuffer * buffer, const char * filename);
@@ -70,7 +69,9 @@ Camera::Camera(int *status, int packetSize, char *name) {
   if (arvCamera == NULL) {
     *status = ERROR_CAMERA_NOT_FOUND;
   } else {
-		arv_camera_gv_set_packet_size(arvCamera, packetSize);
+	device = arv_camera_get_device(arvCamera); // TODO: Error check this line?
+	
+	arv_camera_gv_set_packet_size(arvCamera, packetSize);
     arv_camera_set_trigger(arvCamera, "Software");
     /*
 		ArvDevice *device = arv_camera_get_device(arvCamera);
@@ -154,6 +155,72 @@ ArvBuffer* Camera::getSnapshot(guint64 timeout, int toggleDataRetrieval, int *st
     *status = ERROR_STREAM_CREATION_FAILED;
   }
   return buffer;
+}
+
+void Camera::setFrameRate(double frameRate, int *status) {
+  // must first do a get, otherwise camera doesn't let frame rate write for some reason
+  arv_camera_get_frame_rate(arvCamera);
+
+  double min = 10000, max = -1;
+  arv_camera_get_frame_rate_bounds(arvCamera, &min, &max);
+  if (min > frameRate || max < frameRate) {
+  	*status = ERROR_FEATURE_OUT_OF_BOUNDS;
+	// log error somehow
+	printf("Error: frame rate is not within camera bounds [%lf, %lf]\n", min, max);	
+	return;
+  }
+  else {
+	// log success somehow
+	printf("Frame rate successfully passed validation.\n");
+  }
+
+  arv_camera_set_frame_rate(arvCamera, frameRate);
+
+  // make sure value was written
+  double readFrameRate = arv_camera_get_frame_rate(arvCamera);
+  if (frameRate != readFrameRate) {
+  	// log error somehow
+	cout << frameRate << " " << readFrameRate << endl;
+	printf("Error: frame rate failed to write\n");
+	*status = ERROR_FEATURE_WRITE_FAILED;
+	return;
+  }
+
+  // log success
+  printf("Frame rate %lf was successfully written to the camera.\n", frameRate);
+  *status = SUCCESS;
+}
+
+void Camera::setGain(double gain, int *status) {
+  double min = 10000, max = -1;
+  
+  arv_device_get_float_feature_bounds(device, "GainAbs", &min, &max);
+  
+  if (min > gain || max < gain) {
+  	*status = ERROR_FEATURE_OUT_OF_BOUNDS;
+	// log error somehow
+	printf("Error: gain is not within camera bounds [%lf, %lf]\n", min, max);	
+	return;
+  }
+  else {
+	// log success somehow
+	printf("Gain successfully passed validation.\n");
+  }
+
+  arv_device_set_float_feature_value(device, "GainAbs", gain);
+
+  // make sure value was written
+  double readFeature = arv_device_get_float_feature_value(device, "GainAbs");
+  if (readFeature != gain) {
+  	// log error somehow
+	printf("Error: gain failed to write\n");
+	*status = ERROR_FEATURE_WRITE_FAILED;
+	return;
+  }
+
+  // log success
+  printf("Gain %lf was successfully written to the camera.\n", gain);
+  *status = SUCCESS;
 }
 
 ArvCamera* Camera::getArvInstance() { return arvCamera; }

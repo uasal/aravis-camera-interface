@@ -16,19 +16,22 @@ public:
 	~Camera();
 	
 	// video capture
-	
-	void configureAttributes(gint windowWidth, gint windowHeight, double exposureTime);
 	void startStream(int maxBufferCount, float frameRate);
 	void stopStream();
 	void freeStream();
 	ArvBuffer* getSnapshot(guint64 timeout, int toggleDataRetrieval, int *status);
+
+	// feature writing
+	void configureAttributes(gint windowWidth, gint windowHeight, double exposureTime);
+	void setFrameRate(double frameRate, int *status);
+	void setGain(double gain, int *status);
 
 	// getters
 	ArvCamera* getArvInstance();
 	
 private:
 	ArvCamera *arvCamera;
-	ArvChunkParser *parser;
+	ArvDevice *device;
 };
 
 #endif
