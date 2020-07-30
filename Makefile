@@ -11,8 +11,8 @@ CFLAGS=-O0 -g3 -Wall -fmessage-length=0 -MMD -MP
 %.o: %.cpp $(DEPS)
 	$(CXX) -o $@ $< -c $(CFLAGS) $(LIBS)
 
-main: main.o camera.o
-	$(CXX) -o main main.o camera.o $(CFLAGS) $(LIBS)
+hdcamera: main.o hdcamera.o
+	$(CXX) -o hdcamera main.o hdcamera.o $(CFLAGS) $(LIBS)
 	
 clean:
 	rm -rf *.o *.d
