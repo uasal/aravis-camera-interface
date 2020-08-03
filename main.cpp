@@ -112,6 +112,7 @@ int main(int argc, char *argv[]) {
 }
 
 
+// TODO: initialize variables
 int arv_save_png(ArvBuffer * buffer, const char * filename)
 {
     //assert(arv_buffer_get_payload_type(buffer) == ARV_BUFFER_PAYLOAD_TYPE_IMAGE);
