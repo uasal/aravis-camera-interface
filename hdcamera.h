@@ -16,7 +16,7 @@ public:
 	~HDCamera();
 	
 	// image capture
-	int startStream(int maxBufferCount);
+	int startStream(guint64 duration);
 	int getSnapshot(guint64 timeout, ArvBuffer **buffer);
 
 	// feature writing

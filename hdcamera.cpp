@@ -5,7 +5,6 @@
 #include <signal.h>
 #include <stdio.h>
 #include <iostream>
-//#include <png.h> // Requires libpng1.2
 #include <assert.h>
 #include <unistd.h>
 #include "hdcamera.h"
@@ -21,7 +20,7 @@ HDCamera::HDCamera(int *status, int packetSize, char *name) {
 	*status = SUCCESS;
 
 	arvCamera = arv_camera_new(name);
-	if (arvCamera == NULL) {
+	if (!ARV_IS_CAMERA(arvCamera)) {
 		*status = ERROR_CAMERA_NOT_FOUND;
 	} else {
 		device = arv_camera_get_device(arvCamera); // TODO: Error check this line?
@@ -39,20 +38,13 @@ HDCamera::~HDCamera() {
  * 
  * Parameters:
  */
-int HDCamera::startStream(int duration) {
+int HDCamera::startStream(guint64 duration) {
+	cout << "duration " << duration << endl;
     ArvCamera *camera = arvCamera;
     
     ArvStream *stream = arv_camera_create_stream (camera, NULL, NULL);
 
-	int i;
-
-    // retrieve image payload (number of bytes per image)
-    gint payload = arv_camera_get_payload (arvCamera);
-
     if (stream != NULL) {
-		for (i = 0; i < 50; i++)
-	    	arv_stream_push_buffer (stream, arv_buffer_new (payload, NULL));
-
 		arv_camera_set_acquisition_mode (arvCamera, ARV_ACQUISITION_MODE_CONTINUOUS);
 		arv_camera_start_acquisition (arvCamera);
 		sleep(duration);
@@ -69,9 +61,7 @@ int HDCamera::startStream(int duration) {
 int HDCamera::getSnapshot(guint64 timeout, ArvBuffer **buffer) {
 	ArvStream *stream = NULL;
 	gint payload = arv_camera_get_payload(arvCamera);
-
-	g_return_val_if_fail(ARV_IS_CAMERA(arvCamera), NULL);
-
+	cout << "timeout " << timeout << endl;
 	stream = arv_camera_create_stream(arvCamera, NULL, NULL);
   	if (NULL != stream) {
     	arv_stream_push_buffer(stream, arv_buffer_new(payload, NULL));
@@ -81,7 +71,7 @@ int HDCamera::getSnapshot(guint64 timeout, ArvBuffer **buffer) {
     	cout << "triggered" << endl;
     	if (NULL != buffer) {
     		*buffer = arv_stream_timeout_pop_buffer(stream, timeout);
-    		if (buffer != NULL) cout << "buffer" << endl;
+    		if (NULL != *buffer) cout << "buffer" << endl;
     		else cout << "no buffer" << endl;
     	}
     	else {
@@ -118,7 +108,6 @@ int HDCamera::setFrameRate(double frameRate) {
   double readFrameRate = arv_camera_get_frame_rate(arvCamera);
   if (frameRate != readFrameRate) {
   	// log error somehow
-	cout << frameRate << " " << readFrameRate << endl;
 	printf("Error: frame rate failed to write\n");
 	return ERROR_FEATURE_WRITE_FAILED;
   }
@@ -246,11 +235,11 @@ int HDCamera::setPixelFormat(const char *pixelFormat) {
   const char **pixelFormats = arv_camera_get_available_pixel_formats_as_strings(arvCamera, &nPixelFormats);
 
   int isPixelFormat = FALSE;
-  for (int i = 0; i < nPixelFormats; i++) {
+  for (unsigned int i = 0; i < nPixelFormats; i++) {
 	printf("%s\n", pixelFormats[i]);
 	if (0 == strcmp(pixelFormat, pixelFormats[i])) {
 	  isPixelFormat = TRUE;
-	  break;	
+	  break;
 	}
   }
 
