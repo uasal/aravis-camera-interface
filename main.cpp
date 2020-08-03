@@ -1,3 +1,5 @@
+// TODO: editorconfig
+
 #include "arv.h"
 #include "hdcamera.h"
 #include "config.h"
