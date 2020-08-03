@@ -39,7 +39,6 @@ HDCamera::~HDCamera() {
  * Parameters:
  */
 int HDCamera::startStream(guint64 duration) {
-	cout << "duration " << duration << endl;
     ArvCamera *camera = arvCamera;
     
     ArvStream *stream = arv_camera_create_stream (camera, NULL, NULL);
@@ -259,7 +258,6 @@ int HDCamera::setPixelFormat(const char *pixelFormat) {
   const char *readPixelFormat = arv_camera_get_pixel_format_as_string(arvCamera);
   if (NULL == readPixelFormat || strcmp(readPixelFormat, pixelFormat) != 0) {
 	printf("Error: pixel format failed to write\n");
-	cout << readPixelFormat << endl;
 	return ERROR_FEATURE_WRITE_FAILED;
   }
   printf("Pixel format successfully written to camera\n");
