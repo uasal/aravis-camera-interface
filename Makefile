@@ -1,5 +1,4 @@
-# Please use relative paths.  Tidy!
-# Link to aravis in a comment, download, notes, etc.
+# add comments with options, make options
 
 CXX=g++
 LIBS=`pkg-config --libs --cflags aravis-0.6` \
