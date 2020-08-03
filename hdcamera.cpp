@@ -61,18 +61,22 @@ int HDCamera::startStream(guint64 duration) {
 int HDCamera::getSnapshot(guint64 timeout, ArvBuffer **buffer) {
 	ArvStream *stream = NULL;
 	gint payload = arv_camera_get_payload(arvCamera);
-	cout << "timeout " << timeout << endl;
+
 	stream = arv_camera_create_stream(arvCamera, NULL, NULL);
   	if (NULL != stream) {
     	arv_stream_push_buffer(stream, arv_buffer_new(payload, NULL));
     	arv_camera_start_acquisition(arvCamera);
     
     	arv_camera_software_trigger(arvCamera);
-    	cout << "triggered" << endl;
+
     	if (NULL != buffer) {
     		*buffer = arv_stream_timeout_pop_buffer(stream, timeout);
-    		if (NULL != *buffer) cout << "buffer" << endl;
-    		else cout << "no buffer" << endl;
+    		if (NULL != *buffer) {
+				printf("Buffer was obtained from camera\n");
+			}
+    		else {
+				printf("Buffer was not obtained from camera\n");
+			}
     	}
     	else {
       		usleep(timeout);
