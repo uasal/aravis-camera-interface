@@ -119,9 +119,9 @@ int arv_save_png(ArvBuffer * buffer, const char * filename)
 {
     //assert(arv_buffer_get_payload_type(buffer) == ARV_BUFFER_PAYLOAD_TYPE_IMAGE);
 
-    size_t buffer_size;
+    size_t buffer_size = 0;
     char * buffer_data = (char*)arv_buffer_get_data(buffer, &buffer_size); 
-    int width; int height;
+    int width = -1; int height = -1;
     arv_buffer_get_image_region(buffer, NULL, NULL, &width, &height); 
     int bit_depth = ARV_PIXEL_FORMAT_BIT_PER_PIXEL(arv_buffer_get_image_pixel_format(buffer)); 
 
@@ -154,8 +154,7 @@ int arv_save_png(ArvBuffer * buffer, const char * filename)
 	
     // Need to create pointers to each row of pixels for libpng
     png_bytepp rows = (png_bytepp)(png_malloc(png_ptr, height*sizeof(png_bytep)));
-    int i = 0;
-    for (i = 0; i < height; ++i) {
+    for (int i = 0; i < height; ++i) {
 		rows[i] = (png_bytep)(buffer_data + (height - i)*arv_row_stride);
 	}
 
