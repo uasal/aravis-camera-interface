@@ -1,14 +1,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-typedef struct {
-    GMainLoop *main_loop;
-    int buffer_count;
-    int maxBufferCount;
-    int totalBufferCount;
-    int done;
-} ApplicationData;
-
 class HDCamera {
 public: 
 	// constructor/destructor
