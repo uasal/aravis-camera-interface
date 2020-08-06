@@ -33,6 +33,7 @@ HDCamera::HDCamera(int *status, int packetSize, char *name) {
 }
 
 HDCamera::~HDCamera() {
+	g_clear_object(&device);
 	g_clear_object(&arvCamera);
 }
 
