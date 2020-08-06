@@ -113,57 +113,53 @@ int main(int argc, char *argv[]) {
 	return SUCCESS;
 }
 
-
-// TODO: initialize variables
 int arv_save_png(ArvBuffer * buffer, const char * filename)
 {
-    //assert(arv_buffer_get_payload_type(buffer) == ARV_BUFFER_PAYLOAD_TYPE_IMAGE);
+	size_t buffer_size = 0;
+	char * buffer_data = (char*)arv_buffer_get_data(buffer, &buffer_size); 
+	int width = -1; int height = -1;
+	arv_buffer_get_image_region(buffer, NULL, NULL, &width, &height); 
+	int bit_depth = ARV_PIXEL_FORMAT_BIT_PER_PIXEL(arv_buffer_get_image_pixel_format(buffer)); 
 
-    size_t buffer_size = 0;
-    char * buffer_data = (char*)arv_buffer_get_data(buffer, &buffer_size); 
-    int width = -1; int height = -1;
-    arv_buffer_get_image_region(buffer, NULL, NULL, &width, &height); 
-    int bit_depth = ARV_PIXEL_FORMAT_BIT_PER_PIXEL(arv_buffer_get_image_pixel_format(buffer)); 
+	int arv_row_stride = width * bit_depth/8; 
+	int color_type = PNG_COLOR_TYPE_GRAY; 
 
-    int arv_row_stride = width * bit_depth/8; 
-    int color_type = PNG_COLOR_TYPE_GRAY; 
-
-    png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!png_ptr) {
 		printf("Error: creation of png write struct failed\n");
 		return ERROR_IMAGE_WRITE_FAILURE;
 	}
 
-    png_infop info_ptr = png_create_info_struct(png_ptr);
+	png_infop info_ptr = png_create_info_struct(png_ptr);
 	if (!info_ptr) {
 		printf("Error: creation of png info struct failed\n");
-       	png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+		png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
 		return ERROR_IMAGE_WRITE_FAILURE;
 	}
 
-    FILE * f = fopen(filename, "wb");
+	FILE * f = fopen(filename, "wb");
 	if (!f) {
 		printf("Error: file %s failed to open for writing\n", filename);
 		return ERROR_FILESYSTEM_FAILURE;
 	}
 
-    png_init_io(png_ptr, f);
-    png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth, color_type,
-    PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
-    png_write_info(png_ptr, info_ptr);
+	png_init_io(png_ptr, f);
+	png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth, color_type,
+	PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+	png_write_info(png_ptr, info_ptr);
 	
-    // Need to create pointers to each row of pixels for libpng
-    png_bytepp rows = (png_bytepp)(png_malloc(png_ptr, height*sizeof(png_bytep)));
-    for (int i = 0; i < height; ++i) {
+	// Need to create pointers to each row of pixels for libpng
+	png_bytepp rows = (png_bytepp)(png_malloc(png_ptr, height*sizeof(png_bytep)));
+	for (int i = 0; i < height; ++i) {
 		rows[i] = (png_bytep)(buffer_data + (height - i)*arv_row_stride);
 	}
 
-    png_write_image(png_ptr, rows);
+	png_write_image(png_ptr, rows);
 
-    png_write_end(png_ptr, NULL);
-    png_free(png_ptr, rows);
-    png_destroy_write_struct(&png_ptr, &info_ptr);
+	png_write_end(png_ptr, NULL);
+	png_free(png_ptr, rows);
+	png_destroy_write_struct(&png_ptr, &info_ptr);
 
-    fclose(f);
+	fclose(f);
 	return SUCCESS;
 }
