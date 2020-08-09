@@ -16,8 +16,8 @@ void arv_save_png(ArvBuffer * buffer, const char * filename);
 
 using namespace std;
 
-/**
- * Parameters: status code, packet size of UDP data packets, optional name identifier for the camera
+/*
+	Parameters: status code, packet size of UDP data packets, optional name identifier for the camera
  */
 HDCamera::HDCamera(int *status, int packetSize, char *name) {
 	*status = SUCCESS;
@@ -37,13 +37,13 @@ HDCamera::~HDCamera() {
 	g_clear_object(&arvCamera);
 }
 
-/**
- * Starts stream for the camera.
- * 
- * Parameters: duration for the stream, not equivalent to the video duration, since actual 
- * fps depends on camera and ethernet performance
- *
- * Returns: status code	
+/*
+	Starts stream for the camera.
+	
+	Parameters: duration for the stream, not equivalent to the video duration, since actual 
+	fps depends on camera and ethernet performance
+
+	Returns: status code	
  */
 int HDCamera::startStream(guint64 duration) {
 	ArvCamera *camera = arvCamera;
@@ -64,11 +64,11 @@ int HDCamera::startStream(guint64 duration) {
 	}
 }
 
-/**
- * Obtains snapshot for the camera
- * 
- * Parameters: timeout to wait for the snapshot, needs to be long enough for all packets of the snapshot 
- * Returns: status code	
+/*
+	Obtains snapshot for the camera
+
+	Parameters: timeout to wait for the snapshot, needs to be long enough for all packets of the snapshot 
+	Returns: status code	
  */
 int HDCamera::getSnapshot(guint64 timeout, ArvBuffer **buffer) {
 	ArvStream *stream = NULL;
@@ -102,6 +102,9 @@ int HDCamera::getSnapshot(guint64 timeout, ArvBuffer **buffer) {
   	}
 }
 
+/*
+	Sets frame rate for camera, returns a status code
+*/
 int HDCamera::setFrameRate(double frameRate) {
 	// must first do a get, otherwise camera doesn't let frame rate write for some reason
 	arv_camera_get_frame_rate(arvCamera);
@@ -133,6 +136,9 @@ int HDCamera::setFrameRate(double frameRate) {
 	return SUCCESS;
 }
 
+/*
+	Sets gain for camera, returns status code
+*/
 int HDCamera::setGain(double gain) {
 	double min = 10000, max = -1;
   
@@ -165,7 +171,11 @@ int HDCamera::setGain(double gain) {
 	return SUCCESS;
 }
 
-/* Here, x and y are offsets, with the given window width and height */
+/* 
+	Sets region for camera, returns status code.
+
+	Here, x and y are offsets, with the given window width and height 
+*/
 int HDCamera::setRegion(int x, int y, int width, int height) {
 	int min = 10000, max = -1;
 
@@ -215,6 +225,9 @@ int HDCamera::setRegion(int x, int y, int width, int height) {
 	return status;
 }
 
+/*
+	Sets exposure time for camera, returns status code
+*/
 int HDCamera::setExposureTime(double exposureTime) {
 	// must first do a get, otherwise camera doesn't let frame rate write for some reason
 	arv_camera_get_exposure_time(arvCamera);
@@ -246,6 +259,11 @@ int HDCamera::setExposureTime(double exposureTime) {
 	return SUCCESS;
 }
 
+/*
+	Sets pixel format for the camera, returns status code.
+
+	Valid formats for this particular camera are "Mono8" and "Mono16"
+*/
 int HDCamera::setPixelFormat(const char *pixelFormat) {
 	// do empty get: camera doesn't let pixel format write without this get, returns timeout error
 	arv_camera_get_pixel_format_as_string(arvCamera);
