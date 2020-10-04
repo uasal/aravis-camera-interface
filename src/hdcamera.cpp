@@ -14,42 +14,39 @@
 using namespace std;
 
 typedef struct {
-	GMainLoop *main_loop;
-	int buffer_count;
+	GMainLoop *mainLoop;
+	int bufferCount;
+	int totalBufferCount;
 } ApplicationData;
 
 static gboolean cancel = FALSE;
 
-static void
-set_cancel (int signal)
+static void setCancel(int signal)
 {
 	cancel = TRUE;
 }
 
-static void
-new_buffer_cb (ArvStream *stream, ApplicationData *data)
+static void newBufferCallback(ArvStream *stream, ApplicationData *data)
 {
-	ArvBuffer *buffer;
-
-	buffer = arv_stream_try_pop_buffer (stream);
+	ArvBuffer *buffer = arv_stream_try_pop_buffer (stream);
 	if (buffer != NULL) {
 		if (arv_buffer_get_status (buffer) == ARV_BUFFER_STATUS_SUCCESS)
-			data->buffer_count++;
+			data->bufferCount++;
+			data->totalBufferCount++;
 		/* Image processing here */
 		arv_stream_push_buffer (stream, buffer);
 	}
 }
 
-static gboolean
-periodic_task_cb (void *abstract_data)
+static gboolean periodicTaskCallback(void *abstractData)
 {
-	ApplicationData *data = (ApplicationData*) abstract_data;
+	ApplicationData *data = (ApplicationData*) abstractData;
 
-	printf ("Frame rate = %d Hz\n", data->buffer_count);
-	data->buffer_count = 0;
+	printf ("Frame rate = %d Hz\n", data->bufferCount);
+	data->bufferCount = 0;
 
 	if (cancel) {
-		g_main_loop_quit (data->main_loop);
+		g_main_loop_quit (data->mainLoop);
 		return FALSE;
 	}
 
@@ -58,13 +55,12 @@ periodic_task_cb (void *abstract_data)
 
 static gboolean streamEndCallback(void *appData) {
 	ApplicationData *data = (ApplicationData*) appData;
-	g_main_loop_quit(data->main_loop);
+	g_main_loop_quit(data->mainLoop);
 	
 	return FALSE; // should never get here
 }
 
-static void
-control_lost_cb (ArvGvDevice *gv_device)
+static void controlLostCallback(ArvGvDevice *gvDevice)
 {
 	/* Control of the device is lost. Display a message and force application exit */
 	printf ("Control lost\n");
@@ -102,7 +98,7 @@ HDCamera::~HDCamera() {
 	Returns: status code	
  */
 int HDCamera::startStream(guint64 duration) {
-	void (*old_sigint_handler)(int) = NULL;
+	void (*oldSigintHandler)(int) = NULL;
 	gint payload = arv_camera_get_payload (arvCamera);
 
 	ArvStream *stream = arv_camera_create_stream (arvCamera, NULL, NULL);
@@ -120,28 +116,28 @@ int HDCamera::startStream(guint64 duration) {
 	arv_camera_start_acquisition (arvCamera);
 
 	// Connect the new-buffer signal
-	g_signal_connect (stream, "new-buffer", G_CALLBACK (new_buffer_cb), &data);
+	g_signal_connect (stream, "new-buffer", G_CALLBACK (newBufferCallback), &data);
 		
 	// enable emission of this signal (it's disabled by default for performance reason) 
 	arv_stream_set_emit_signals (stream, TRUE);
 
 	// Connect the control-lost signal 
-	g_signal_connect (arv_camera_get_device (arvCamera), "control-lost", G_CALLBACK (control_lost_cb), NULL);
+	g_signal_connect (arv_camera_get_device (arvCamera), "control-lost", G_CALLBACK (controlLostCallback), NULL);
 
 	// Install the callback for frame rate display
-	g_timeout_add_seconds (1, periodic_task_cb, &data);
+	g_timeout_add_seconds (1, periodicTaskCallback, &data);
 
 	// End the stream after the given duration has passed
 	g_timeout_add_seconds (duration, streamEndCallback, &data);	
 
 	// Create a new glib main loop 
-	data.main_loop = g_main_loop_new (NULL, FALSE);
+	data.mainLoop = g_main_loop_new (NULL, FALSE);
 
-	old_sigint_handler = signal (SIGINT, set_cancel);
-	g_main_loop_run (data.main_loop);
-	signal (SIGINT, old_sigint_handler);
+	oldSigintHandler = signal (SIGINT, setCancel);
+	g_main_loop_run (data.mainLoop);
+	signal (SIGINT, oldSigintHandler);
 
-	g_main_loop_unref (data.main_loop);
+	g_main_loop_unref (data.mainLoop);
 	arv_camera_stop_acquisition (arvCamera);
 
 	// Signal must be inhibited to avoid stream thread running after the last unref
