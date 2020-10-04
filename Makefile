@@ -1,20 +1,20 @@
-# add comments with options, make options
+SOURCE_DIR = src
+TEST_DIR = tst
+CLEAN_DIRS = $(SOURCE_DIR) $(TEST_DIR)
 
-CXX=g++
-LIBS=`pkg-config --libs --cflags aravis-0.6` \
+export CXX = g++
+export ARAVIS_DEPS = `pkg-config --libs --cflags aravis-0.6` \
 	-lm -pthread -lgio-2.0 -lgobject-2.0 \
 	-lxml2 -lgthread-2.0 -lglib-2.0 -lz -lpng 
-DEPS=*.h
-CFLAGS=-O0 -g3 -Wall -fmessage-length=0 -MMD -MP
 
-%.o: %.cpp $(DEPS)
-	$(CXX) -o $@ $< -c $(CFLAGS) $(LIBS)
+source: $(SOURCE_DIR)
+	$(MAKE) -C $(SOURCE_DIR) \
 
-hdcamera: main.o hdcamera.o
-	$(CXX) -o hdcamera main.o hdcamera.o $(CFLAGS) $(LIBS)
+test: $(TEST_DIR)
+	$(MAKE) -C $(TEST_DIR) test \
+
+clean: $(CLEAN_DIRS)
+	for dir in $(CLEAN_DIRS); do \
+		$(MAKE) -C $$dir -f Makefile $@; \
+	done
 	
-clean:
-	rm -rf *.o *.d
-	rm -rf main
-	rm -rf *.png
-
