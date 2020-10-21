@@ -73,7 +73,8 @@ static void controlLostCallback(ArvGvDevice *gvDevice)
  */
 HDCamera::HDCamera(int *status, int packetSize, char *name) {
 	*status = SUCCESS;
-
+	created = false;
+	
 	arvCamera = arv_camera_new(name);
 	if (!ARV_IS_CAMERA(arvCamera)) {
 		*status = ERROR_CAMERA_NOT_FOUND;
@@ -81,12 +82,15 @@ HDCamera::HDCamera(int *status, int packetSize, char *name) {
 		device = arv_camera_get_device(arvCamera); // TODO: Error check this line?
 		arv_camera_gv_set_packet_size(arvCamera, packetSize);
 		arv_camera_set_trigger(arvCamera, "Software");
+		created = true;
   	}
 }
 
 HDCamera::~HDCamera() {
-	g_clear_object(&device);
-	g_clear_object(&arvCamera);
+	if (created) {		
+		g_clear_object(&device);
+		g_clear_object(&arvCamera);
+	}
 }
 
 /*

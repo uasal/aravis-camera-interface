@@ -34,6 +34,8 @@ public:
 private:
 	ArvCamera *arvCamera;
 	ArvDevice *device;
+	
+	bool created;
 };
 
 #endif

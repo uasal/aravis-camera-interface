@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
 	int status = -1;
 	HDCamera camera = HDCamera(&status, ethernetPacketSize);
 	if (SUCCESS != status) return status;
-
+	
 	status = camera.setFrameRate(frameRate);
 	if (SUCCESS != status) return status;
 	
