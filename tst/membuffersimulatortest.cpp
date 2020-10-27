@@ -1,8 +1,10 @@
 #include <stdio.h>
-#include "membuffersimulator.h"
+#include "../src/simulation/membuffersimulator.h"
 #include <unistd.h>
+#include <catch2/catch.hpp>
 
-int main() {
+
+TEST_CASE("sim1", "[simulator]") {
 	
 	MemBufferSimulator simulator = MemBufferSimulator(100000);
 	char data[64000];
@@ -18,9 +20,13 @@ int main() {
 		if (status == MEM_STATUS_COMPLETED) break;
 		sleep(1);
 	}
+
+	REQUIRE(3 == 3);
+	/*
 	simulator.writeToBuffer(data, 64000, 0);
 	simulator.writeToBuffer(data, 64000, 1);
 	simulator.writeToBuffer(data, 64000, 0);
 	simulator.writeToBuffer(data, 64000, 1);
-	return 0;
+	*/
 }
+

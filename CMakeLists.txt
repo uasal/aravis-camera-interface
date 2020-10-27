@@ -5,8 +5,8 @@ add_subdirectory(src)
 
 # Uncomment for tests
 
-#include(CTest)
-#enable_testing()
+include(CTest)
+enable_testing()
 
 if(BUILD_TESTING)
     add_subdirectory (tst)

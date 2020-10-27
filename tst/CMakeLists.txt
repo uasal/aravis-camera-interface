@@ -1,9 +1,18 @@
 set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/modules")
-project("hdcam")
+set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} 
+"${CMAKE_SOURCE_DIR}/modules")
 
-add_executable(${PROJECT_NAME} main.cpp)
+project("testmain")
+
+set(
+	tst_files
+	testmain.cpp
+	membuffersimulatortest.cpp
+	test_2.cpp
+)
+
+add_executable(${PROJECT_NAME} ${tst_files})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 
@@ -13,15 +22,18 @@ target_include_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+message("current source dir : " ${CMAKE_CURRENT_SOURCE_DIR})
 set(
 	src_files
-	hdcamera.cpp
-	hdcamera.h
-	config.h
+	../src/hdcamera.cpp
+	../src/hdcamera.h
+	../src/config.h
+	../src/simulation/membuffersimulator.cpp
+	../src/simulation/membuffersimulator.h
 )
 
-add_library(srcfs ${src_files})
-target_link_libraries(${PROJECT_NAME} srcfs)
+add_library(srcdeps ${src_files})
+target_link_libraries(${PROJECT_NAME} srcdeps)
 
 # package dependencies
 
@@ -50,4 +62,13 @@ find_package(PNG REQUIRED)
 include_directories(${PNG_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} ${PNG_LIBRARIES})
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(${PROJECT_NAME} Threads::Threads)
 
+find_package(Catch2 REQUIRED)
+target_link_libraries(${PROJECT_NAME} Catch2::Catch2)
+
+include(Catch)
+include(CTest)
+catch_discover_tests(${PROJECT_NAME})
