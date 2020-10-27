@@ -1,0 +1,4026 @@
+PixeLINK Inc.-PL-B771G - GEV Camera-771001261 (10.130.0.10)
+<?xml version="1.0" encoding="utf-8"?>
+<RegisterDescription ModelName="PL_B771G" VendorName="PixeLINK" ToolTip="Gigabit Ethernet Camera" StandardNameSpace="GEV" SchemaMajorVersion="1" SchemaMinorVersion="0" SchemaSubMinorVersion="1" MajorVersion="1" MinorVersion="1" SubMinorVersion="0" ProductGuid="482D9FB2-F4D6-429B-AEDA-6E814636C727" VersionGuid="96EF45D0-68EF-4B04-AD82-A4535805D1C9" xmlns="http://www.genicam.org/GenApi/Version_1_0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.genicam.org/GenApi/Version_1_0 ../GenApiSchema_Version_1_0.xsd">
+	<Group Comment="Root">
+		<Category Name="Root">
+			<pFeature>DeviceInformation</pFeature>
+			<pFeature>ImageSizeControl</pFeature>
+			<pFeature>AcquisitionAndTriggerControls</pFeature>
+			<pFeature>DigitalIO</pFeature>
+			<pFeature>CountersAndTimersControls</pFeature>
+			<pFeature>EventsGeneration</pFeature>
+			<pFeature>AnalogControls</pFeature>
+			<pFeature>GigEVisionTransportLayer</pFeature>
+			<pFeature>IPEngine</pFeature>
+			<pFeature>PixeLINKFeatures</pFeature>
+			<pFeature>TLParamsLockedCategory</pFeature>
+		</Category>
+	</Group>
+	<Group Comment="DeviceInformation">
+		<Category Name="DeviceInformation">
+			<pFeature>DeviceVendorName</pFeature>
+			<pFeature>DeviceModelName</pFeature>
+			<pFeature>DeviceManufacturerInfo</pFeature>
+			<pFeature>DeviceVersion</pFeature>
+			<pFeature>DeviceID</pFeature>
+			<pFeature>DeviceUserID</pFeature>
+			<pFeature>DeviceScanType</pFeature>
+		</Category>
+		<StringReg Name="DeviceVendorName">
+			<ToolTip>This feature provides the name of the manufacturer of the device.</ToolTip>
+			<Description>This feature provides the name of the manufacturer of the device.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<Address>0x0048</Address>
+			<Length>32</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+		</StringReg>
+		<StringReg Name="DeviceModelName">
+			<ToolTip>This feature provides the model of the device.</ToolTip>
+			<Description>This feature provides the model of the device.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<Address>0x0068</Address>
+			<Length>32</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+		</StringReg>
+		<StringReg Name="DeviceManufacturerInfo">
+			<ToolTip>This feature provides extended manufacturer information about the device.</ToolTip>
+			<Description>This feature provides extended manufacturer information about the device.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<Address>0x00A8</Address>
+			<Length>48</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+		</StringReg>
+		<StringReg Name="DeviceVersion">
+			<ToolTip>This feature provides the version of the device.</ToolTip>
+			<Description>This feature provides the version of the device.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<Address>0x0088</Address>
+			<Length>32</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+		</StringReg>
+		<StringReg Name="DeviceID">
+			<ToolTip>This feature stores a camera identifier.</ToolTip>
+			<Description>This feature stores a camera identifier.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<Address>0x00D8</Address>
+			<Length>16</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+		</StringReg>
+		<StringReg Name="DeviceUserID">
+			<ToolTip>This feature stores a user-programmable identifier.</ToolTip>
+			<Description>This feature stores a user-programmable identifier.</Description>
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>GevSupportedIPConfigurationPersistentIP</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<Address>0x00E8</Address>
+			<Length>16</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+		</StringReg>
+		<Enumeration Name="DeviceScanType">
+			<ToolTip>This feature specifies the scan type of the sensor.</ToolTip>
+			<Description>This feature specifies the scan type of the sensor.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Areascan"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Linescan"><Value>1</Value></EnumEntry>
+			<pValue>DeviceScanTypeReg</pValue>
+		</Enumeration>
+		<IntReg Name="DeviceScanTypeReg">
+			<Address>0xD32C</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+	</Group>
+	<Group Comment="ImageSizeControl">
+		<Category Name="ImageSizeControl">
+			<pFeature>SensorWidth</pFeature>
+			<pFeature>SensorHeight</pFeature>
+			<pFeature>WidthMax</pFeature>
+			<pFeature>HeightMax</pFeature>
+			<pFeature>Width</pFeature>
+			<pFeature>Height</pFeature>
+			<pFeature>OffsetX</pFeature>
+			<pFeature>OffsetY</pFeature>
+			<pFeature>PixelFormat</pFeature>
+			<pFeature>PixelCoding</pFeature>
+			<pFeature>PixelSize</pFeature>
+			<pFeature>PixelColorFilter</pFeature>
+		</Category> 
+		<Integer Name="SensorWidth">
+			<ToolTip>This feature indicates the effective width of the sensor in pixels.</ToolTip>
+			<Description>This feature indicates the effective width of the sensor in pixels.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>SensorWidthReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="SensorWidthReg">
+			<Address>0xA020</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>PixelAddressingFactorReg</pInvalidator>
+			<pInvalidator>PixelAddressingModeReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="SensorHeight">
+			<ToolTip>This feature indicates the effective height of the sensor in pixels.</ToolTip>
+			<Description>This feature indicates the effective height of the sensor in pixels.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>SensorHeightReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="SensorHeightReg">
+			<Address>0xA024</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>PixelAddressingFactorReg</pInvalidator>
+			<pInvalidator>PixelAddressingModeReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="WidthMax">
+			<ToolTip>This feature represents the maximum width (in pixels) of the image after ROI and PixelAddressing features have been applied.</ToolTip>
+			<Description>This feature represents the maximum width (in pixels) of the image after ROI and PixelAddressing features have been applied.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>WidthMaxValExpr</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntSwissKnife Name="WidthMaxValExpr">
+			<pVariable Name="VAR_ROIWIDTH">RoiWidthReg</pVariable>
+			<pVariable Name="VAR_PIXELADDRESSINGMODE">PixelAddressingModeReg</pVariable>
+			<pVariable Name="VAR_PIXELADDRESSINGFACTOR">PixelAddressingFactorReg</pVariable>
+			<Formula>VAR_ROIWIDTH / (VAR_PIXELADDRESSINGMODE = 0x0 ? 1 : (VAR_PIXELADDRESSINGFACTOR = 0x0 ? 1 : (VAR_PIXELADDRESSINGFACTOR = 0x1 ? 2 : (VAR_PIXELADDRESSINGFACTOR = 0x2 ? 3 : (VAR_PIXELADDRESSINGFACTOR = 0x3 ? 4 : 6)))))</Formula>
+		</IntSwissKnife>
+		<Integer Name="HeightMax">
+			<ToolTip>This feature represents the maximum height (in pixels) of the image after vertical binning, decimation or any other function changing the vertical dimensions of the image.</ToolTip>
+			<Description>This feature represents the maximum height (in pixels) of the image after vertical binning, decimation or any other function changing the vertical dimensions of the image.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>HeightMaxValExpr</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntSwissKnife Name="HeightMaxValExpr">
+			<pVariable Name="VAR_ROIHEIGHT">RoiHeightReg</pVariable>
+			<pVariable Name="VAR_PIXELADDRESSINGMODE">PixelAddressingModeReg</pVariable>
+			<pVariable Name="VAR_PIXELADDRESSINGFACTOR">PixelAddressingFactorReg</pVariable>
+			<Formula>VAR_ROIHEIGHT / (VAR_PIXELADDRESSINGMODE = 0x0 ? 1 : (VAR_PIXELADDRESSINGFACTOR = 0x0 ? 1 : (VAR_PIXELADDRESSINGFACTOR = 0x1 ? 2 : (VAR_PIXELADDRESSINGFACTOR = 0x2 ? 3 : (VAR_PIXELADDRESSINGFACTOR = 0x3 ? 4 : 6)))))</Formula>
+		</IntSwissKnife>
+		<Integer Name="Width">
+			<ToolTip>This feature represents the actual image width expelled by the camera (in pixels).</ToolTip>
+			<Description>This feature represents the actual image width expelled by the camera (in pixels).</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>WidthReg</pValue>
+			<Min>8</Min>
+			<pMax>WidthMaxExpr</pMax>
+			<Inc>8</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="WidthReg">
+			<Address>0xD300</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<IntSwissKnife Name="WidthMaxExpr">
+			<pVariable Name="VAR_WIDTHMAX">WidthMaxValExpr</pVariable>
+			<pVariable Name="VAR_OFFSETX">OffsetXReg</pVariable>
+			<Formula>((VAR_WIDTHMAX - VAR_OFFSETX) / 8) * 8</Formula>
+		</IntSwissKnife>
+		<Integer Name="Height">
+			<ToolTip>This feature represents the actual image height expelled by the camera (in pixels).</ToolTip>
+			<Description>This feature represents the actual image height expelled by the camera (in pixels).</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>HeightReg</pValue>
+			<Min>1</Min>
+			<pMax>HeightMaxExpr</pMax>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="HeightReg">
+			<Address>0xD304</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<IntSwissKnife Name="HeightMaxExpr">
+			<pVariable Name="VAR_HEIGHTMAX">HeightMaxValExpr</pVariable>
+			<pVariable Name="VAR_OFFSETY">OffsetYReg</pVariable>
+			<Formula>VAR_HEIGHTMAX - VAR_OFFSETY</Formula>
+		</IntSwissKnife>
+		<Integer Name="OffsetX">
+			<ToolTip>This feature represents the horizontal offset from the origin to the AOI (in pixels).</ToolTip>
+			<Description>This feature represents the horizontal offset from the origin to the AOI (in pixels).</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>OffsetXReg</pValue>
+			<Min>0</Min>
+			<pMax>OffsetXMaxExpr</pMax>
+			<Inc>8</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="OffsetXReg">
+			<Address>0xD31C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<IntSwissKnife Name="OffsetXMaxExpr">
+			<pVariable Name="VAR_WIDTHMAX">WidthMaxValExpr</pVariable>
+			<Formula>VAR_WIDTHMAX - 8</Formula>
+		</IntSwissKnife>
+		<Integer Name="OffsetY">
+			<ToolTip>This feature represents the vertical offset from the origin to the AOI (in pixels).</ToolTip>
+			<Description>This feature represents the vertical offset from the origin to the AOI (in pixels).</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>OffsetYReg</pValue>
+			<Min>0</Min>
+			<pMax>OffsetYMaxExpr</pMax>
+			<Inc>8</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="OffsetYReg">
+			<Address>0xD320</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<IntSwissKnife Name="OffsetYMaxExpr">
+			<pVariable Name="VAR_HEIGHTMAX">HeightMaxValExpr</pVariable>
+			<Formula>VAR_HEIGHTMAX - 8</Formula>
+		</IntSwissKnife>
+		<Enumeration Name="PixelFormat">
+			<ToolTip>This feature indicates the format of the pixel to use during the acquisition.</ToolTip>
+			<Description>This feature indicates the format of the pixel to use during the acquisition.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Mono8"><Value>17301505</Value></EnumEntry>
+			<EnumEntry Name="Mono16"><Value>17825799</Value></EnumEntry>
+			<pValue>PixelFormatReg</pValue>
+		</Enumeration>
+		<IntReg Name="PixelFormatReg">
+			<Address>0xD308</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>MaxFrameRateReg</pInvalidator>
+			<pInvalidator>MinFrameRateReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="PixelCoding">
+			<ToolTip>This feature indicates the coding of the pixels in the image.</ToolTip>
+			<Description>This feature indicates the coding of the pixels in the image.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Mono"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="MonoSigned"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="MonoPacked"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="RGBPacked"><Value>3</Value></EnumEntry>
+			<EnumEntry Name="BGRPacked"><Value>4</Value></EnumEntry>
+			<EnumEntry Name="RGBAPacked"><Value>5</Value></EnumEntry>
+			<EnumEntry Name="BGRAPacked"><Value>6</Value></EnumEntry>
+			<EnumEntry Name="RGBPlanar"><Value>7</Value></EnumEntry>
+			<EnumEntry Name="YUV411Packed"><Value>8</Value></EnumEntry>
+			<EnumEntry Name="YUV422Packed"><Value>9</Value></EnumEntry>
+			<EnumEntry Name="YUV444Packed"><Value>10</Value></EnumEntry>
+			<EnumEntry Name="Raw"><Value>11</Value></EnumEntry>
+			<pValue>PixelCodingValExpr</pValue>
+		</Enumeration>
+		<IntSwissKnife Name="PixelCodingValExpr">
+			<pVariable Name="VAR_PIXELFORMAT">PixelFormatReg</pVariable>
+			<Formula>(((VAR_PIXELFORMAT=0x1080001) | (VAR_PIXELFORMAT=0x1100003) | (VAR_PIXELFORMAT=0x1100005) | (VAR_PIXELFORMAT=0x1100007) | (VAR_PIXELFORMAT=0x1080008) | (VAR_PIXELFORMAT=0x1080009) | (VAR_PIXELFORMAT=0x108000A) | (VAR_PIXELFORMAT=0x108000B) | (VAR_PIXELFORMAT=0x110000C) | (VAR_PIXELFORMAT=0x110000D) | (VAR_PIXELFORMAT=0x110000E) | (VAR_PIXELFORMAT=0x110000F) | (VAR_PIXELFORMAT=0x1100010) | (VAR_PIXELFORMAT=0x1100011) | (VAR_PIXELFORMAT=0x1100012) | (VAR_PIXELFORMAT=0x1100013)) ? (0) : ((VAR_PIXELFORMAT=0x1080002) ? (1) : (((VAR_PIXELFORMAT=0x10C0004) | (VAR_PIXELFORMAT=0x10C0006)) ? (2) : ((VAR_PIXELFORMAT=0x2180014) ? (3) :((VAR_PIXELFORMAT=0x2180015) ? (4) : ((VAR_PIXELFORMAT=0x2200016) ? (5) : ((VAR_PIXELFORMAT=0x2200017) ? (6) : (((VAR_PIXELFORMAT=0x2180021) | (VAR_PIXELFORMAT=0x2300022) | (VAR_PIXELFORMAT=0x2300023) | (VAR_PIXELFORMAT=0x2300024)) ? (7) : ((VAR_PIXELFORMAT=0x20C001E) ? (8) : ((VAR_PIXELFORMAT=0x210001F) ? (9) : ((VAR_PIXELFORMAT=0x2180020) ? (10) : (11))))))))))))</Formula>
+		</IntSwissKnife>
+		<Enumeration Name="PixelSize">
+			<ToolTip>This feature indicates the total size in bits of a pixel of the image.</ToolTip>
+			<Description>This feature indicates the total size in bits of a pixel of the image.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Bpp8"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Bpp10"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="Bpp12"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="Bpp14"><Value>3</Value></EnumEntry>
+			<EnumEntry Name="Bpp16"><Value>4</Value></EnumEntry>
+			<EnumEntry Name="Bpp24"><Value>5</Value></EnumEntry>
+			<EnumEntry Name="Bpp32"><Value>6</Value></EnumEntry>
+			<EnumEntry Name="Bpp64"><Value>7</Value></EnumEntry>
+			<pValue>PixelSizeValExpr</pValue>
+		</Enumeration>
+		<IntSwissKnife Name="PixelSizeValExpr">
+			<pVariable Name="VAR_PIXELFORMAT">PixelFormatReg</pVariable>
+			<Formula>((((VAR_PIXELFORMAT&amp;0x00ff0000)&gt;&gt;16)=0x8) ? (0) : ((((VAR_PIXELFORMAT&amp;0x00ff0000)&gt;&gt;16)=0xA) ? (1) : ((((VAR_PIXELFORMAT&amp;0x00ff0000)&gt;&gt;16)=0xC) ? (2) : ((((VAR_PIXELFORMAT&amp;0x00ff0000)&gt;&gt;16)=0xE) ? (3) : ((((VAR_PIXELFORMAT&amp;0x00ff0000)&gt;&gt;16)=0x10) ? (4) : ((((VAR_PIXELFORMAT&amp;0x00ff0000)&gt;&gt;16)=0x18) ? (5) : ((((VAR_PIXELFORMAT&amp;0x00ff0000)&gt;&gt;16)=0x20) ? (6) : ((((VAR_PIXELFORMAT&amp;0x00ff0000)&gt;&gt;16)=0x40) ? (7) : (8)))))))))</Formula>
+		</IntSwissKnife>
+		<Enumeration Name="PixelColorFilter">
+			<ToolTip>This feature indicates the type of color filter that is applied to the image.</ToolTip>
+			<Description>This feature indicates the type of color filter that is applied to the image.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="None"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="BayerRG"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="BayerGB"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="BayerGR"><Value>3</Value></EnumEntry>
+			<EnumEntry Name="BayerBG"><Value>4</Value></EnumEntry>
+			<pValue>PixelColorFilterValExpr</pValue>
+		</Enumeration>
+		<IntSwissKnife Name="PixelColorFilterValExpr">
+			<pVariable Name="VAR_PIXELFORMAT">PixelFormatReg</pVariable>
+			<Formula>(((VAR_PIXELFORMAT=0x1080009) | (VAR_PIXELFORMAT=0x110000D) | (VAR_PIXELFORMAT=0x1100011)) ? (1) : (((VAR_PIXELFORMAT=0x108000A) | (VAR_PIXELFORMAT=0x110000E) | (VAR_PIXELFORMAT=0x1100012)) ? (2) : (((VAR_PIXELFORMAT=0x1080008) | (VAR_PIXELFORMAT=0x110000C) | (VAR_PIXELFORMAT=0x1100010)) ? (3) : (((VAR_PIXELFORMAT=0x108000B) | (VAR_PIXELFORMAT=0x110000F) | (VAR_PIXELFORMAT=0x1100013)) ? (4) : (0)))))</Formula>
+		</IntSwissKnife>
+	</Group>
+	<Group Comment="AcquisitionAndTriggerControls">
+		<Category Name="AcquisitionAndTriggerControls">
+			<pFeature>AcquisitionMode</pFeature>
+			<pFeature>AcquisitionStart</pFeature>
+			<pFeature>AcquisitionStop</pFeature>
+			<pFeature>AcquisitionFrameRateAbs</pFeature>
+			<pFeature>TriggerSelector</pFeature>
+			<pFeature>ExposureMode</pFeature>
+			<pFeature>TriggerMode</pFeature>
+			<pFeature>TriggerSoftware</pFeature>
+			<pFeature>TriggerSource</pFeature>
+			<pFeature>TriggerActivation</pFeature>
+			<pFeature>TriggerDelayAbs</pFeature>
+			<pFeature>MinFrameRate</pFeature>
+			<pFeature>MaxFrameRate</pFeature>
+			<pFeature>ExposureTimeAbs</pFeature>
+		</Category>  
+		<Enumeration Name="AcquisitionMode">
+			<ToolTip>This feature controls the acquisition mode of the device.</ToolTip>
+			<Description>This feature controls the acquisition mode of the device.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Continuous"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="SingleFrame">
+				<pIsImplemented>AcquisitionModeSingleFrameImplExpr</pIsImplemented>
+				<Value>1</Value>
+			</EnumEntry>
+			<EnumEntry Name="MultiFrame">
+				<pIsImplemented>AcquisitionModeMultiFrameImplExpr</pIsImplemented>
+				<Value>2</Value>
+			</EnumEntry>
+			<EnumEntry Name="ContinuousRecording">
+				<pIsImplemented>AcquisitionModeContinuousRecordingImplExpr</pIsImplemented>
+				<Value>3</Value>
+			</EnumEntry>
+			<EnumEntry Name="ContinuousReadout">
+				<pIsImplemented>AcquisitionModeContinuousReadoutImplExpr</pIsImplemented>
+				<Value>4</Value>
+			</EnumEntry>
+			<EnumEntry Name="SingleFrameRecording">
+				<pIsImplemented>AcquisitionModeSingleFrameRecordingImplExpr</pIsImplemented>
+				<Value>5</Value>
+			</EnumEntry>
+			<EnumEntry Name="SingleFrameReadout">
+				<pIsImplemented>AcquisitionModeSingleFrameReadoutImplExpr</pIsImplemented>
+				<Value>6</Value>
+			</EnumEntry>
+			<pValue>AcquisitionModeReg</pValue>
+		</Enumeration>
+		<IntReg Name="AcquisitionModeReg">
+			<Address>0xD310</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="AcquisitionModeSingleFrameImplExpr">
+			<Value>0</Value>
+		</Integer>
+		<Integer Name="AcquisitionModeMultiFrameImplExpr">
+			<Value>0</Value>
+		</Integer>
+		<Integer Name="AcquisitionModeContinuousRecordingImplExpr">
+			<Value>0</Value>
+		</Integer>
+		<Integer Name="AcquisitionModeContinuousReadoutImplExpr">
+			<Value>0</Value>
+		</Integer>
+		<Integer Name="AcquisitionModeSingleFrameRecordingImplExpr">
+			<Value>0</Value>
+		</Integer>
+		<Integer Name="AcquisitionModeSingleFrameReadoutImplExpr">
+			<Value>0</Value>
+		</Integer>
+		<Command Name="AcquisitionStart">
+			<ToolTip>This feature starts the Acquisition of the device.</ToolTip>
+			<Description>This feature starts the Acquisition of the device.</Description>
+			<Visibility>Beginner</Visibility>
+			<pValue>AcquisitionStartReg</pValue>
+			<CommandValue>1</CommandValue>
+		</Command>
+		<IntReg Name="AcquisitionStartReg">
+			<Address>0xD314</Address>
+			<Length>4</Length>
+			<AccessMode>WO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Command Name="AcquisitionStop">
+			<ToolTip>This feature stops the Acquisition of the device at the end of the current Frame.</ToolTip>
+			<Description>This feature stops the Acquisition of the device at the end of the current Frame.</Description>
+			<Visibility>Beginner</Visibility>
+			<pValue>AcquisitionStopReg</pValue>
+			<CommandValue>1</CommandValue>
+		</Command>
+		<IntReg Name="AcquisitionStopReg">
+			<Address>0xD318</Address>
+			<Length>4</Length>
+			<AccessMode>WO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Float Name="AcquisitionFrameRateAbs">
+			<ToolTip>This feature controls the rate (in Hertz) at which the Frames are captured when TriggerMode is Off for the Frame trigger.</ToolTip>
+			<Description>This feature controls the rate (in Hertz) at which the Frames are captured when TriggerMode is Off for the Frame trigger.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>AcquisitionFrameRateAbsReg</pValue>
+			<pMin>AcquisitionFrameRateAbsMinExpr</pMin>
+			<pMax>AcquisitionFrameRateAbsMaxExpr</pMax>
+			<Unit>Hz</Unit>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="AcquisitionFrameRateAbsReg">
+			<Address>0xE820</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>ExposureTimeAbsReg</pInvalidator>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<SwissKnife Name="AcquisitionFrameRateAbsMinExpr">
+			<pVariable Name="VAR_MINFRAMERATE">MinFrameRate</pVariable>
+			<Formula>VAR_MINFRAMERATE</Formula>
+		</SwissKnife>
+		<SwissKnife Name="AcquisitionFrameRateAbsMaxExpr">
+			<pVariable Name="VAR_MAXFRAMERATE">MaxFrameRate</pVariable>
+			<Formula>VAR_MAXFRAMERATE</Formula>
+		</SwissKnife>
+		<Enumeration Name="TriggerSelector">
+			<ToolTip>This feature is used to select which type of trigger to configure.</ToolTip>
+			<Description>This feature is used to select which type of trigger to configure.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="AcquisitionStart"><Value>0</Value></EnumEntry>
+			<pValue>TriggerSelectorReg</pValue>
+			<pSelected>TriggerActivation</pSelected>
+			<pSelected>TriggerDelayAbs</pSelected>
+			<pSelected>TriggerMode</pSelected>
+			<pSelected>TriggerSoftware</pSelected>
+			<pSelected>TriggerSource</pSelected>
+		</Enumeration>
+		<IntReg Name="TriggerSelectorReg">
+			<Address>0xE830</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="ExposureMode">
+			<ToolTip>This feature is used to set the operation mode of the Exposure (or shutter).</ToolTip>
+			<Description>This feature is used to set the operation mode of the Exposure (or shutter).</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Timed"><Value>1</Value></EnumEntry>
+			<pValue>ExposureModeReg</pValue>
+		</Enumeration>
+		<IntReg Name="ExposureModeReg">
+			<Address>0xE834</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="TriggerMode">
+			<ToolTip>TriggerMode define if the selected trigger is active.</ToolTip>
+			<Description>TriggerMode define if the selected trigger is active.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Off"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="On"><Value>1</Value></EnumEntry>
+			<pValue>TriggerModeReg</pValue>
+		</Enumeration>
+		<IntReg Name="TriggerModeReg">
+			<Address>0xE840</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Command Name="TriggerSoftware">
+			<ToolTip>TriggerSoftware is a command that can be used by an application to generate an internal trigger when TriggerSource is set to Software.</ToolTip>
+			<Description>TriggerSoftware is a command that can be used by an application to generate an internal trigger when TriggerSource is set to Software.</Description>
+			<Visibility>Beginner</Visibility>
+			<pValue>TriggerSoftwareReg</pValue>
+			<CommandValue>1</CommandValue>
+		</Command>
+		<IntReg Name="TriggerSoftwareReg">
+			<Address>0xE844</Address>
+			<Length>4</Length>
+			<AccessMode>WO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="TriggerSource">
+			<ToolTip>TriggerSource specifies the internal signal or physical input Line to use as the trigger source for the selected trigger when TriggerMode is On.</ToolTip>
+			<Description>TriggerSource specifies the internal signal or physical input Line to use as the trigger source for the selected trigger when TriggerMode is On.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Software"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Line0"><Value>1</Value></EnumEntry>
+			<pValue>TriggerSourceReg</pValue>
+		</Enumeration>
+		<IntReg Name="TriggerSourceReg">
+			<Address>0xE848</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="TriggerActivation">
+			<ToolTip>TriggerActivation specifies the activation mode of the trigger.</ToolTip>
+			<Description>TriggerActivation specifies the activation mode of the trigger.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="RisingEdge"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="FallingEdge"><Value>1</Value></EnumEntry>
+			<pValue>TriggerActivationReg</pValue>
+		</Enumeration>
+		<IntReg Name="TriggerActivationReg">
+			<Address>0xE84C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Float Name="TriggerDelayAbs">
+			<ToolTip>TriggerDelayAbs specifies the absolute delay in microseconds (us) to apply after the trigger reception before effectively activating it.</ToolTip>
+			<Description>TriggerDelayAbs specifies the absolute delay in microseconds (us) to apply after the trigger reception before effectively activating it.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>TriggerDelayAbsReg</pValue>
+			<Unit>us</Unit>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="TriggerDelayAbsReg">
+			<Address>0xE854</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<Float Name="MinFrameRate">
+			<ToolTip>Minimum frame rate for the camera, given the current settings</ToolTip>
+			<Description>Minimum frame rate for the camera, given the current settings</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>MinFrameRateReg</pValue>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="MinFrameRateReg">
+			<Address>0xE864</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>RoiHeightReg</pInvalidator>
+			<pInvalidator>RoiWidthReg</pInvalidator>
+			<pInvalidator>PixelAddressingFactorReg</pInvalidator>
+			<pInvalidator>PixelAddressingModeReg</pInvalidator>
+			<pInvalidator>PixelFormatReg</pInvalidator>
+			<pInvalidator>ExposureTimeAbsReg</pInvalidator>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<Float Name="MaxFrameRate">
+			<ToolTip>Minimum frame rate for the camera, given the current settings</ToolTip>
+			<Description>Minimum frame rate for the camera, given the current settings</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>MaxFrameRateReg</pValue>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="MaxFrameRateReg">
+			<Address>0xE868</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>RoiHeightReg</pInvalidator>
+			<pInvalidator>RoiWidthReg</pInvalidator>
+			<pInvalidator>PixelAddressingFactorReg</pInvalidator>
+			<pInvalidator>PixelAddressingModeReg</pInvalidator>
+			<pInvalidator>PixelFormatReg</pInvalidator>
+			<pInvalidator>ExposureTimeAbsReg</pInvalidator>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<Float Name="ExposureTimeAbs">
+			<ToolTip>This feature is used to set the Exposure time (in microseconds) when ExposureMode is Timed.</ToolTip>
+			<Description>This feature is used to set the Exposure time (in microseconds) when ExposureMode is Timed.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>ExposureTimeAbsReg</pValue>
+			<Min>100</Min>
+			<Max>2000000</Max>
+			<Unit>us</Unit>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="ExposureTimeAbsReg">
+			<Address>0xE86C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>AcquisitionFrameRateAbsReg</pInvalidator>
+			<pInvalidator>PixelAddressingFactorReg</pInvalidator>
+			<pInvalidator>PixelFormatReg</pInvalidator>
+			<pInvalidator>RoiHeightReg</pInvalidator>
+			<pInvalidator>RoiWidthReg</pInvalidator>
+			<pInvalidator>PixelAddressingModeReg</pInvalidator>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+	</Group>
+	<Group Comment="DigitalIO">
+		<Category Name="DigitalIO">
+			<pFeature>LineSelector</pFeature>
+			<pFeature>UserOutputSelector</pFeature>
+			<pFeature>LineMode</pFeature>
+			<pFeature>LineInverter</pFeature>
+			<pFeature>UserOutputValue</pFeature>
+			<pFeature>LineSource</pFeature>
+		</Category>   
+		<Enumeration Name="LineSelector">
+			<ToolTip>This feature selects the General Purpose Output (GPO) to configure</ToolTip>
+			<Description>This feature selects the General Purpose Output (GPO) to configure</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Line1"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="Line2"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="Line3"><Value>3</Value></EnumEntry>
+			<EnumEntry Name="Line4"><Value>4</Value></EnumEntry>
+			<pValue>LineSelectorReg</pValue>
+			<pSelected>LineInverter</pSelected>
+			<pSelected>LineMode</pSelected>
+			<pSelected>LineSource</pSelected>
+		</Enumeration>
+		<IntReg Name="LineSelectorReg">
+			<Address>0xE870</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>LineInverterReg</pInvalidator>
+			<pInvalidator>LineSourceReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="UserOutputSelector">
+			<ToolTip>This feature selects which bit of the User Output register will be set by UserOutputValue.</ToolTip>
+			<Description>This feature selects which bit of the User Output register will be set by UserOutputValue.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="UserOutput1"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="UserOutput2"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="UserOutput3"><Value>3</Value></EnumEntry>
+			<EnumEntry Name="UserOutput4"><Value>4</Value></EnumEntry>
+			<pValue>UserOutputSelectorReg</pValue>
+			<pSelected>UserOutputValue</pSelected>
+		</Enumeration>
+		<IntReg Name="UserOutputSelectorReg">
+			<Address>0xE874</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>UserOutputValueReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="LineMode">
+			<ToolTip>This feature controls if the physical Line is used to Input or Output a signal.</ToolTip>
+			<Description>This feature controls if the physical Line is used to Input or Output a signal.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Input"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Output"><Value>1</Value></EnumEntry>
+			<pValue>LineModeValExpr</pValue>
+		</Enumeration>
+		<IntSwissKnife Name="LineModeValExpr">
+			<pVariable Name="VAR_LINESELECTOR">LineSelectorReg</pVariable>
+			<Formula>VAR_LINESELECTOR &lt; 1? 0: 1</Formula>
+		</IntSwissKnife>
+		<Boolean Name="LineInverter">
+			<ToolTip>This feature controls if the electrical input or output signal on the selected Line is inverted.</ToolTip>
+			<Description>This feature controls if the electrical input or output signal on the selected Line is inverted.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>LineInverterReg</pValue>
+		</Boolean>
+		<IntReg Name="LineInverterReg">
+			<Address>0xE878</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>LineSelectorReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Boolean Name="UserOutputValue">
+			<ToolTip>This feature sets the value of the selected bit of the User Output register.</ToolTip>
+			<Description>This feature sets the value of the selected bit of the User Output register.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>UserOutputValueReg</pValue>
+		</Boolean>
+		<IntReg Name="UserOutputValueReg">
+			<Address>0xE87C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>UserOutputSelectorReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="LineSource">
+			<ToolTip>This feature is used to select which internal acquisition or I/O source signal to output on the selected Line when its LineMode is Output.</ToolTip>
+			<Description>This feature is used to select which internal acquisition or I/O source signal to output on the selected Line when its LineMode is Output.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Off"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="ExposureActive"><Value>5</Value></EnumEntry>
+			<EnumEntry Name="Timer1Active"><Value>6</Value></EnumEntry>
+			<EnumEntry Name="Timer2Active"><Value>7</Value></EnumEntry>
+			<EnumEntry Name="Timer3Active"><Value>8</Value></EnumEntry>
+			<EnumEntry Name="Timer4Active"><Value>9</Value></EnumEntry>
+			<EnumEntry Name="UserOutput1"><Value>10</Value></EnumEntry>
+			<EnumEntry Name="UserOutput2"><Value>11</Value></EnumEntry>
+			<EnumEntry Name="UserOutput3"><Value>12</Value></EnumEntry>
+			<EnumEntry Name="UserOutput4"><Value>13</Value></EnumEntry>
+			<pValue>LineSourceReg</pValue>
+		</Enumeration>
+		<IntReg Name="LineSourceReg">
+			<Address>0xE880</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>LineSelectorReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+	</Group>
+	<Group Comment="CountersAndTimersControls">
+		<Category Name="CountersAndTimersControls">
+			<pFeature>TimerSelector</pFeature>
+			<pFeature>TimerDurationAbs</pFeature>
+			<pFeature>TimerDelayAbs</pFeature>
+		</Category>
+		<Enumeration Name="TimerSelector">
+			<ToolTip>This feature selects which Timer to configure.</ToolTip>
+			<Description>This feature selects which Timer to configure.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Timer1"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Timer2"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="Timer3"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="Timer4"><Value>3</Value></EnumEntry>
+			<pValue>TimerSelectorReg</pValue>
+			<pSelected>TimerDelayAbs</pSelected>
+			<pSelected>TimerDurationAbs</pSelected>
+		</Enumeration>
+		<IntReg Name="TimerSelectorReg">
+			<Address>0xE884</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>TimerDelayAbsReg</pInvalidator>
+			<pInvalidator>TimerDurationAbsReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Float Name="TimerDurationAbs">
+			<ToolTip>This features controls the duration of pulse used with GPOs.  Units is seconds</ToolTip>
+			<Description>This features controls the duration of pulse used with GPOs.  Units is seconds</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>TimerDurationAbsReg</pValue>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="TimerDurationAbsReg">
+			<Address>0xE888</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>TimerSelectorReg</pInvalidator>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<Float Name="TimerDelayAbs">
+			<ToolTip>This feature sets the length of delay of the timer used by GPOs.  Units is seconds </ToolTip>
+			<Description>This feature sets the length of delay of the timer used by GPOs.  Units is seconds </Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>TimerDelayAbsReg</pValue>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="TimerDelayAbsReg">
+			<Address>0xE88C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>TimerSelectorReg</pInvalidator>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+	</Group>
+	<Group Comment="EventsGeneration">
+		<Category Name="EventsGeneration">
+			<pFeature>DataOverrun</pFeature>
+			<pFeature>Error</pFeature>
+			<pFeature>IPEngineCamHeadSerialComLog</pFeature>
+			<pFeature>BlockDiscard</pFeature>
+		</Category> 
+	</Group>
+	<Group Comment="DataOverrun">
+		<Category Name="DataOverrun">
+			<pFeature>DataOverrunEventStreamChannelIndex</pFeature>
+			<pFeature>DataOverrunEventBlockID</pFeature>
+			<pFeature>DataOverrunEventTimestamp</pFeature>
+		</Category> 
+		<Integer Name="DataOverrunEventStreamChannelIndex">
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>DataOverrunEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>DataOverrunEventStreamChannelIndexReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="DataOverrunEventStreamChannelIndexReg">
+			<Address>4</Address>
+			<Length>2</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event800D</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="DataOverrunEventBlockID">
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>DataOverrunEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>DataOverrunEventBlockIDReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="DataOverrunEventBlockIDReg">
+			<Address>6</Address>
+			<Length>2</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event800D</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="DataOverrunEventTimestamp">
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>DataOverrunEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>DataOverrunEventTimestampReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="DataOverrunEventTimestampReg">
+			<Address>8</Address>
+			<Length>8</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event800D</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+	</Group>
+	<Group Comment="Error">
+		<Category Name="Error">
+			<pFeature>ErrorEventStreamChannelIndex</pFeature>
+			<pFeature>ErrorEventBlockID</pFeature>
+			<pFeature>ErrorEventTimestamp</pFeature>
+		</Category>  
+		<Integer Name="ErrorEventStreamChannelIndex">
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>ErrorEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>ErrorEventStreamChannelIndexReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="ErrorEventStreamChannelIndexReg">
+			<Address>4</Address>
+			<Length>2</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event8FFF</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="ErrorEventBlockID">
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>ErrorEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>ErrorEventBlockIDReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="ErrorEventBlockIDReg">
+			<Address>6</Address>
+			<Length>2</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event8FFF</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="ErrorEventTimestamp">
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>ErrorEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>ErrorEventTimestampReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="ErrorEventTimestampReg">
+			<Address>8</Address>
+			<Length>8</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event8FFF</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+	</Group>
+	<Group Comment="IPEngineCamHeadSerialComLog">
+		<Category Name="IPEngineCamHeadSerialComLog">
+			<pFeature>IPEngineCamHeadSerialComLogEventStreamChannelIndex</pFeature>
+			<pFeature>IPEngineCamHeadSerialComLogEventBlockID</pFeature>
+			<pFeature>IPEngineCamHeadSerialComLogEventTimestamp</pFeature>
+		</Category>   
+		<Integer Name="IPEngineCamHeadSerialComLogEventStreamChannelIndex">
+			<Visibility>Guru</Visibility>
+		<pIsImplemented>IPEngineCamHeadSerialComLogEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineCamHeadSerialComLogEventStreamChannelIndexReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="IPEngineCamHeadSerialComLogEventStreamChannelIndexReg">
+			<Address>4</Address>
+			<Length>2</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event9009</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="IPEngineCamHeadSerialComLogEventBlockID">
+			<Visibility>Guru</Visibility>
+		<pIsImplemented>IPEngineCamHeadSerialComLogEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineCamHeadSerialComLogEventBlockIDReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="IPEngineCamHeadSerialComLogEventBlockIDReg">
+			<Address>6</Address>
+			<Length>2</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event9009</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="IPEngineCamHeadSerialComLogEventTimestamp">
+			<Visibility>Guru</Visibility>
+		<pIsImplemented>IPEngineCamHeadSerialComLogEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineCamHeadSerialComLogEventTimestampReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="IPEngineCamHeadSerialComLogEventTimestampReg">
+			<Address>8</Address>
+			<Length>8</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event9009</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+	</Group>
+	<Group Comment="BlockDiscard">
+		<Category Name="BlockDiscard">
+			<pFeature>BlockDiscardEventStreamChannelIndex</pFeature>
+			<pFeature>BlockDiscardEventBlockID</pFeature>
+			<pFeature>BlockDiscardEventTimestamp</pFeature>
+		</Category>
+		<Integer Name="BlockDiscardEventStreamChannelIndex">
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>BlockDiscardEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>BlockDiscardEventStreamChannelIndexReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="BlockDiscardEventStreamChannelIndexReg">
+			<Address>4</Address>
+			<Length>2</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event9100</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="BlockDiscardEventBlockID">
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>BlockDiscardEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>BlockDiscardEventBlockIDReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="BlockDiscardEventBlockIDReg">
+			<Address>6</Address>
+			<Length>2</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event9100</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="BlockDiscardEventTimestamp">
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>BlockDiscardEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>BlockDiscardEventTimestampReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="BlockDiscardEventTimestampReg">
+			<Address>8</Address>
+			<Length>8</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Event9100</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+	</Group>
+	<Group Comment="AnalogControls">
+		<Category Name="AnalogControls">
+			<pFeature>GainAbs</pFeature>
+			<pFeature>Gamma</pFeature>
+			<pFeature>CameraGainAbsMax</pFeature>
+		</Category>  
+		<Float Name="GainAbs">
+			<ToolTip>This feature controls the selected gain as an absolute physical value.</ToolTip>
+			<Description>This feature controls the selected gain as an absolute physical value.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GainAbsReg</pValue>
+			<Min>0</Min>
+			<pMax>GainAbsMaxExpr</pMax>
+			<Unit>Device-specific</Unit>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="GainAbsReg">
+			<Address>0xE8B0</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<SwissKnife Name="GainAbsMaxExpr">
+			<pVariable Name="VAR_CAMERAGAINABSMAX">CameraGainAbsMax</pVariable>
+			<Formula>VAR_CAMERAGAINABSMAX</Formula>
+		</SwissKnife>
+		<Float Name="Gamma">
+			<ToolTip>This feature is used to perform gamma correction of pixel intensity.</ToolTip>
+			<Description>This feature is used to perform gamma correction of pixel intensity.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GammaReg</pValue>
+			<Min>0.1</Min>
+			<Max>4</Max>
+			<Unit>0.1</Unit>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="GammaReg">
+			<Address>0xE8D0</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<Float Name="CameraGainAbsMax">
+			<ToolTip>The maximum gain supported by the camera</ToolTip>
+			<Description>The maximum gain supported by the camera</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>CameraGainAbsMaxReg</pValue>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="CameraGainAbsMaxReg">
+			<Address>0xE8D4</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+	</Group>
+	<Group Comment="GigEVisionTransportLayer">
+		<Category Name="GigEVisionTransportLayer">
+			<pFeature>PayloadSize</pFeature>
+			<pFeature>GevVersionMajor</pFeature>
+			<pFeature>GevVersionMinor</pFeature>
+			<pFeature>GevDeviceModeIsBigEndian</pFeature>
+			<pFeature>GevDeviceModeCharacterSet</pFeature>
+			<pFeature>GevInterfaceSelector</pFeature>
+			<pFeature>GevMACAddress</pFeature>
+			<pFeature>GevMACAddressHigh</pFeature>
+			<pFeature>GevMACAddressLow</pFeature>
+			<pFeature>GevSupportedIPConfigurationLLA</pFeature>
+			<pFeature>GevSupportedIPConfigurationDHCP</pFeature>
+			<pFeature>GevSupportedIPConfigurationPersistentIP</pFeature>
+			<pFeature>GevCurrentIPConfigurationLLA</pFeature>
+			<pFeature>GevCurrentIPConfigurationDHCP</pFeature>
+			<pFeature>GevCurrentIPConfigurationPersistentIP</pFeature>
+			<pFeature>GevCurrentIPAddress</pFeature>
+			<pFeature>GevCurrentSubnetMask</pFeature>
+			<pFeature>GevCurrentDefaultGateway</pFeature>
+			<pFeature>GevFirstURL</pFeature>
+			<pFeature>GevSecondURL</pFeature>
+			<pFeature>GevNumberOfInterfaces</pFeature>
+			<pFeature>GevPersistentIPAddress</pFeature>
+			<pFeature>GevPersistentSubnetMask</pFeature>
+			<pFeature>GevPersistentDefaultGateway</pFeature>
+			<pFeature>GevMessageChannelCount</pFeature>
+			<pFeature>GevStreamChannelCount</pFeature>
+			<pFeature>GevSupportedOptionalCommandsUserDefinedName</pFeature>
+			<pFeature>GevSupportedOptionalCommandsSerialNumber</pFeature>
+			<pFeature>GevSupportedOptionalCommandsEVENTDATA</pFeature>
+			<pFeature>GevSupportedOptionalCommandsEVENT</pFeature>
+			<pFeature>GevSupportedOptionalCommandsPACKETRESEND</pFeature>
+			<pFeature>GevSupportedOptionalCommandsWRITEMEM</pFeature>
+			<pFeature>GevSupportedOptionalCommandsConcatenation</pFeature>
+			<pFeature>GevHeartbeatTimeout</pFeature>
+			<pFeature>GevTimestampTickFrequency</pFeature>
+			<pFeature>GevTimestampTickFrequencyHigh</pFeature>
+			<pFeature>GevTimestampTickFrequencyLow</pFeature>
+			<pFeature>GevTimestampControlLatch</pFeature>
+			<pFeature>GevTimestampControlReset</pFeature>
+			<pFeature>GevTimestampValue</pFeature>
+			<pFeature>GevTimestampValueHigh</pFeature>
+			<pFeature>GevTimestampValueLow</pFeature>
+			<pFeature>GevCCP</pFeature>
+			<pFeature>GevMCPHostPort</pFeature>
+			<pFeature>GevMCDA</pFeature>
+			<pFeature>GevMCTT</pFeature>
+			<pFeature>GevMCRC</pFeature>
+			<pFeature>GevStreamChannelSelector</pFeature>
+			<pFeature>GevSCPInterfaceIndex</pFeature>
+			<pFeature>GevSCPHostPort</pFeature>
+			<pFeature>GevSCPSFireTestPacket</pFeature>
+			<pFeature>GevSCPSDoNotFragment</pFeature>
+			<pFeature>GevSCPSBigEndian</pFeature>
+			<pFeature>GevSCPSPacketSize</pFeature>
+			<pFeature>GevSCPD</pFeature>
+			<pFeature>GevSCDA</pFeature>
+			<pFeature>GevIPConfigurationStatus</pFeature>
+			<pFeature>GevTimestampControl</pFeature>
+		</Category>   
+		<Integer Name="PayloadSize">
+			<ToolTip>PayloadSize provides the number of bytes transferred for each image on the stream channel, including any end-of-line, end-of-frame statistics or other stamp data.</ToolTip>
+			<Description>PayloadSize provides the number of bytes transferred for each image on the stream channel, including any end-of-line, end-of-frame statistics or other stamp data.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>PayloadSizeReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="PayloadSizeReg">
+			<Address>0xD30C</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevVersionMajor">
+			<ToolTip>This field represents the major version of the specification.</ToolTip>
+			<Description>This field represents the major version of the specification.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevVersionMajorReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="GevVersionMajorReg">
+			<Address>0x0000</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>15</LSB>
+			<MSB>0</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="GevVersionMinor">
+			<ToolTip>This field represents the minor version of the specification.</ToolTip>
+			<Description>This field represents the minor version of the specification.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevVersionMinorReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="GevVersionMinorReg">
+			<Address>0x0000</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>16</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevDeviceModeIsBigEndian">
+			<ToolTip>Endianess might be used to interpret multi-byte data for READMEM and WRITEMEM commands.</ToolTip>
+			<Description>Endianess might be used to interpret multi-byte data for READMEM and WRITEMEM commands.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevDeviceModeIsBigEndianReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevDeviceModeIsBigEndianReg">
+			<Address>0x0004</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>0</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Enumeration Name="GevDeviceModeCharacterSet">
+			<ToolTip>This feature represents the character set used by all the strings of the bootstrap registers.</ToolTip>
+			<Description>This feature represents the character set used by all the strings of the bootstrap registers.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Reserved"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="UTF8"><Value>1</Value></EnumEntry>
+			<pValue>GevDeviceModeCharacterSetReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="GevDeviceModeCharacterSetReg">
+			<Address>0x0004</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>24</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="GevInterfaceSelector">
+			<ToolTip>This feature is a Selector that indicates to which physical network interface other features must reference.</ToolTip>
+			<Description>This feature is a Selector that indicates to which physical network interface other features must reference.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<Value>0</Value>
+			<Min>0</Min>
+			<Max>0</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<Integer Name="GevMACAddress">
+			<ToolTip>This feature stores the MAC address of the given network interface.</ToolTip>
+			<Description>This feature stores the MAC address of the given network interface.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevMACAddressValExpr</pValue>
+			<Inc>1</Inc>
+			<Representation>HexNumber</Representation>
+		</Integer>
+		<IntSwissKnife Name="GevMACAddressValExpr">
+			<pVariable Name="VAR_GEVMACADDRESSHIGH">GevMACAddressHighReg</pVariable>
+			<pVariable Name="VAR_GEVMACADDRESSLOW">GevMACAddressLowReg</pVariable>
+			<Formula>(VAR_GEVMACADDRESSHIGH &lt;&lt; 32) | VAR_GEVMACADDRESSLOW</Formula>
+		</IntSwissKnife>
+		<Integer Name="GevMACAddressHigh">
+			<ToolTip>This feature stores the upper two bytes of the MAC address of the given network interface.</ToolTip>
+			<Description>This feature stores the upper two bytes of the MAC address of the given network interface.</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevMACAddressHighReg</pValue>
+			<Inc>1</Inc>
+			<Representation>HexNumber</Representation>
+		</Integer>
+		<MaskedIntReg Name="GevMACAddressHighReg">
+			<Address>0x0008</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>16</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="GevMACAddressLow">
+			<ToolTip>This feature stores the lower four bytes of the MAC address of the given network interface.</ToolTip>
+			<Description>This feature stores the lower four bytes of the MAC address of the given network interface.</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevMACAddressLowReg</pValue>
+			<Inc>1</Inc>
+			<Representation>HexNumber</Representation>
+		</Integer>
+		<IntReg Name="GevMACAddressLowReg">
+			<Address>0x000C</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Boolean Name="GevSupportedIPConfigurationLLA">
+			<ToolTip>This feature indicates if Link Local Address IP configuration scheme is supported by the given network interface.</ToolTip>
+			<Description>This feature indicates if Link Local Address IP configuration scheme is supported by the given network interface.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSupportedIPConfigurationLLAReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSupportedIPConfigurationLLAReg">
+			<Address>0x0010</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>29</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevSupportedIPConfigurationDHCP">
+			<ToolTip>This feature indicates if DHCP IP configuration scheme is supported by the given network interface.</ToolTip>
+			<Description>This feature indicates if DHCP IP configuration scheme is supported by the given network interface.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSupportedIPConfigurationDHCPReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSupportedIPConfigurationDHCPReg">
+			<Address>0x0010</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>30</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevSupportedIPConfigurationPersistentIP">
+			<ToolTip>This feature indicates if PersistentIP configuration scheme is supported by the given network interface.</ToolTip>
+			<Description>This feature indicates if PersistentIP configuration scheme is supported by the given network interface.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSupportedIPConfigurationPersistentIPReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSupportedIPConfigurationPersistentIPReg">
+			<Address>0x0010</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>31</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevCurrentIPConfigurationLLA">
+			<ToolTip>This feature indicates if Link Local Address IP configuration scheme is activated on the given network interface.</ToolTip>
+			<Description>This feature indicates if Link Local Address IP configuration scheme is activated on the given network interface.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevCurrentIPConfigurationLLAReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevCurrentIPConfigurationLLAReg">
+			<Address>0x0014</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteAround</Cachable>
+			<Bit>29</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevCurrentIPConfigurationDHCP">
+			<ToolTip>This feature indicates if DHCP IP configuration scheme is activated on the given network interface.</ToolTip>
+			<Description>This feature indicates if DHCP IP configuration scheme is activated on the given network interface.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevCurrentIPConfigurationDHCPReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevCurrentIPConfigurationDHCPReg">
+			<Address>0x0014</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteAround</Cachable>
+			<Bit>30</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevCurrentIPConfigurationPersistentIP">
+			<ToolTip>This feature indicates if PersistentIP configuration scheme is activated on the given network interface.</ToolTip>
+			<Description>This feature indicates if PersistentIP configuration scheme is activated on the given network interface.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevCurrentIPConfigurationPersistentIPReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevCurrentIPConfigurationPersistentIPReg">
+			<Address>0x0014</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteAround</Cachable>
+			<Bit>31</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="GevCurrentIPAddress">
+			<ToolTip>This feature reports the IP address for the given network interface once it has been configured.</ToolTip>
+			<Description>This feature reports the IP address for the given network interface once it has been configured.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevCurrentIPAddressReg</pValue>
+			<Inc>1</Inc>
+			<Representation>HexNumber</Representation>
+		</Integer>
+		<IntReg Name="GevCurrentIPAddressReg">
+			<Address>0x0024</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevCurrentSubnetMask">
+			<ToolTip>This feature provides the subnet mask of the given interface.</ToolTip>
+			<Description>This feature provides the subnet mask of the given interface.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevCurrentSubnetMaskReg</pValue>
+			<Inc>1</Inc>
+			<Representation>HexNumber</Representation>
+		</Integer>
+		<IntReg Name="GevCurrentSubnetMaskReg">
+			<Address>0x0034</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevCurrentDefaultGateway">
+			<ToolTip>This feature indicates the default gateway IP address to be used on the given network interface.</ToolTip>
+			<Description>This feature indicates the default gateway IP address to be used on the given network interface.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevCurrentDefaultGatewayReg</pValue>
+			<Inc>1</Inc>
+			<Representation>HexNumber</Representation>
+		</Integer>
+		<IntReg Name="GevCurrentDefaultGatewayReg">
+			<Address>0x0044</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<StringReg Name="GevFirstURL">
+			<ToolTip>This feature stores the first URL to the XML device description file.</ToolTip>
+			<Description>This feature stores the first URL to the XML device description file.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<Address>0x0200</Address>
+			<Length>512</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+		</StringReg>
+		<StringReg Name="GevSecondURL">
+			<ToolTip>This feature stores the second URL to the XML device description file.</ToolTip>
+			<Description>This feature stores the second URL to the XML device description file.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<Address>0x0400</Address>
+			<Length>512</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+		</StringReg>
+		<Integer Name="GevNumberOfInterfaces">
+			<ToolTip>This feature indicates the number of physical network interfaces supported by this device.</ToolTip>
+			<Description>This feature indicates the number of physical network interfaces supported by this device.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevNumberOfInterfacesReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevNumberOfInterfacesReg">
+			<Address>0x0600</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevPersistentIPAddress">
+			<ToolTip>This feature indicates the Persistent IP address for this network interface.</ToolTip>
+			<Description>This feature indicates the Persistent IP address for this network interface.</Description>
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>GevSupportedIPConfigurationPersistentIP</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>GevPersistentIPAddressReg</pValue>
+			<Inc>1</Inc>
+			<Representation>HexNumber</Representation>
+		</Integer>
+		<IntReg Name="GevPersistentIPAddressReg">
+			<Address>0x064C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevPersistentSubnetMask">
+			<ToolTip>This feature indicates the Persistent subnet mask associated with the Persistent IP address on this network interface.</ToolTip>
+			<Description>This feature indicates the Persistent subnet mask associated with the Persistent IP address on this network interface.</Description>
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>GevSupportedIPConfigurationPersistentIP</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>GevPersistentSubnetMaskReg</pValue>
+			<Inc>1</Inc>
+			<Representation>HexNumber</Representation>
+		</Integer>
+		<IntReg Name="GevPersistentSubnetMaskReg">
+			<Address>0x065C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevPersistentDefaultGateway">
+			<ToolTip>This feature indicates the persistent default gateway for this network interface.</ToolTip>
+			<Description>This feature indicates the persistent default gateway for this network interface.</Description>
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>GevSupportedIPConfigurationPersistentIP</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>GevPersistentDefaultGatewayReg</pValue>
+			<Inc>1</Inc>
+			<Representation>HexNumber</Representation>
+		</Integer>
+		<IntReg Name="GevPersistentDefaultGatewayReg">
+			<Address>0x066C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevMessageChannelCount">
+			<ToolTip>This feature reports the number of message channels supported by this device.</ToolTip>
+			<Description>This feature reports the number of message channels supported by this device.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevMessageChannelCountReg</pValue>
+			<Min>0</Min>
+			<Max>1</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevMessageChannelCountReg">
+			<Address>0x0900</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevStreamChannelCount">
+			<ToolTip>This feature reports the number of stream channels supported by this device.</ToolTip>
+			<Description>This feature reports the number of stream channels supported by this device.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevStreamChannelCountReg</pValue>
+			<Min>1</Min>
+			<Max>512</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevStreamChannelCountReg">
+			<Address>0x0904</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Boolean Name="GevSupportedOptionalCommandsUserDefinedName">
+			<ToolTip>User-defined name register is supported.</ToolTip>
+			<Description>User-defined name register is supported.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSupportedOptionalCommandsUserDefinedNameReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSupportedOptionalCommandsUserDefinedNameReg">
+			<Address>0x0934</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>0</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevSupportedOptionalCommandsSerialNumber">
+			<ToolTip>Serial number register is supported.</ToolTip>
+			<Description>Serial number register is supported.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSupportedOptionalCommandsSerialNumberReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSupportedOptionalCommandsSerialNumberReg">
+			<Address>0x0934</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>1</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevSupportedOptionalCommandsEVENTDATA">
+			<ToolTip>EVENTDATA_CMD and EVENTDATA_ACK are supported.</ToolTip>
+			<Description>EVENTDATA_CMD and EVENTDATA_ACK are supported.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSupportedOptionalCommandsEVENTDATAReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSupportedOptionalCommandsEVENTDATAReg">
+			<Address>0x0934</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>27</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevSupportedOptionalCommandsEVENT">
+			<ToolTip>EVENT_CMD and EVENT_ACK are supported.</ToolTip>
+			<Description>EVENT_CMD and EVENT_ACK are supported.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSupportedOptionalCommandsEVENTReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSupportedOptionalCommandsEVENTReg">
+			<Address>0x0934</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>28</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevSupportedOptionalCommandsPACKETRESEND">
+			<ToolTip>PACKETRESEND_CMD is supported.</ToolTip>
+			<Description>PACKETRESEND_CMD is supported.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSupportedOptionalCommandsPACKETRESENDReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSupportedOptionalCommandsPACKETRESENDReg">
+			<Address>0x0934</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>29</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevSupportedOptionalCommandsWRITEMEM">
+			<ToolTip>WRITEMEM_CMD and WRITEMEM_ACK are supported.</ToolTip>
+			<Description>WRITEMEM_CMD and WRITEMEM_ACK are supported.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSupportedOptionalCommandsWRITEMEMReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSupportedOptionalCommandsWRITEMEMReg">
+			<Address>0x0934</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>30</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevSupportedOptionalCommandsConcatenation">
+			<ToolTip>Multiple operations in a single message are supported.</ToolTip>
+			<Description>Multiple operations in a single message are supported.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSupportedOptionalCommandsConcatenationReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSupportedOptionalCommandsConcatenationReg">
+			<Address>0x0934</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>31</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="GevHeartbeatTimeout">
+			<ToolTip>This feature indicates the current heartbeat timeout in milliseconds.</ToolTip>
+			<Description>This feature indicates the current heartbeat timeout in milliseconds.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevHeartbeatTimeoutReg</pValue>
+			<Min>500</Min>
+			<Max>4294967295</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevHeartbeatTimeoutReg">
+			<Address>0x0938</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevTimestampTickFrequency">
+			<ToolTip>This 64-bit feature indicates the number of timestamp ticks during 1 second.</ToolTip>
+			<Description>This 64-bit feature indicates the number of timestamp ticks during 1 second.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevTimestampTickFrequencyValExpr</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntSwissKnife Name="GevTimestampTickFrequencyValExpr">
+			<pVariable Name="VAR_GEVTIMESTAMPTICKFREQUENCYHIGH">GevTimestampTickFrequencyHighReg</pVariable>
+			<pVariable Name="VAR_GEVTIMESTAMPTICKFREQUENCYLOW">GevTimestampTickFrequencyLowReg</pVariable>
+			<Formula>(VAR_GEVTIMESTAMPTICKFREQUENCYHIGH &lt;&lt; 32) | VAR_GEVTIMESTAMPTICKFREQUENCYLOW</Formula>
+		</IntSwissKnife>
+		<Integer Name="GevTimestampTickFrequencyHigh">
+			<ToolTip>This feature indicates the 32 most significant bits of the number of timestamp ticks during 1 second.</ToolTip>
+			<Description>This feature indicates the 32 most significant bits of the number of timestamp ticks during 1 second.</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevTimestampTickFrequencyHighReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevTimestampTickFrequencyHighReg">
+			<Address>0x093C</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevTimestampTickFrequencyLow">
+			<ToolTip>This feature indicates the 32 least significant bits of the number of timestamp ticks during 1 second.</ToolTip>
+			<Description>This feature indicates the 32 least significant bits of the number of timestamp ticks during 1 second.</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevTimestampTickFrequencyLowReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevTimestampTickFrequencyLowReg">
+			<Address>0x0940</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Command Name="GevTimestampControlLatch">
+			<ToolTip>Latch current timestamp counter into &quot;Timestamp value&quot; register.</ToolTip>
+			<Description>Latch current timestamp counter into &quot;Timestamp value&quot; register.</Description>
+			<Visibility>Beginner</Visibility>
+			<pValue>GevTimestampControlReg</pValue>
+			<CommandValue>2</CommandValue>
+		</Command>
+		<Command Name="GevTimestampControlReset">
+			<ToolTip>Reset timestamp 64-bit counter to 0.</ToolTip>
+			<Description>Reset timestamp 64-bit counter to 0.</Description>
+			<Visibility>Beginner</Visibility>
+			<pValue>GevTimestampControlReg</pValue>
+			<CommandValue>1</CommandValue>
+		</Command>
+		<Integer Name="GevTimestampValue">
+			<ToolTip>This feature reports the latched 64-bit value of the timestamp counter.</ToolTip>
+			<Description>This feature reports the latched 64-bit value of the timestamp counter.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevTimestampValueValExpr</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntSwissKnife Name="GevTimestampValueValExpr">
+			<pVariable Name="VAR_GEVTIMESTAMPVALUEHIGH">GevTimestampValueHighReg</pVariable>
+			<pVariable Name="VAR_GEVTIMESTAMPVALUELOW">GevTimestampValueLowReg</pVariable>
+			<Formula>(VAR_GEVTIMESTAMPVALUEHIGH &lt;&lt; 32) | VAR_GEVTIMESTAMPVALUELOW</Formula>
+		</IntSwissKnife>
+		<Integer Name="GevTimestampValueHigh">
+			<ToolTip>This feature reports the 32 most significant bits of the latched value of the timestamp counter.</ToolTip>
+			<Description>This feature reports the 32 most significant bits of the latched value of the timestamp counter.</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevTimestampValueHighReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevTimestampValueHighReg">
+			<Address>0x0948</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>GevTimestampControlReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevTimestampValueLow">
+			<ToolTip>This feature reports the 32 least significant bits of the latched value of the timestamp counter.</ToolTip>
+			<Description>This feature reports the 32 least significant bits of the latched value of the timestamp counter.</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevTimestampValueLowReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevTimestampValueLowReg">
+			<Address>0x094C</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>GevTimestampControlReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="GevCCP">
+			<ToolTip>This feature is used to grant privilege to an application.</ToolTip>
+			<Description>This feature is used to grant privilege to an application.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="OpenAccess"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="ExclusiveAccess"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="ControlAccess"><Value>2</Value></EnumEntry>
+			<pValue>GevCCPReg</pValue>
+		</Enumeration>
+		<IntReg Name="GevCCPReg">
+			<Address>0x0A00</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevMCPHostPort">
+			<ToolTip>Indicates the port to which the device must send messages.</ToolTip>
+			<Description>Indicates the port to which the device must send messages.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevMCPHostPortReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="GevMCPHostPortReg">
+			<Address>0x0B00</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>16</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="GevMCDA">
+			<ToolTip>This feature indicates the destination IP address for the message channel.</ToolTip>
+			<Description>This feature indicates the destination IP address for the message channel.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevMCDAReg</pValue>
+			<Inc>1</Inc>
+			<Representation>HexNumber</Representation>
+		</Integer>
+		<IntReg Name="GevMCDAReg">
+			<Address>0x0B10</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevMCTT">
+			<ToolTip>This feature provides the transmission timeout value in milliseconds.</ToolTip>
+			<Description>This feature provides the transmission timeout value in milliseconds.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevMCTTReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevMCTTReg">
+			<Address>0x0B14</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevMCRC">
+			<ToolTip>This feature indicates the number of retransmissions allowed when a message channel message times out.</ToolTip>
+			<Description>This feature indicates the number of retransmissions allowed when a message channel message times out.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevMCRCReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevMCRCReg">
+			<Address>0x0B18</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevStreamChannelSelector">
+			<ToolTip>This Selector is used to index into the various stream channel features.</ToolTip>
+			<Description>This Selector is used to index into the various stream channel features.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<Value>0</Value>
+			<Min>0</Min>
+			<Max>0</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<Integer Name="GevSCPInterfaceIndex">
+			<ToolTip>Index of network interface to use (from 0 to 3).</ToolTip>
+			<Description>Index of network interface to use (from 0 to 3).</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSCPInterfaceIndexReg</pValue>
+			<Min>0</Min>
+			<Max>0</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="GevSCPInterfaceIndexReg">
+			<Address>0x0D00</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>15</LSB>
+			<MSB>12</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="GevSCPHostPort">
+			<ToolTip>Indicates the port to which the device must send data stream.</ToolTip>
+			<Description>Indicates the port to which the device must send data stream.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSCPHostPortReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="GevSCPHostPortReg">
+			<Address>0x0D00</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>16</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevSCPSFireTestPacket">
+			<ToolTip>When this bit is set, the device will fire one test packet.</ToolTip>
+			<Description>When this bit is set, the device will fire one test packet.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSCPSFireTestPacketReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSCPSFireTestPacketReg">
+			<Address>0x0D04</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteAround</Cachable>
+			<Bit>0</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevSCPSDoNotFragment">
+			<ToolTip>This bit is copied into the &quot;do not fragment&quot; bit of IP header of each stream packet.</ToolTip>
+			<Description>This bit is copied into the &quot;do not fragment&quot; bit of IP header of each stream packet.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSCPSDoNotFragmentReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSCPSDoNotFragmentReg">
+			<Address>0x0D04</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>1</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GevSCPSBigEndian">
+			<ToolTip>Endianess of multi-byte pixel data for this stream.</ToolTip>
+			<Description>Endianess of multi-byte pixel data for this stream.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSCPSBigEndianReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GevSCPSBigEndianReg">
+			<Address>0x0D04</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteAround</Cachable>
+			<Bit>2</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="GevSCPSPacketSize">
+			<ToolTip>The stream packet size to send on this channel, except for data leader and data trailer; and the last data packet which might be of smaller size (since packet size is not necessarily a multiple of block size for stream channel).</ToolTip>
+			<Description>The stream packet size to send on this channel, except for data leader and data trailer; and the last data packet which might be of smaller size (since packet size is not necessarily a multiple of block size for stream channel).</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSCPSPacketSizeReg</pValue>
+			<Min>72</Min>
+			<Max>16260</Max>
+			<Inc>4</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="GevSCPSPacketSizeReg">
+			<Address>0x0D04</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>16</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="GevSCPD">
+			<ToolTip>This feature indicates the delay (in timestamp counter unit) to insert between each packet for this stream channel.</ToolTip>
+			<Description>This feature indicates the delay (in timestamp counter unit) to insert between each packet for this stream channel.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSCPDReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevSCPDReg">
+			<Address>0x0D08</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevSCDA">
+			<ToolTip>This feature indicates the destination IP address for this stream channel.</ToolTip>
+			<Description>This feature indicates the destination IP address for this stream channel.</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>GevSCDAReg</pValue>
+			<Inc>1</Inc>
+			<Representation>HexNumber</Representation>
+		</Integer>
+		<IntReg Name="GevSCDAReg">
+			<Address>0x0D18</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="GevIPConfigurationStatus">
+			<ToolTip>This feature reports the current IP configuration status.</ToolTip>
+			<Description>This feature reports the current IP configuration status.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="None"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="PersistentIP"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="DHCP"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="LLA"><Value>3</Value></EnumEntry>
+			<EnumEntry Name="ForceIP"><Value>4</Value></EnumEntry>
+			<pValue>GevIPConfigurationStatusReg</pValue>
+		</Enumeration>
+		<IntReg Name="GevIPConfigurationStatusReg">
+			<Address>0xA030</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="GevTimestampControl">
+			<ToolTip>This register is used to control the timestamp counter.</ToolTip>
+			<Description>This register is used to control the timestamp counter.</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GevTimestampControlReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="GevTimestampControlReg">
+			<Address>0x0944</Address>
+			<Length>4</Length>
+			<AccessMode>WO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteAround</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+	</Group>
+	<Group Comment="IPEngine">
+		<Category Name="IPEngine">
+			<pFeature>ProgrammableLogicController</pFeature>
+			<pFeature>PortCommunication</pFeature>
+			<pFeature>Grabber</pFeature>
+			<pFeature>Invisible</pFeature>
+			<pFeature>IPEngineFirmwareVersionMajor</pFeature>
+			<pFeature>IPEngineFirmwareVersionMinor</pFeature>
+			<pFeature>IPEngineFirmwareVersionSubminor</pFeature>
+			<pFeature>IPEngineInitSequenceStatus</pFeature>
+			<pFeature>IPEngineVendorID</pFeature>
+			<pFeature>IPEngineDeviceID</pFeature>
+			<pFeature>IPEngineModuleID</pFeature>
+			<pFeature>IPEngineSubModuleID</pFeature>
+		</Category>
+		<Integer Name="IPEngineFirmwareVersionMajor">
+			<ToolTip>This field represents the major version of the iPORT IP Engine firmware.</ToolTip>
+			<Description>This field represents the major version of the iPORT IP Engine firmware.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineFirmwareVersionMajorReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineFirmwareVersionMajorReg">
+			<Address>0xA004</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>15</LSB>
+			<MSB>0</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineFirmwareVersionMinor">
+			<ToolTip>This field represents the minor version of the iPORT IP Engine firmware.</ToolTip>
+			<Description>This field represents the minor version of the iPORT IP Engine firmware.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineFirmwareVersionMinorReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineFirmwareVersionMinorReg">
+			<Address>0xA004</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>16</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineFirmwareVersionSubminor">
+			<ToolTip>This field represents the subminor version of the iPORT IP Engine firmware.</ToolTip>
+			<Description>This field represents the subminor version of the iPORT IP Engine firmware.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineFirmwareVersionSubminorReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineFirmwareVersionSubminorReg">
+			<Address>0xA064</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>16</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineInitSequenceStatus">
+			<ToolTip>This field reports the status of the initialization sequence. A null value indicates that the initialization sequence ran successfully. Otherwise, it returns the index of the register write that failed in the sequence.</ToolTip>
+			<Description>This field reports the status of the initialization sequence. A null value indicates that the initialization sequence ran successfully. Otherwise, it returns the index of the register write that failed in the sequence.</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineInitSequenceStatusReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineInitSequenceStatusReg">
+			<Address>0xA028</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>16</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineVendorID">
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineVendorIDReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineVendorIDReg">
+			<Address>0xB800</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>7</LSB>
+			<MSB>0</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineDeviceID">
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineDeviceIDReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineDeviceIDReg">
+			<Address>0xB800</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>24</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineModuleID">
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineModuleIDReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineModuleIDReg">
+			<Address>0xB800</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>23</LSB>
+			<MSB>16</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineSubModuleID">
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineSubModuleIDReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineSubModuleIDReg">
+			<Address>0xB800</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>15</LSB>
+			<MSB>8</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+	</Group>
+	<Group Comment="ProgrammableLogicController">
+		<Category Name="ProgrammableLogicController">
+			<pFeature>EnhancedFunctionBlock</pFeature>
+		</Category>
+	</Group>
+	<Group Comment="EnhancedFunctionBlock">
+		<Category Name="EnhancedFunctionBlock">
+			<pFeature>InterruptFIFO</pFeature>
+		</Category>
+	</Group>
+	<Group Comment="InterruptFIFO">
+		<Category Name="InterruptFIFO">
+			<pFeature>PLC_Interrupt_FIFO0_Q15_Enabled</pFeature>
+			<pFeature>PLC_Interrupt_FIFO0_Q3_Enabled</pFeature>
+			<pFeature>PLC_Interrupt_FIFO0_Q7_Enabled</pFeature>
+			<pFeature>PLC_Interrupt_FIFO0_Q10_Enabled</pFeature>
+		</Category>
+		<Boolean Name="PLC_Interrupt_FIFO0_Q15_Enabled">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>PLC_Interrupt_FIFO0_Q15_EnabledReg</pValue>
+		</Boolean>
+		<IntReg Name="PLC_Interrupt_FIFO0_Q15_EnabledReg">
+			<Address>0xBB54</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Boolean Name="PLC_Interrupt_FIFO0_Q3_Enabled">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>PLC_Interrupt_FIFO0_Q3_EnabledReg</pValue>
+		</Boolean>
+		<IntReg Name="PLC_Interrupt_FIFO0_Q3_EnabledReg">
+			<Address>0xBB58</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Boolean Name="PLC_Interrupt_FIFO0_Q7_Enabled">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>PLC_Interrupt_FIFO0_Q7_EnabledReg</pValue>
+		</Boolean>
+		<IntReg Name="PLC_Interrupt_FIFO0_Q7_EnabledReg">
+			<Address>0xBB5C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Boolean Name="PLC_Interrupt_FIFO0_Q10_Enabled">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>PLC_Interrupt_FIFO0_Q10_EnabledReg</pValue>
+		</Boolean>
+		<IntReg Name="PLC_Interrupt_FIFO0_Q10_EnabledReg">
+			<Address>0xBB60</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+	</Group>
+	<Group Comment="PortCommunication">
+		<Category Name="PortCommunication">
+			<pFeature>Uart0</pFeature>
+			<pFeature>Uart1</pFeature>
+		</Category>   
+	</Group>
+	<Group Comment="Uart0">
+		<Category Name="Uart0">
+			<pFeature>Uart0BaudRate</pFeature>
+			<pFeature>Uart0BaudRateFactor</pFeature>
+			<pFeature>Uart0NumOfStopBits</pFeature>
+			<pFeature>Uart0Parity</pFeature>
+			<pFeature>Uart0Loopback</pFeature>
+			<pFeature>Uart0ReadyToReceive</pFeature>
+			<pFeature>Uart0BreakDetection</pFeature>
+			<pFeature>Uart0BreakGeneration</pFeature>
+		</Category>   
+		<Enumeration Name="Uart0BaudRate">
+			<Visibility>Expert</Visibility>
+			<pIsImplemented>Uart0BaudRateImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Baud9600"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Baud14400"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="Baud19200"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="Baud28800"><Value>3</Value></EnumEntry>
+			<EnumEntry Name="Baud38400"><Value>4</Value></EnumEntry>
+			<EnumEntry Name="Baud57600"><Value>5</Value></EnumEntry>
+			<EnumEntry Name="Baud115200"><Value>6</Value></EnumEntry>
+			<EnumEntry Name="Programmable"><Value>7</Value></EnumEntry>
+			<pValue>Uart0BaudRateReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="Uart0BaudRateReg">
+			<Address>0xB848</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>26</LSB>
+			<MSB>24</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart0BaudRateImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt;= 1</Formula>
+		</IntSwissKnife>
+		<Integer Name="Uart0BaudRateFactor">
+			<Visibility>Expert</Visibility>
+		<pIsImplemented>Uart0BaudRateFactorImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>Uart0BaudRateFactorReg</pValue>
+			<Min>0</Min>
+			<Max>255</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="Uart0BaudRateFactorReg">
+			<Address>0xB848</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>23</LSB>
+			<MSB>16</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart0BaudRateFactorImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt;= 1</Formula>
+		</IntSwissKnife>
+		<Enumeration Name="Uart0NumOfStopBits">
+			<Visibility>Expert</Visibility>
+			<pIsImplemented>Uart0NumOfStopBitsImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="One"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Two"><Value>2</Value></EnumEntry>
+			<pValue>Uart0NumOfStopBitsReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="Uart0NumOfStopBitsReg">
+			<Address>0xB848</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>29</LSB>
+			<MSB>28</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart0NumOfStopBitsImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt;= 1</Formula>
+		</IntSwissKnife>
+		<Enumeration Name="Uart0Parity">
+			<Visibility>Expert</Visibility>
+			<pIsImplemented>Uart0ParityImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="None"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Even"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="Odd"><Value>3</Value></EnumEntry>
+			<pValue>Uart0ParityReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="Uart0ParityReg">
+			<Address>0xB848</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>30</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart0ParityImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt;= 1</Formula>
+		</IntSwissKnife>
+		<Boolean Name="Uart0Loopback">
+			<Visibility>Expert</Visibility>
+		<pIsImplemented>Uart0LoopbackImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>Uart0LoopbackReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="Uart0LoopbackReg">
+			<Address>0xB988</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>28</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart0LoopbackImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt;= 1</Formula>
+		</IntSwissKnife>
+		<Boolean Name="Uart0ReadyToReceive">
+			<Visibility>Expert</Visibility>
+		<pIsImplemented>Uart0ReadyToReceiveImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>Uart0ReadyToReceiveReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="Uart0ReadyToReceiveReg">
+			<Address>0xB988</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>29</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart0ReadyToReceiveImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt;= 1</Formula>
+		</IntSwissKnife>
+		<Boolean Name="Uart0BreakDetection">
+			<Visibility>Expert</Visibility>
+		<pIsImplemented>Uart0BreakDetectionImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>Uart0BreakDetectionReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="Uart0BreakDetectionReg">
+			<Address>0xB988</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>30</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart0BreakDetectionImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<pVariable Name="VAR_IPENGINEUSEUART0BREAKDETECTION">IPEngineUseUart0BreakDetectionReg</pVariable>
+			<Formula>(VAR_IPENGINENUMBEROFUARTINTERFACES &gt;= 1) &amp; (VAR_IPENGINEUSEUART0BREAKDETECTION)</Formula>
+		</IntSwissKnife>
+		<Boolean Name="Uart0BreakGeneration">
+			<Visibility>Expert</Visibility>
+		<pIsImplemented>Uart0BreakGenerationImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>Uart0BreakGenerationReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="Uart0BreakGenerationReg">
+			<Address>0xB988</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>31</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart0BreakGenerationImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<pVariable Name="VAR_IPENGINEUSEUART0BREAKGENERATION">IPEngineUseUart0BreakGenerationReg</pVariable>
+			<Formula>(VAR_IPENGINENUMBEROFUARTINTERFACES &gt;= 1) &amp; (VAR_IPENGINEUSEUART0BREAKGENERATION)</Formula>
+		</IntSwissKnife>
+	</Group>
+	<Group Comment="Uart1">
+		<Category Name="Uart1">
+			<pFeature>Uart1BaudRate</pFeature>
+			<pFeature>Uart1BaudRateFactor</pFeature>
+			<pFeature>Uart1NumOfStopBits</pFeature>
+			<pFeature>Uart1Parity</pFeature>
+			<pFeature>Uart1Loopback</pFeature>
+			<pFeature>Uart1ReadyToReceive</pFeature>
+			<pFeature>Uart1BreakDetection</pFeature>
+			<pFeature>Uart1BreakGeneration</pFeature>
+		</Category>
+		<Enumeration Name="Uart1BaudRate">
+			<Visibility>Expert</Visibility>
+			<pIsImplemented>Uart1BaudRateImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Baud9600"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Baud14400"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="Baud19200"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="Baud28800"><Value>3</Value></EnumEntry>
+			<EnumEntry Name="Baud38400"><Value>4</Value></EnumEntry>
+			<EnumEntry Name="Baud57600"><Value>5</Value></EnumEntry>
+			<EnumEntry Name="Baud115200"><Value>6</Value></EnumEntry>
+			<EnumEntry Name="Programmable"><Value>7</Value></EnumEntry>
+			<pValue>Uart1BaudRateReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="Uart1BaudRateReg">
+			<Address>0xB848</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>10</LSB>
+			<MSB>8</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart1BaudRateImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt; 1</Formula>
+		</IntSwissKnife>
+		<Integer Name="Uart1BaudRateFactor">
+			<Visibility>Expert</Visibility>
+		<pIsImplemented>Uart1BaudRateFactorImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>Uart1BaudRateFactorReg</pValue>
+			<Min>0</Min>
+			<Max>255</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="Uart1BaudRateFactorReg">
+			<Address>0xB848</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>7</LSB>
+			<MSB>0</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart1BaudRateFactorImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt; 1</Formula>
+		</IntSwissKnife>
+		<Enumeration Name="Uart1NumOfStopBits">
+			<Visibility>Expert</Visibility>
+			<pIsImplemented>Uart1NumOfStopBitsImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="One"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Two"><Value>2</Value></EnumEntry>
+			<pValue>Uart1NumOfStopBitsReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="Uart1NumOfStopBitsReg">
+			<Address>0xB848</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>13</LSB>
+			<MSB>12</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart1NumOfStopBitsImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt; 1</Formula>
+		</IntSwissKnife>
+		<Enumeration Name="Uart1Parity">
+			<Visibility>Expert</Visibility>
+			<pIsImplemented>Uart1ParityImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="None"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Even"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="Odd"><Value>3</Value></EnumEntry>
+			<pValue>Uart1ParityReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="Uart1ParityReg">
+			<Address>0xB848</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>15</LSB>
+			<MSB>14</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart1ParityImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt; 1</Formula>
+		</IntSwissKnife>
+		<Boolean Name="Uart1Loopback">
+			<Visibility>Expert</Visibility>
+		<pIsImplemented>Uart1LoopbackImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>Uart1LoopbackReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="Uart1LoopbackReg">
+			<Address>0xB988</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>12</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart1LoopbackImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt; 1</Formula>
+		</IntSwissKnife>
+		<Boolean Name="Uart1ReadyToReceive">
+			<Visibility>Expert</Visibility>
+		<pIsImplemented>Uart1ReadyToReceiveImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>Uart1ReadyToReceiveReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="Uart1ReadyToReceiveReg">
+			<Address>0xB988</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>13</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart1ReadyToReceiveImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<Formula>VAR_IPENGINENUMBEROFUARTINTERFACES &gt; 1</Formula>
+		</IntSwissKnife>
+		<Boolean Name="Uart1BreakDetection">
+			<Visibility>Expert</Visibility>
+		<pIsImplemented>Uart1BreakDetectionImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>Uart1BreakDetectionReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="Uart1BreakDetectionReg">
+			<Address>0xB988</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>14</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart1BreakDetectionImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<pVariable Name="VAR_IPENGINEUSEUART1BREAKDETECTION">IPEngineUseUart1BreakDetectionReg</pVariable>
+			<Formula>(VAR_IPENGINENUMBEROFUARTINTERFACES &gt; 1) &amp; (VAR_IPENGINEUSEUART1BREAKDETECTION)</Formula>
+		</IntSwissKnife>
+		<Boolean Name="Uart1BreakGeneration">
+			<Visibility>Expert</Visibility>
+		<pIsImplemented>Uart1BreakGenerationImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>Uart1BreakGenerationReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="Uart1BreakGenerationReg">
+			<Address>0xB988</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>15</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="Uart1BreakGenerationImplExpr">
+			<pVariable Name="VAR_IPENGINENUMBEROFUARTINTERFACES">IPEngineNumberOfUARTInterfacesReg</pVariable>
+			<pVariable Name="VAR_IPENGINEUSEUART1BREAKGENERATION">IPEngineUseUart1BreakGenerationReg</pVariable>
+			<Formula>(VAR_IPENGINENUMBEROFUARTINTERFACES &gt; 1) &amp; (VAR_IPENGINEUSEUART1BREAKGENERATION)</Formula>
+		</IntSwissKnife>
+	</Group>
+	<Group Comment="Grabber">
+		<Category Name="Grabber">
+			<pFeature>Channel0</pFeature>
+			<pFeature>Channel0Extension</pFeature>
+		</Category>  
+	</Group>
+	<Group Comment="Channel0">
+		<Category Name="Channel0">
+			<pFeature>AcquisitionConfiguration</pFeature>
+			<pFeature>TriggerConfiguration</pFeature>
+		</Category>  
+	</Group>
+	<Group Comment="AcquisitionConfiguration">
+		<Category Name="AcquisitionConfiguration">
+			<pFeature>GrbCh0AcqCfgMemoryWaterLevel</pFeature>
+			<pFeature>GrbCh0AcqCfgPixelBusDataPortMapping</pFeature>
+			<pFeature>GrbCh0AcqCfgIncludeMetadataInImage</pFeature>
+			<pFeature>GrbCh0AcqCfgInvertPixelData</pFeature>
+		</Category>  
+		<Enumeration Name="GrbCh0AcqCfgMemoryWaterLevel">
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Level50"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Level75"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="Level87Point5"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="Level100"><Value>3</Value></EnumEntry>
+			<pValue>GrbCh0AcqCfgMemoryWaterLevelReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="GrbCh0AcqCfgMemoryWaterLevelReg">
+			<Address>0xB830</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>30</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Enumeration Name="GrbCh0AcqCfgPixelBusDataPortMapping">
+			<Visibility>Beginner</Visibility>
+			<pIsImplemented>GrbCh0AcqCfgPixelBusDataPortMappingImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="CBA"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="CAB"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="BCA"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="BAC"><Value>3</Value></EnumEntry>
+			<EnumEntry Name="ACB"><Value>4</Value></EnumEntry>
+			<EnumEntry Name="ABC"><Value>5</Value></EnumEntry>
+			<pValue>GrbCh0AcqCfgPixelBusDataPortMappingReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="GrbCh0AcqCfgPixelBusDataPortMappingReg">
+			<Address>0xB840</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>26</LSB>
+			<MSB>24</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="GrbCh0AcqCfgPixelBusDataPortMappingImplExpr">
+			<pVariable Name="VAR_IPENGINEGRBPREPROCESSORPORTMAPDISABLED">IPEngineGrbPreProcessorPortMapDisabledReg</pVariable>
+			<Formula>VAR_IPENGINEGRBPREPROCESSORPORTMAPDISABLED = 0</Formula>
+		</IntSwissKnife>
+		<Boolean Name="GrbCh0AcqCfgIncludeMetadataInImage">
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>GrbCh0AcqCfgIncludeMetadataInImageReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GrbCh0AcqCfgIncludeMetadataInImageReg">
+			<Address>0xB818</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>0</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GrbCh0AcqCfgInvertPixelData">
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>GrbCh0AcqCfgInvertPixelDataImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>GrbCh0AcqCfgInvertPixelDataReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GrbCh0AcqCfgInvertPixelDataReg">
+			<Address>0xB840</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>27</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<IntSwissKnife Name="GrbCh0AcqCfgInvertPixelDataImplExpr">
+			<pVariable Name="VAR_IPENGINEGRBPREPROCESSORDATAINVERTDISABLED">IPEngineGrbPreProcessorDataInvertDisabledReg</pVariable>
+			<Formula>VAR_IPENGINEGRBPREPROCESSORDATAINVERTDISABLED = 0</Formula>
+		</IntSwissKnife>
+	</Group>
+	<Group Comment="TriggerConfiguration">
+		<Category Name="TriggerConfiguration">
+			<pFeature>GrbCh0TrigCfgFrameToSkip</pFeature>
+			<pFeature>GrbCh0TrigCfgContinuousPipeCount</pFeature>
+			<pFeature>GrbCh0TrigCfgAutomaticInternalRetrigger</pFeature>
+		</Category>   
+		<Integer Name="GrbCh0TrigCfgFrameToSkip">
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>GrbCh0TrigCfgFrameToSkipReg</pValue>
+			<Min>0</Min>
+			<Max>4095</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="GrbCh0TrigCfgFrameToSkipReg">
+			<Address>0xB81C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>15</LSB>
+			<MSB>4</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Enumeration Name="GrbCh0TrigCfgContinuousPipeCount">
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Continuous"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="One"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="Two"><Value>2</Value></EnumEntry>
+			<pValue>GrbCh0TrigCfgContinuousPipeCountReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="GrbCh0TrigCfgContinuousPipeCountReg">
+			<Address>0xB81C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>2</LSB>
+			<MSB>1</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="GrbCh0TrigCfgAutomaticInternalRetrigger">
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>GrbCh0TrigCfgAutomaticInternalRetriggerReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="GrbCh0TrigCfgAutomaticInternalRetriggerReg">
+			<Address>0xB81C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>17</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+	</Group>
+	<Group Comment="Channel0Extension">
+		<Category Name="Channel0Extension">
+			<pFeature>GrabberMetadata</pFeature>
+		</Category> 
+	</Group>
+	<Group Comment="GrabberMetadata">
+		<Category Name="GrabberMetadata">
+			<pFeature>GrbCh0MetadataInsertionMode</pFeature>
+			<pFeature>GrbCh0MetadataSourceSelection</pFeature>
+			<pFeature>GrbCh0MetadataMsbOverride</pFeature>
+		</Category> 
+		<Enumeration Name="GrbCh0MetadataInsertionMode">
+			<Visibility>Expert</Visibility>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="FirstFourBytesOfFirstAcquiredLine"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="FirstFourBytesOfEveryAcquiredLines"><Value>1</Value></EnumEntry>
+			<pValue>GrbCh0MetadataInsertionModeReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="GrbCh0MetadataInsertionModeReg">
+			<Address>0xB9A0</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>24</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Enumeration Name="GrbCh0MetadataSourceSelection">
+			<Visibility>Expert</Visibility>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="BlockID"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="GevTimestampValueLow"><Value>1</Value></EnumEntry>
+			<pValue>GrbCh0MetadataSourceSelectionReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="GrbCh0MetadataSourceSelectionReg">
+			<Address>0xB9A0</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>31</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Enumeration Name="GrbCh0MetadataMsbOverride">
+			<Visibility>Expert</Visibility>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="NotOverriden"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="PLC_Q0ToPLC_Q7"><Value>1</Value></EnumEntry>
+			<pValue>GrbCh0MetadataMsbOverrideReg</pValue>
+		</Enumeration>
+		<MaskedIntReg Name="GrbCh0MetadataMsbOverrideReg">
+			<Address>0xB9A0</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>27</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+	</Group>
+	<Group Comment="Invisible">
+		<Category Name="Invisible">
+			<pFeature>GevEventsCapability</pFeature>
+			<pFeature>FunctionCapability</pFeature>
+			<pFeature>GevEventsEnable</pFeature>
+		</Category>
+	</Group>
+	<Group Comment="GevEventsCapability">
+		<Category Name="GevEventsCapability">
+			<pFeature>IPEngineCamHeadSerialComLogEventIsSupported</pFeature>
+			<pFeature>BlockDiscardEventIsSupported</pFeature>
+			<pFeature>ErrorEventIsSupported</pFeature>
+			<pFeature>DataOverrunEventIsSupported</pFeature>
+		</Category>
+		<Boolean Name="IPEngineCamHeadSerialComLogEventIsSupported">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineCamHeadSerialComLogEventIsSupportedReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="IPEngineCamHeadSerialComLogEventIsSupportedReg">
+			<Address>0xA05C</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>28</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="BlockDiscardEventIsSupported">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>BlockDiscardEventIsSupportedReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="BlockDiscardEventIsSupportedReg">
+			<Address>0xA05C</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>29</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="ErrorEventIsSupported">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>ErrorEventIsSupportedReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="ErrorEventIsSupportedReg">
+			<Address>0xA05C</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>30</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="DataOverrunEventIsSupported">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>DataOverrunEventIsSupportedReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="DataOverrunEventIsSupportedReg">
+			<Address>0xA05C</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>31</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+	</Group>
+	<Group Comment="FunctionCapability">
+		<Category Name="FunctionCapability">
+			<pFeature>IPEngineStaticCfgIsSupported</pFeature>
+			<pFeature>IPEngineNumberOfUARTInterfaces</pFeature>
+			<pFeature>IPEngineGrbPreProcessorDataInvertDisabled</pFeature>
+			<pFeature>IPEngineGrbPreProcessorDataShiftDisabled</pFeature>
+			<pFeature>IPEngineGrbPreProcessorPortMapDisabled</pFeature>
+			<pFeature>IPEngineUseUart0BreakDetection</pFeature>
+			<pFeature>IPEngineUseUart1BreakDetection</pFeature>
+			<pFeature>IPEngineBulkUsrt0BreakDetection</pFeature>
+			<pFeature>IPEngineUseUart1BreakGeneration</pFeature>
+			<pFeature>IPEngineUseUart0BreakGeneration</pFeature>
+		</Category> 
+		<Boolean Name="IPEngineStaticCfgIsSupported">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineStaticCfgIsSupportedReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="IPEngineStaticCfgIsSupportedReg">
+			<Address>0xB8FC</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>11</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineNumberOfUARTInterfaces">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineNumberOfUARTInterfacesReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineNumberOfUARTInterfacesReg">
+			<Address>0xB8FC</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<LSB>31</LSB>
+			<MSB>29</MSB>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="IPEngineGrbPreProcessorDataInvertDisabled">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineGrbPreProcessorDataInvertDisabledReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="IPEngineGrbPreProcessorDataInvertDisabledReg">
+			<Address>0xB8FC</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>1</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="IPEngineGrbPreProcessorDataShiftDisabled">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineGrbPreProcessorDataShiftDisabledReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="IPEngineGrbPreProcessorDataShiftDisabledReg">
+			<Address>0xB8FC</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>2</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Boolean Name="IPEngineGrbPreProcessorPortMapDisabled">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineGrbPreProcessorPortMapDisabledReg</pValue>
+		</Boolean>
+		<MaskedIntReg Name="IPEngineGrbPreProcessorPortMapDisabledReg">
+			<Address>0xB8FC</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>3</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineUseUart0BreakDetection">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineUseUart0BreakDetectionReg</pValue>
+			<Min>0</Min>
+			<Max>1</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineUseUart0BreakDetectionReg">
+			<Address>0xB9C4</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>31</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineUseUart1BreakDetection">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineUseUart1BreakDetectionReg</pValue>
+			<Min>0</Min>
+			<Max>1</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineUseUart1BreakDetectionReg">
+			<Address>0xB9C4</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>30</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineBulkUsrt0BreakDetection">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineBulkUsrt0BreakDetectionReg</pValue>
+			<Min>0</Min>
+			<Max>1</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineBulkUsrt0BreakDetectionReg">
+			<Address>0xB9C4</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>27</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineUseUart1BreakGeneration">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineUseUart1BreakGenerationReg</pValue>
+			<Min>0</Min>
+			<Max>1</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineUseUart1BreakGenerationReg">
+			<Address>0xB9C4</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>28</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+		<Integer Name="IPEngineUseUart0BreakGeneration">
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineUseUart0BreakGenerationReg</pValue>
+			<Min>0</Min>
+			<Max>1</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<MaskedIntReg Name="IPEngineUseUart0BreakGenerationReg">
+			<Address>0xB9C4</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Bit>29</Bit>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</MaskedIntReg>
+	</Group>
+	<Group Comment="GevEventsEnable">
+		<Category Name="GevEventsEnable">
+			<pFeature>IPEngineCamHeadSerialComLogEventEnabled</pFeature>
+			<pFeature>DataOverrunEventEnabled</pFeature>
+			<pFeature>ErrorEventEnabled</pFeature>
+			<pFeature>BlockDiscardEventEnabled</pFeature>
+		</Category>  
+		<Boolean Name="IPEngineCamHeadSerialComLogEventEnabled">
+			<Visibility>Invisible</Visibility>
+		<pIsImplemented>IPEngineCamHeadSerialComLogEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>IPEngineCamHeadSerialComLogEventEnabledReg</pValue>
+		</Boolean>
+		<IntReg Name="IPEngineCamHeadSerialComLogEventEnabledReg">
+			<Address>0xA04C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Boolean Name="DataOverrunEventEnabled">
+			<Visibility>Invisible</Visibility>
+		<pIsImplemented>DataOverrunEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>DataOverrunEventEnabledReg</pValue>
+		</Boolean>
+		<IntReg Name="DataOverrunEventEnabledReg">
+			<Address>0xA050</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Boolean Name="ErrorEventEnabled">
+			<Visibility>Invisible</Visibility>
+		<pIsImplemented>ErrorEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>ErrorEventEnabledReg</pValue>
+		</Boolean>
+		<IntReg Name="ErrorEventEnabledReg">
+			<Address>0xA054</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Boolean Name="BlockDiscardEventEnabled">
+			<Visibility>Invisible</Visibility>
+		<pIsImplemented>BlockDiscardEventIsSupported</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>BlockDiscardEventEnabledReg</pValue>
+		</Boolean>
+		<IntReg Name="BlockDiscardEventEnabledReg">
+			<Address>0xA058</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+	</Group>
+	<Group Comment="PixeLINKFeatures">
+		<Category Name="PixeLINKFeatures">
+			<pFeature>AutoFrameRate</pFeature>
+			<pFeature>FeaturesInquiry</pFeature>
+			<pFeature>Brightness</pFeature>
+			<pFeature>BrightnessMin</pFeature>
+			<pFeature>BrightnessMax</pFeature>
+			<pFeature>Saturation</pFeature>
+			<pFeature>SaturationMax</pFeature>
+			<pFeature>ColorTemperature</pFeature>
+			<pFeature>SensorTemperature</pFeature>
+			<pFeature>PixeLINKFeatureEnable</pFeature>
+			<pFeature>MemSaveCh</pFeature>
+			<pFeature>CurrMemCh</pFeature>
+			<pFeature>MemorySave</pFeature>
+			<pFeature>PixeLINKFeatureSupported</pFeature>
+			<pFeature>MaxSensorWidth</pFeature>
+			<pFeature>MaxSensorHeight</pFeature>
+			<pFeature>PixelAddressingMode</pFeature>
+			<pFeature>PixelAddressingFactor</pFeature>
+			<pFeature>RoiWidth</pFeature>
+			<pFeature>RoiHeight</pFeature>
+			<pFeature>RoiOffsetX</pFeature>
+			<pFeature>RoiOffsetY</pFeature>
+			<pFeature>MaxPixelSize</pFeature>
+		</Category> 
+		<Enumeration Name="AutoFrameRate">
+			<ToolTip>While set, the camera optimizes frame rate.  While clear, frame rate will only change to accomodate other settings</ToolTip>
+			<Description>While set, the camera optimizes frame rate.  While clear, frame rate will only change to accomodate other settings</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="Off"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="On"><Value>1</Value></EnumEntry>
+			<pValue>AutoFrameRateReg</pValue>
+		</Enumeration>
+		<IntReg Name="AutoFrameRateReg">
+			<Address>0xE8E8</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<pInvalidator>AcquisitionFrameRateAbsReg</pInvalidator>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="FeaturesInquiry">
+			<ToolTip>Bitmap of supported features</ToolTip>
+			<Description>Bitmap of supported features</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>FeaturesInquiryReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="FeaturesInquiryReg">
+			<Address>0xE8EC</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Float Name="Brightness">
+			<ToolTip>Brightness Control</ToolTip>
+			<Description>Brightness Control</Description>
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>BrightnessImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>BrightnessReg</pValue>
+			<pMin>BrightnessMinExpr</pMin>
+			<pMax>BrightnessMaxExpr</pMax>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="BrightnessReg">
+			<Address>0xE8F0</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<SwissKnife Name="BrightnessMinExpr">
+			<pVariable Name="VAR_BRIGHTNESSMIN">BrightnessMin</pVariable>
+			<Formula>VAR_BRIGHTNESSMIN</Formula>
+		</SwissKnife>
+		<SwissKnife Name="BrightnessMaxExpr">
+			<pVariable Name="VAR_BRIGHTNESSMAX">BrightnessMax</pVariable>
+			<Formula>VAR_BRIGHTNESSMAX</Formula>
+		</SwissKnife>
+		<IntSwissKnife Name="BrightnessImplExpr">
+			<pVariable Name="VAR_FEATURESINQUIRY">FeaturesInquiryReg</pVariable>
+			<Formula>VAR_FEATURESINQUIRY &amp; 0x80000000</Formula>
+		</IntSwissKnife>
+		<Float Name="BrightnessMin">
+			<ToolTip>Minimum Brightness Value</ToolTip>
+			<Description>Minimum Brightness Value</Description>
+			<Visibility>Invisible</Visibility>
+		<pIsImplemented>BrightnessMinImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>BrightnessMinReg</pValue>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="BrightnessMinReg">
+			<Address>0xE8F4</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<IntSwissKnife Name="BrightnessMinImplExpr">
+			<pVariable Name="VAR_FEATURESINQUIRY">FeaturesInquiryReg</pVariable>
+			<Formula>VAR_FEATURESINQUIRY &amp; 0x80000000</Formula>
+		</IntSwissKnife>
+		<Float Name="BrightnessMax">
+			<ToolTip>Maximum Brightness Value</ToolTip>
+			<Description>Maximum Brightness Value</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>BrightnessMaxReg</pValue>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="BrightnessMaxReg">
+			<Address>0xE8F8</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<Float Name="Saturation">
+			<ToolTip>Image color intensity (in percent)</ToolTip>
+			<Description>Image color intensity (in percent).  A value of 0 has not color (monochrome)</Description>
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>SaturationImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>SaturationReg</pValue>
+			<Min>0</Min>
+			<pMax>SaturationMaxExpr</pMax>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="SaturationReg">
+			<Address>0xE8FC</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<SwissKnife Name="SaturationMaxExpr">
+			<pVariable Name="VAR_SATURATIONMAX">SaturationMax</pVariable>
+			<Formula>VAR_SATURATIONMAX</Formula>
+		</SwissKnife>
+		<IntSwissKnife Name="SaturationImplExpr">
+			<pVariable Name="VAR_FEATURESINQUIRY">FeaturesInquiryReg</pVariable>
+			<Formula>VAR_FEATURESINQUIRY &amp; 0x04000000</Formula>
+		</IntSwissKnife>
+		<Float Name="SaturationMax">
+			<ToolTip>Maximum value for Saturation</ToolTip>
+			<Description>Maximum value for Saturation</Description>
+			<Visibility>Invisible</Visibility>
+		<pIsImplemented>SaturationMaxImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>SaturationMaxReg</pValue>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="SaturationMaxReg">
+			<Address>0xE900</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<IntSwissKnife Name="SaturationMaxImplExpr">
+			<pVariable Name="VAR_FEATURESINQUIRY">FeaturesInquiryReg</pVariable>
+			<Formula>VAR_FEATURESINQUIRY &amp; 0x02000000</Formula>
+		</IntSwissKnife>
+		<Float Name="ColorTemperature">
+			<ToolTip>Indictes a colour bias for &#39;whiter&#39; colored objects</ToolTip>
+			<Description>Indictes a colour bias for &#39;whiter&#39; coloured objects.  Allows slight modifications in the colour hue to compensate for varous lighting sources.</Description>
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>ColorTemperatureImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>ColorTemperatureReg</pValue>
+			<Min>3200</Min>
+			<Max>6500</Max>
+			<Unit>Degrees Kelvin</Unit>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="ColorTemperatureReg">
+			<Address>0xE904</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<IntSwissKnife Name="ColorTemperatureImplExpr">
+			<pVariable Name="VAR_FEATURESINQUIRY">FeaturesInquiryReg</pVariable>
+			<Formula>VAR_FEATURESINQUIRY &amp; 0x10000000</Formula>
+		</IntSwissKnife>
+		<Float Name="SensorTemperature">
+			<ToolTip>Temperature of the image sensor</ToolTip>
+			<Description>Temperature of the image sensor, in degrees Kelvin</Description>
+			<Visibility>Beginner</Visibility>
+		<pIsImplemented>SensorTemperatureImplExpr</pIsImplemented>
+			<Streamable>Yes</Streamable>
+			<pValue>SensorTemperatureReg</pValue>
+			<Representation>Linear</Representation>
+		</Float>
+		<FloatReg Name="SensorTemperatureReg">
+			<Address>0xE908</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Endianess>BigEndian</Endianess>
+		</FloatReg>
+		<IntSwissKnife Name="SensorTemperatureImplExpr">
+			<pVariable Name="VAR_FEATURESINQUIRY">FeaturesInquiryReg</pVariable>
+			<Formula>VAR_FEATURESINQUIRY &amp; 0x00020000</Formula>
+		</IntSwissKnife>
+		<Integer Name="PixeLINKFeatureEnable">
+			<ToolTip>Bit map defining a set of features that are enabled on the camera</ToolTip>
+			<Description>Bit map defining a set of features that are enabled on the camera</Description>
+			<Visibility>Expert</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>PixeLINKFeatureEnableReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="PixeLINKFeatureEnableReg">
+			<Address>0xE90C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="MemSaveCh">
+			<ToolTip>DCAM like MemSaveCh register</ToolTip>
+			<Description>DCAM like MemSaveCh register</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>MemSaveChReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="MemSaveChReg">
+			<Address>0xE910</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="CurrMemCh">
+			<ToolTip>DCAM like CurrMemCh register</ToolTip>
+			<Description>DCAM like CurrMemCh register</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>CurrMemChReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="CurrMemChReg">
+			<Address>0xE914</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="MemorySave">
+			<ToolTip>DCAM like MemorySave register</ToolTip>
+			<Description>DCAM like MemorySave register</Description>
+			<Visibility>Invisible</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>MemorySaveReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="MemorySaveReg">
+			<Address>0xE918</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="PixeLINKFeatureSupported">
+			<ToolTip>Bit map defining a set of features that can be enabled on the camera</ToolTip>
+			<Description>Bit map defining a set of features that are enabled on the camera</Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<pValue>PixeLINKFeatureSupportedReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="PixeLINKFeatureSupportedReg">
+			<Address>0xE91C</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="MaxSensorWidth">
+			<ToolTip>This feature indicates the maximum effective width of the sensor in pixels.</ToolTip>
+			<Description>This feature indicates the maximum effective width of the sensor in pixels, independant of ROI and Pixel Addressing</Description>
+			<Visibility>Invisible</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>MaxSensorWidthReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="MaxSensorWidthReg">
+			<Address>0xE920</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="MaxSensorHeight">
+			<ToolTip>This feature indicates the maximum effective height of the sensor in pixels.</ToolTip>
+			<Description>This feature indicates the maximum effective height of the sensor in pixels, independant of ROI and Pixel Addressing</Description>
+			<Visibility>Invisible</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>MaxSensorHeightReg</pValue>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="MaxSensorHeightReg">
+			<Address>0xE924</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="PixelAddressingMode">
+			<ToolTip>Reduces the number of pixels represented in the Region Of Interest</ToolTip>
+			<Description>Reduces the number of pixels represented in the Region Of Interest</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="None"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="Decimate"><Value>1</Value></EnumEntry>
+			<EnumEntry Name="Average"><Value>2</Value></EnumEntry>
+			<EnumEntry Name="Bin"><Value>3</Value></EnumEntry>
+			<pValue>PixelAddressingModeReg</pValue>
+		</Enumeration>
+		<IntReg Name="PixelAddressingModeReg">
+			<Address>0xE928</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="PixelAddressingFactor">
+			<ToolTip>Reduce the number of pixels in the ROI by the square of this amount</ToolTip>
+			<Description>Reduce the number of pixels in the ROI by the square of this amount</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<EnumEntry Name="None"><Value>0</Value></EnumEntry>
+			<EnumEntry Name="By_2"><Value>1</Value></EnumEntry>
+			<pValue>PixelAddressingFactorReg</pValue>
+		</Enumeration>
+		<IntReg Name="PixelAddressingFactorReg">
+			<Address>0xE92C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="RoiWidth">
+			<ToolTip>The number of pixels comprising the width of an ROIed Image</ToolTip>
+			<Description>The number of pixels comprising the width of an ROIed Image - Affects SensorWidth feature</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>RoiWidthReg</pValue>
+			<Min>8</Min>
+			<pMax>RoiWidthMaxExpr</pMax>
+			<Inc>8</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="RoiWidthReg">
+			<Address>0xE930</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<IntSwissKnife Name="RoiWidthMaxExpr">
+			<pVariable Name="VAR_SENSORWIDTH">SensorWidthReg</pVariable>
+			<pVariable Name="VAR_ROIOFFSETX">RoiOffsetXReg</pVariable>
+			<Formula>((VAR_SENSORWIDTH - VAR_ROIOFFSETX) / 8) * 8</Formula>
+		</IntSwissKnife>
+		<Integer Name="RoiHeight">
+			<ToolTip>The number of pixels comprising the height of an ROIed Image </ToolTip>
+			<Description>The number of pixels comprising the width of an ROIed Image - Affects SensorHeight feature</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>RoiHeightReg</pValue>
+			<Min>8</Min>
+			<pMax>RoiHeightMaxExpr</pMax>
+			<Inc>8</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="RoiHeightReg">
+			<Address>0xE934</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<IntSwissKnife Name="RoiHeightMaxExpr">
+			<pVariable Name="VAR_SENSORHEIGHT">SensorHeightReg</pVariable>
+			<pVariable Name="VAR_ROIOFFSETY">RoiOffsetYReg</pVariable>
+			<Formula>((VAR_SENSORHEIGHT - VAR_ROIOFFSETY) / 8) * 8</Formula>
+		</IntSwissKnife>
+		<Integer Name="RoiOffsetX">
+			<ToolTip>This feature represents the horizontal offset from the origin to the ROI (in pixels).</ToolTip>
+			<Description>This feature represents the horizontal offset from the origin to the ROI (in pixels)</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>RoiOffsetXReg</pValue>
+			<Min>0</Min>
+			<pMax>RoiOffsetXMaxExpr</pMax>
+			<Inc>8</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="RoiOffsetXReg">
+			<Address>0xE938</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<IntSwissKnife Name="RoiOffsetXMaxExpr">
+			<pVariable Name="VAR_SENSORWIDTH">SensorWidthReg</pVariable>
+			<Formula>VAR_SENSORWIDTH - 8</Formula>
+		</IntSwissKnife>
+		<Integer Name="RoiOffsetY">
+			<ToolTip>This feature represents the vertical offset from the origin to the ROI (in pixels).</ToolTip>
+			<Description>This feature represents the vertical offset from the origin to the ROI (in pixels).</Description>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Streamable>Yes</Streamable>
+			<pValue>RoiOffsetYReg</pValue>
+			<Min>0</Min>
+			<pMax>RoiOffsetYMaxExpr</pMax>
+			<Inc>8</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+		<IntReg Name="RoiOffsetYReg">
+			<Address>0xE93C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<IntSwissKnife Name="RoiOffsetYMaxExpr">
+			<pVariable Name="VAR_SENSORHEIGHT">SensorHeightReg</pVariable>
+			<Formula>VAR_SENSORHEIGHT - 8</Formula>
+		</IntSwissKnife>
+		<Integer Name="MaxPixelSize">
+			<ToolTip>Indicates the maximum number of bits used to represent a pixel.  </ToolTip>
+			<Description>Indicates the maximum number of bits used to represent a pixel.  Note that this is representative of the digital pixel value before any pixel formatting is applied (i.e., the ????????????raw???????????? pixel data). </Description>
+			<Visibility>Beginner</Visibility>
+			<Streamable>Yes</Streamable>
+			<Value>10</Value>
+			<Min>10</Min>
+			<Max>10</Max>
+			<Inc>1</Inc>
+			<Representation>Linear</Representation>
+		</Integer>
+	</Group>
+	<Port Name="Event800D">
+		<EventID>800D</EventID>
+	</Port>
+	<Port Name="Event8FFF">
+		<EventID>8FFF</EventID>
+	</Port>
+	<Port Name="Event9009">
+		<EventID>9009</EventID>
+	</Port>
+	<Port Name="Event9100">
+		<EventID>9100</EventID>
+	</Port>
+	<Category Name="TLParamsLockedCategory">
+		<Visibility>Invisible</Visibility>
+		<pFeature>TLParamsLocked</pFeature>
+	</Category>
+	<Integer Name="TLParamsLocked">
+		<ToolTip>Integer parameter: 1 when grabbing, 0 when not</ToolTip>
+		<Visibility>Invisible</Visibility>
+		<Value>0</Value>
+		<Min>0</Min>
+		<Max>1</Max>
+	</Integer>
+	<Port Name="Device">
+		<ToolTip>Port giving access to the device.</ToolTip>
+	</Port>
+</RegisterDescription>
+
