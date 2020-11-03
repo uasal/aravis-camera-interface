@@ -9,7 +9,6 @@ set(
 	tst_files
 	testmain.cpp
 	membuffersimulatortest.cpp
-	test_2.cpp
 )
 
 add_executable(${PROJECT_NAME} ${tst_files})
