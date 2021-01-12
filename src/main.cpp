@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
 		if (SUCCESS != status) return status;
 
 		if (NULL != buffer) {
-			status = arv_save_png(buffer, "/home/bli/aravis-camera-interface/buffer.png");
+			status = arv_save_png(buffer, "buffer.png");
 			if (SUCCESS != status) return status;
 		}
 	} else {

@@ -9,6 +9,8 @@ set(
 	tst_files
 	testmain.cpp
 	membuffersimulatortest.cpp
+	test_camera_feature_io.cpp
+	test_packet_downlink.cpp
 )
 
 add_executable(${PROJECT_NAME} ${tst_files})
@@ -29,6 +31,7 @@ set(
 	../src/config.h
 	../src/simulation/membuffersimulator.cpp
 	../src/simulation/membuffersimulator.h
+	../src/downlink/packetinterface.hpp
 )
 
 add_library(srcdeps ${src_files})

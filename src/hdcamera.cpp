@@ -10,6 +10,7 @@
 #include <string.h>
 
 #define BUFFER_CAPACITY 2
+#define USE_FAKE TRUE
 
 using namespace std;
 
@@ -76,6 +77,7 @@ HDCamera::HDCamera(int *status, int packetSize, char *name) {
 	created = false;
 	
 	arvCamera = arv_camera_new(name);
+	
 	if (!ARV_IS_CAMERA(arvCamera)) {
 		*status = ERROR_CAMERA_NOT_FOUND;
 	} else {
