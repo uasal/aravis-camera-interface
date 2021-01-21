@@ -18,6 +18,11 @@ set(
 	hdcamera.cpp
 	hdcamera.h
 	config.h
+	simulation/membuffersimulator.cpp
+	simulation/membuffersimulator.h
+	downlink/packetinterface.hpp
+	downlink/packetmanager.cpp
+	downlink/packetmanager.h
 )
 
 add_library(srcfs ${src_files})

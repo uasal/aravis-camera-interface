@@ -8,6 +8,7 @@
 #include <iostream>
 #include "config.h"
 #include <string.h>
+#include "downlink/packetmanager.h"
 
 #define BUFFER_CAPACITY 2
 #define USE_FAKE TRUE
@@ -21,6 +22,7 @@ typedef struct {
 } ApplicationData;
 
 static gboolean cancel = FALSE;
+PacketManager packetManager = PacketManager();
 
 static void setCancel(int signal)
 {
@@ -31,10 +33,13 @@ static void newBufferCallback(ArvStream *stream, ApplicationData *data)
 {
 	ArvBuffer *buffer = arv_stream_try_pop_buffer (stream);
 	if (buffer != NULL) {
-		if (arv_buffer_get_status (buffer) == ARV_BUFFER_STATUS_SUCCESS)
+		if (arv_buffer_get_status (buffer) == ARV_BUFFER_STATUS_SUCCESS) {
 			data->bufferCount++;
-			data->totalBufferCount++;
-		/* Image processing here */
+			/* Image processing here */
+			packetManager.writeBufferToMemory(buffer);
+		}
+
+		data->totalBufferCount++;
 		arv_stream_push_buffer (stream, buffer);
 	}
 }
@@ -86,6 +91,7 @@ HDCamera::HDCamera(int *status, int packetSize, char *name) {
 		arv_camera_set_trigger(arvCamera, "Software");
 		created = true;
   	}
+
 }
 
 HDCamera::~HDCamera() {

@@ -3,7 +3,7 @@
 
 // default camera config
 #define DEFAULT_ETHERNET_PACKET_SIZE 1500
-#define DEFAULT_CAMERA_WINDOW_WIDTH 1280
+#define DEFAULT_CAMERA_WINDOW_WIDTH 1280 // full window configurations
 #define DEFAULT_CAMERA_WINDOW_HEIGHT 1024
 #define DEFAULT_CAMERA_FRAME_RATE 10.0
 #define DEFAULT_CAMERA_GAIN 1.0
@@ -29,4 +29,8 @@
 #define ERROR_BAD_BUFFER 10
 #define ERROR_OUT_OF_MEMORY 11
 #define ERROR_NULL_ARGS 12
+
+// non-error return codes
+#define BUFFER_QUEUE_FULL 100
+
 #endif
