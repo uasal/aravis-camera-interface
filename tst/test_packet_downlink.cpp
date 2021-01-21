@@ -1,6 +1,6 @@
 #include "../src/hdcamera.h"
 #include "../src/config.h"
-#include "../src/downlink/packetinterface.hpp"
+#include "../src/downlink/packetinterface.h"
 #include "../src/simulation/membuffersimulator.h"
 
 #include "glib.h"

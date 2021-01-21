@@ -11,7 +11,6 @@
 #include "downlink/packetmanager.h"
 
 #define BUFFER_CAPACITY 2
-#define USE_FAKE TRUE
 
 using namespace std;
 

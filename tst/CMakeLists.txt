@@ -31,7 +31,10 @@ set(
 	../src/config.h
 	../src/simulation/membuffersimulator.cpp
 	../src/simulation/membuffersimulator.h
-	../src/downlink/packetinterface.hpp
+	../src/downlink/packetinterface.h
+	../src/downlink/packetinterface.cpp
+	../src/downlink/packetmanager.cpp
+	../src/downlink/packetmanager.h
 )
 
 add_library(srcdeps ${src_files})

@@ -20,7 +20,8 @@ set(
 	config.h
 	simulation/membuffersimulator.cpp
 	simulation/membuffersimulator.h
-	downlink/packetinterface.hpp
+	downlink/packetinterface.h
+	downlink/packetinterface.cpp
 	downlink/packetmanager.cpp
 	downlink/packetmanager.h
 )
@@ -49,6 +50,9 @@ include_directories(${GOBJECT_INCLUDE_DIR})
 #link_directories(${GOBJECT_LIBRARY_DIRS})
 target_link_libraries(${PROJECT_NAME} ${GOBJECT_LIBRARIES})
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(${PROJECT_NAME} Threads::Threads)
 
 # libpng may be removed later
 find_package(PNG REQUIRED)
