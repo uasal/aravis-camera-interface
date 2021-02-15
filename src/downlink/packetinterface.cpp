@@ -5,11 +5,37 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
-
+#include <stdint.h>
 #include "arv.h"
 #include "../config.h"
 
-int convertBufferToPackets(ArvBuffer *buffer, HEADER *header, vector<DATA> *dataPackets) {
+
+// checksum implementation from http://home.thep.lu.se/~bjorn/crc/
+uint32_t crc32_for_byte(uint32_t r) {
+	for(int j = 0; j < 8; ++j) {
+		r = (r & 1? 0: (uint32_t)0xEDB88320L) ^ r >> 1;
+	}
+	return r ^ (uint32_t)0xFF000000L;
+}
+
+uint32_t crc32(const void *data, size_t n_bytes) {
+	uint32_t crc = 0;
+	static uint32_t table[0x100];
+	
+	if(!*table) {
+		for(size_t i = 0; i < 0x100; ++i) {
+			table[i] = crc32_for_byte(i);
+		}
+	}
+
+	for(size_t i = 0; i < n_bytes; ++i) {
+		crc = table[(uint8_t) crc ^ ((uint8_t*)data)[i]] ^ crc >> 8;
+	}
+
+	return crc;
+}
+
+int convertBufferToPackets(ArvBuffer *buffer, HEADER *header, vector<DATA> *dataPackets, unsigned int packetNum) {
 	if (!ARV_IS_BUFFER(buffer)) return ERROR_BAD_BUFFER;
 
 	size_t bufferSize = 0;
@@ -26,17 +52,17 @@ int convertBufferToPackets(ArvBuffer *buffer, HEADER *header, vector<DATA> *data
 		numDataPackets++;
 	}
 
-	time_t timestamp = time(NULL);
-	srand(timestamp);
 
+	time_t timestamp = time(NULL);
 	header->packetType = PACKET_TYPE_HEADER;
-	header->packetId = rand();
+	header->packetId = packetNum;
+	cout << "header " << header->packetId << endl;
 	header->timestamp = timestamp;
 	header->numDataPackets = numDataPackets;
 	header->imageHeight = height;
 	header->imageWidth = width;
 	header->imageBitDepth = bitDepth;
-	strcpy(header->checksum, "I'm a checksum\0"); // TODO: implement actual checksum calculation
+	header->checksum = 0; // TODO: implement actual checksum calculation
 	header->dataSize = numDataPackets == 0 ? bufferSize : HEADER_PACKET_DATA_MAX_SIZE;
 	memcpy(header->data, bufferData, header->dataSize);
 
@@ -47,7 +73,7 @@ int convertBufferToPackets(ArvBuffer *buffer, HEADER *header, vector<DATA> *data
 		data.packetId = header->packetId;
 		data.packetNum = i + 1;
 		data.timestamp = timestamp;
-		strcpy(data.checksum, "I'm a checksum\0");
+		data.checksum = 0;
 		data.dataSize = i == numDataPackets - 1 ? lastDataPacketSize : DATA_PACKET_DATA_MAX_SIZE;
 		memcpy(data.data, bufferData + HEADER_PACKET_DATA_MAX_SIZE + DATA_PACKET_DATA_MAX_SIZE * i, data.dataSize);
 		dataPackets->push_back(data);

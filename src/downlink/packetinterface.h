@@ -7,14 +7,13 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
-
+#include <stdint.h>
 #include "arv.h"
 #include "../config.h"
 
 // modify these as necessary to fill up all bytes for downlink packet size
-#define CHECKSUM_SIZE 32
-#define HEADER_PACKET_DATA_MAX_SIZE 63927
-#define DATA_PACKET_DATA_MAX_SIZE 63939
+#define HEADER_PACKET_DATA_MAX_SIZE 63959
+#define DATA_PACKET_DATA_MAX_SIZE 63963
 
 #define PACKET_TYPE_HEADER 0
 #define PACKET_TYPE_DATA 1
@@ -29,9 +28,9 @@ struct HEADER {
 	unsigned int imageHeight;
 	unsigned int imageWidth;
 	unsigned int imageBitDepth;
-	char checksum[CHECKSUM_SIZE];
 	unsigned int dataSize;
 	char data[HEADER_PACKET_DATA_MAX_SIZE];
+	uint32_t checksum;
 };
 
 struct DATA {
@@ -39,12 +38,13 @@ struct DATA {
 	int packetId;
 	unsigned int packetNum;
 	time_t timestamp;
-	char checksum[CHECKSUM_SIZE];
 	unsigned int dataSize;
 	char data[DATA_PACKET_DATA_MAX_SIZE];
+	uint32_t checksum;
 };
 
-int convertBufferToPackets(ArvBuffer *buffer, HEADER *header, vector<DATA> *dataPackets);
+uint32_t crc32(const void *data, size_t n_bytes);
+int convertBufferToPackets(ArvBuffer *buffer, HEADER *header, vector<DATA> *dataPackets, unsigned int packetNum);
 void reconstructPacketsToBuffer(HEADER header, vector<DATA> dataPackets, char **data, size_t *dataSize);
 
 

@@ -41,7 +41,7 @@ TEST_CASE("standard downlink", "[camera][packet]") {
 	HEADER header;
 	vector<DATA> dataPackets;
 
-	status = convertBufferToPackets(buffer, &header, &dataPackets);
+	status = convertBufferToPackets(buffer, &header, &dataPackets, 10);
 	REQUIRE(SUCCESS == status);
 	REQUIRE(header.numDataPackets == dataPackets.size());
 
@@ -92,7 +92,7 @@ TEST_CASE("downlink small image", "[camera][packet]") {
 	HEADER header;
 	vector<DATA> dataPackets;
 
-	status = convertBufferToPackets(buffer, &header, &dataPackets);
+	status = convertBufferToPackets(buffer, &header, &dataPackets, 10);
 	REQUIRE(SUCCESS == status);
 	REQUIRE(header.numDataPackets == dataPackets.size());
 

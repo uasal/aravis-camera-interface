@@ -19,6 +19,7 @@ sem_t pmMutex, memoryAddrReady[NUM_DOWNLINK_BUFFERS];
 bool pmQuit = false;
 ArvBuffer *currentBuffer[2];
 PacketManager *thisPmObj = NULL;
+unsigned int packetCounter = 0;
 
 typedef struct {
 	int index;
@@ -44,7 +45,7 @@ void* worker(void *arg) {
 		ArvBuffer *buffer = currentBuffer[args->index];
 		sem_post(&pmMutex);
 
-		rc = convertBufferToPackets(buffer, &header, &dataPackets);
+		rc = convertBufferToPackets(buffer, &header, &dataPackets, packetCounter);
 
 		char bytes[BUFFER_SIZE];
 		memcpy(bytes, &header, BUFFER_SIZE);
@@ -56,8 +57,11 @@ void* worker(void *arg) {
 			thisPmObj->writePacket(bytes, BUFFER_SIZE, args->index);
 		}
 
+		cout << "wrote buffer " << header.packetId << endl;
+
 		sem_wait(&pmMutex);
 		currentBuffer[args->index] = NULL;
+		packetCounter++;
 		sem_post(&pmMutex);
 
 		thisPmObj->readyNextBuffer();
@@ -144,7 +148,7 @@ void PacketManager::readyNextBuffer() {
 
 	int freeIndex = 0;
 	for (freeIndex = 0; freeIndex < NUM_DOWNLINK_BUFFERS; freeIndex++) {
-		if (NULL == currentBuffer) break;
+		if (NULL == currentBuffer[freeIndex]) break;
 	}
 
 	if (NUM_DOWNLINK_BUFFERS == freeIndex) {
