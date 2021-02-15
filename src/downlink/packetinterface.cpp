@@ -1,4 +1,4 @@
-#include "packetInterface.h"
+#include "packetinterface.h"
 #include <time.h>
 #include <png.h> // Requires libpng1.2
 #include <vector>
