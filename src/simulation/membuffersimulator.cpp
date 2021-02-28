@@ -4,11 +4,15 @@
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
+
+using namespace std;
 
 sem_t mutex, dataReady[NUM_DOWNLINK_BUFFERS];
 
 char *sharedData[NUM_DOWNLINK_BUFFERS];
 size_t sharedDataSize[NUM_DOWNLINK_BUFFERS];
+bool terminated[NUM_DOWNLINK_BUFFERS] = {true, true};
 bool quit = false;
 
 MemBufferSimulator *thisObj = NULL;
@@ -17,19 +21,27 @@ typedef struct {
 	int address;
 } HandlerArgs;
 
+HandlerArgs args[NUM_DOWNLINK_BUFFERS];
 
 void* handler(void *arg) {
 	HandlerArgs *args = (HandlerArgs*) arg;
+	terminated[args->address] = false;
 
 	while (true) {
+		cout << "handler " << args->address << " waiting on dataready" << endl;
 		sem_wait(&dataReady[args->address]);
+		cout << "handler " << args->address << " passed dataready" << endl;
 		sem_wait(&mutex);
+		cout << "handler " << args->address << " passed mutex " << quit << endl;
 
 		if (quit) {
+			cout << "handler " << args->address << " quitting" << endl;
+			terminated[args->address] = true;
 			sem_post(&mutex);
-			printf("done with execution %d\n", args->address);
+			cout << "handler " << args->address << " right about to quit" << endl;
 			return NULL;
 		}
+
 		sem_post(&mutex);
 
 		sem_wait(&mutex);
@@ -38,7 +50,6 @@ void* handler(void *arg) {
 		thisObj->status[0];
 		thisObj->status[args->address] = MEM_STATUS_WRITING;
 		sem_post(&mutex);
-
 		usleep(thisObj->latency);
 
 		sem_wait(&mutex);
@@ -47,6 +58,7 @@ void* handler(void *arg) {
 
 	}
 
+	terminated[args->address] = true;
 	return NULL;
 }
 
@@ -54,8 +66,8 @@ MemBufferSimulator::MemBufferSimulator(long simulatedLatency) {
 	sem_init(&mutex, 0, 1);
 	latency = simulatedLatency;
 	int rc = -1;
-	HandlerArgs args[NUM_DOWNLINK_BUFFERS];
 
+	quit = false;
 	for (int i = 0; i < NUM_DOWNLINK_BUFFERS; i++) {
 		sem_init(&dataReady[i], 0, 0);
 		status[i] = MEM_STATUS_EMPTY;
@@ -68,48 +80,65 @@ MemBufferSimulator::MemBufferSimulator(long simulatedLatency) {
 }
 
 MemBufferSimulator::~MemBufferSimulator() {
+	cout << "begin killing" << endl;
 	sem_wait(&mutex);
 	quit = true;
 	sem_post(&mutex);
 	for (int i = 0; i < NUM_DOWNLINK_BUFFERS; i++) {
 		sem_post(&dataReady[i]);
 	}
+	cout << "before joins" << endl;
 	for (int i = 0; i < NUM_DOWNLINK_BUFFERS; i++) {
-		pthread_join(handlers[i], NULL);
+		if (!terminated[i]) {
+			pthread_join(handlers[i], NULL);
+		}
+		cout << "joined " << i << endl;
 	}
+	cout << "after joins" << endl;
 	for (int i = 0; i < NUM_DOWNLINK_BUFFERS; i++) {
 		sem_destroy(&dataReady[i]);
 	}
 	
 	sem_destroy(&mutex);
+
+	cout << "killed successfully" << endl;
 }
 
-void MemBufferSimulator::writeToBuffer(char *data, size_t size, int addr) {
+int MemBufferSimulator::writeToBuffer(char *data, size_t size, int addr) {
 	if (size > BUFFER_SIZE) {
 		printf("Buffer size %d too big\n", size);
-		return;
+		return MEM_WRITE_FAILURE;
 	}
 	if (addr < 0 || addr >= NUM_DOWNLINK_BUFFERS) {
 		printf("Invalid address\n");
-		return;
+		return MEM_WRITE_FAILURE;
 	}
 	
 	sem_wait(&mutex);
+	if (MEM_STATUS_NOT_STARTED == status[addr] || MEM_STATUS_WRITING == status[addr]) {
+		printf("writing to buffer that is being written\n");
+		sem_post(&mutex);
+		return MEM_WRITE_FAILURE;
+	}
 	status[addr] = MEM_STATUS_NOT_STARTED;
 	sharedData[addr] = data;
 	sharedDataSize[addr] = size;
 	sem_post(&dataReady[addr]);
 	sem_post(&mutex);
+	return MEM_WRITE_SUCCESS;
 }
 
 int MemBufferSimulator::getBufferStatus(int addr) {
-	printf("getting status\n");
 	if (addr < 0 || addr >= NUM_DOWNLINK_BUFFERS) {
 		printf("Invalid address\n");
-		return 666;
+		return MEM_INVALID_ADDRESS;
 	}
 	sem_wait(&mutex);
-	int retstatus = status[addr];  
+	int retstatus = status[addr];
+
+	if (retstatus == MEM_STATUS_COMPLETED) {
+		status[addr] = MEM_STATUS_EMPTY;
+	}
 	sem_post(&mutex);
 	return retstatus;
 }

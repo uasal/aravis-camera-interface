@@ -11,6 +11,10 @@
 #define MEM_STATUS_WRITING 1
 #define MEM_STATUS_COMPLETED 2
 
+#define MEM_WRITE_SUCCESS 0
+#define MEM_WRITE_FAILURE 1
+#define MEM_INVALID_ADDRESS 2
+
 using namespace std;
 
 class MemBufferSimulator {
@@ -19,7 +23,7 @@ public:
 	MemBufferSimulator(long latency);
 	~MemBufferSimulator();
 
-	void writeToBuffer(char *data, size_t size, int addr);
+	int writeToBuffer(char *data, size_t size, int addr);
 	int getBufferStatus(int addr);
 
 	long latency;
