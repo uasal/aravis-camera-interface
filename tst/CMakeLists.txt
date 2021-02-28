@@ -41,35 +41,29 @@ add_library(srcdeps ${src_files})
 target_link_libraries(${PROJECT_NAME} srcdeps)
 
 # package dependencies
+link_directories(${CMAKE_SOURCE_DIR}/include/lib)
 
 find_package( aravis REQUIRED)
 include_directories(${aravis_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} ${aravis_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} aravis-0.6)
 
 find_package( GLIB2 REQUIRED)
-message ("GLIB2_INCLUDE_DIR  : " ${GLIB2_INCLUDE_DIR})
-message ("GLIB2_LIBRARIES : " ${GLIB2_LIBRARIES})
 include_directories(${GLIB2_INCLUDE_DIR})
-link_directories(${GLIB2_LIBRARY_DIRS})
-target_link_libraries(${PROJECT_NAME} ${GLIB2_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} glib-2.0)
 
 
 find_package( GObject REQUIRED)
-message ("GOBJECT_INCLUDE_DIR : " ${GOBJECT_INCLUDE_DIR})
-message ("GOBJECT_LIBRARIES : " ${GOBJECT_LIBRARIES})
 include_directories(${GOBJECT_INCLUDE_DIR})
-#link_directories(${GOBJECT_LIBRARY_DIRS})
-target_link_libraries(${PROJECT_NAME} ${GOBJECT_LIBRARIES})
-
-
-# libpng may be removed later
-find_package(PNG REQUIRED)
-include_directories(${PNG_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} ${PNG_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} gobject-2.0)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(${PROJECT_NAME} Threads::Threads)
+
+# libpng may be removed later
+find_package(PNG REQUIRED)
+include_directories(${PNG_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} png)
 
 find_package(Catch2 REQUIRED)
 target_link_libraries(${PROJECT_NAME} Catch2::Catch2)
