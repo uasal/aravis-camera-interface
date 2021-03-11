@@ -33,7 +33,8 @@ target_link_libraries(${PROJECT_NAME} srcfs)
 
 find_package( aravis REQUIRED)
 include_directories(${aravis_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} ${aravis_LIBRARIES})
+string(REGEX REPLACE "[.]so$" ".a" aravis_lib ${aravis_LIBRARIES}) 
+target_link_libraries(${PROJECT_NAME} ${aravis_lib} -static)
 
 find_package( GLIB2 REQUIRED)
 message ("GLIB2_INCLUDE_DIR  : " ${GLIB2_INCLUDE_DIR})
