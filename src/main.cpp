@@ -6,10 +6,10 @@
 #include <unistd.h>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>
-#include <png.h> // Requires libpng1.2
+// #include <png.h> // Requires libpng1.2
 #include <stdio.h>
 
-int arv_save_png(ArvBuffer * buffer, const char * filename);
+// int arv_save_png(ArvBuffer * buffer, const char * filename);
 
 using namespace std;
 
@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
 		if (SUCCESS != status) return status;
 
 		if (NULL != buffer) {
-			status = arv_save_png(buffer, "buffer.png");
+			// status = arv_save_png(buffer, "buffer.png");
 			if (SUCCESS != status) return status;
 		}
 	} else {
@@ -111,6 +111,7 @@ int main(int argc, char *argv[]) {
 	return SUCCESS;
 }
 
+/*
 int arv_save_png(ArvBuffer * buffer, const char * filename)
 {
 	size_t buffer_size = 0;
@@ -161,3 +162,4 @@ int arv_save_png(ArvBuffer * buffer, const char * filename)
 	fclose(f);
 	return SUCCESS;
 }
+*/

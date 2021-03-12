@@ -58,7 +58,7 @@ find_package( GObject REQUIRED)
 message ("GOBJECT_INCLUDE_DIR : " ${GOBJECT_INCLUDE_DIR})
 message ("GOBJECT_LIBRARIES : " ${GOBJECT_LIBRARIES})
 include_directories(${GOBJECT_INCLUDE_DIR})
-#link_directories(${GOBJECT_LIBRARY_DIRS})
+link_directories(${GOBJECT_LIBRARY_DIRS})
 target_link_libraries(${PROJECT_NAME} ${GOBJECT_LIBRARIES})
 
 
