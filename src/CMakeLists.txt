@@ -1,5 +1,5 @@
 set (CMAKE_CXX_STANDARD 11)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -rdynamic")
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/modules")
 set (CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 set (BUILD_SHARED_LIBS OFF)
@@ -39,6 +39,7 @@ find_package( aravis REQUIRED)
 include_directories(${aravis_INCLUDE_DIR})
 string(REGEX REPLACE "[.]so$" ".a" aravis_lib ${aravis_LIBRARIES}) 
 target_link_libraries(${PROJECT_NAME} ${aravis_lib} -static)
+message("ARAVIS-LIB : " ${aravis_lib})
 
 find_package( GLIB2 REQUIRED)
 include_directories(${GLIB2_INCLUDE_DIR})
@@ -49,6 +50,8 @@ target_link_libraries(${PROJECT_NAME} ${glib_libs})
 message ("GLIB2_INCLUDE_DIR  : " ${GLIB2_INCLUDE_DIR})
 message ("GLIB2_LIBRARIES : " ${glib_libs})
 
+#find_package(udev REQUIRED)
+#include_directories(${UDEV_INCLUDE_DIR})
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
