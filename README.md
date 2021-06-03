@@ -56,6 +56,10 @@ hdcam -d 100
 ```
 
 ## Future Tasks
+* Integrate downlink memory buffers on FPGA side
+   * Modify packet manager to use actual memory buffer rather than simulation software, see `src/downlink/packetmanager.cpp`
+   * Potentially modify downlink protocol as size requirements change, see `src/downlink/packetinterface.h`
 
 ## Known Issues
+* Frame rate and gain features currently aren't writing properly for some reason. I don't know of an easy fix for this. If the frame rate is still having issues for the flight board, it may be necessary to control the data rate through other means, such as reducing the image size.
 
