@@ -7,7 +7,9 @@
  * on the ASDR, this class maintains a thread
  * that handles IO into the buffer. 
  *
- * 
+ * The packet manager maintains a queue of image buffers
+ * as more buffers are written, selecting an open memory
+ * memory buffer as it becomes freed.
  */
 
 
