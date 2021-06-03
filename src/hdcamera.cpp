@@ -1,3 +1,11 @@
+/**
+ * hdcamera.cpp
+ * 
+ * Author: Bohan Li
+ * This file is the primary interface to the camera, handling camera discovery,
+ * feature IO, and starting and stopping the stream.
+ */
+
 #include <stdlib.h>
 #include <signal.h>
 #include <stdio.h>
@@ -14,6 +22,7 @@
 
 using namespace std;
 
+/* Data structure for application during stream handler*/
 typedef struct {
 	GMainLoop *mainLoop;
 	int bufferCount;
@@ -22,6 +31,10 @@ typedef struct {
 
 static gboolean cancel = FALSE;
 PacketManager packetManager = PacketManager();
+
+/**************************************************************/
+/* Handlers for stream callbacks                              */
+/**************************************************************/
 
 static void setCancel(int signal)
 {
@@ -72,6 +85,8 @@ static void controlLostCallback(ArvGvDevice *gvDevice)
 
 	cancel = TRUE;
 }
+
+/**********************************************************************/
 
 /*
 	Parameters: status code, packet size of UDP data packets, optional name identifier for the camera
@@ -395,7 +410,7 @@ int HDCamera::setPixelFormat(const char *pixelFormat) {
 	return SUCCESS;
 }
 
-ArvCamera* HDCamera::getArvInstance() { return arvCamera; }
+ArvCamera* HDCamera::getArvInstance() { return arvCamera; } // for debugging
 
 
 
