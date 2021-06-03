@@ -1,6 +1,13 @@
+/**
+ * packetinterface.cpp
+ * Author: Bohan Li
+ * 
+ * This file implements conversion between ArvBuffer* images
+ * into sequences of packets defined in the header file.
+ */
+
 #include "packetinterface.h"
 #include <time.h>
-#include <png.h> // Requires libpng1.2
 #include <vector>
 #include <iostream>
 #include <stdlib.h>
@@ -35,6 +42,9 @@ uint32_t crc32(const void *data, size_t n_bytes) {
 	return crc;
 }
 
+/*
+	Converts ArvBuffer* into HEADER packet and vector of DATA packets
+*/
 int convertBufferToPackets(ArvBuffer *buffer, HEADER *header, vector<DATA> *dataPackets, unsigned int packetNum) {
 	if (!ARV_IS_BUFFER(buffer)) return ERROR_BAD_BUFFER;
 
@@ -82,6 +92,9 @@ int convertBufferToPackets(ArvBuffer *buffer, HEADER *header, vector<DATA> *data
 	return SUCCESS;
 }
 
+/*
+	Converts a sequence of packets into a single array format.
+*/
 void reconstructPacketsToBuffer(HEADER header, vector<DATA> dataPackets, char **data, size_t *dataSize) {
 	*dataSize = header.imageHeight * header.imageWidth * header.imageBitDepth / 8;
 	*data = (char *) malloc(*dataSize * sizeof(char));

@@ -121,6 +121,9 @@ PacketManager::~PacketManager() {
 	sem_destroy(&pmMutex);
 }
 
+/* 
+	Primary interface with other classes, adds a buffer to the queue 
+*/
 int PacketManager::writeBufferToMemory(ArvBuffer *buffer) {
 	sem_wait(&pmMutex);
 
@@ -137,7 +140,11 @@ int PacketManager::writeBufferToMemory(ArvBuffer *buffer) {
 	return MEM_WRITE_SUCCESS;
 }
 
+/* 
+	Helper function to write data buffer to memory buffer.
 
+	TODO: MODIFY THIS FOR INTEGRATION WITH ASDR
+*/
 int PacketManager::writePacket(char *data, size_t size, int addr) {
 	int rc = memory.writeToBuffer(data, size, addr);
 	if (SUCCESS != rc) { // TODO: add more sophisticated error checking
@@ -152,7 +159,12 @@ int PacketManager::writePacket(char *data, size_t size, int addr) {
 	return SUCCESS;
 }
 
+/*
+	Helper function to check if there is a free memory buffer, readying
+	the next corresponding data buffer
 
+	TODO: MODIFY THIS FOR INTEGRATION WITH ASDR 
+*/
 void PacketManager::readyNextBuffer() {
 	sem_wait(&pmMutex);
 

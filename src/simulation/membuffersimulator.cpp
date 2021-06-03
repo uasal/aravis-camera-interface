@@ -1,3 +1,12 @@
+/**
+ * membuffersimulator.cpp
+ * Author: Bohan Li
+ * 
+ * Class implementing a simulation of ASDR memory buffers.
+ * Functions by defining two downlink buffer arrays, for which
+ * each has its own thread managing the IO into the array element.
+ */
+
 #include "membuffersimulator.h"
 #include <unistd.h>
 #include <pthread.h>
