@@ -1,4 +1,12 @@
 /**
+ * packetmanager.cpp
+ * Author: Bohan Li
+ *
+ * This class implements the interface to the
+ * memory buffers on the ASDR. For each buffer
+ * on the ASDR, this class maintains a thread
+ * that handles IO into the buffer. 
+ *
  * 
  */
 
@@ -18,7 +26,8 @@
 
 using namespace std;
 
-
+// here memoryAddrReady contains semaphores that block until
+// a buffer is being written to that particular buffer
 sem_t pmMutex, memoryAddrReady[NUM_DOWNLINK_BUFFERS];
 
 bool pmQuit = false;
@@ -32,6 +41,7 @@ typedef struct {
 
 WorkerArgs wargs[NUM_DOWNLINK_BUFFERS];
 
+/* Handler thread for a buffer indicated by its arg */
 void* worker(void *arg) {
 	WorkerArgs *args = (WorkerArgs*) arg;
 	int rc = -1;
@@ -77,7 +87,6 @@ void* worker(void *arg) {
 
 
 PacketManager::PacketManager() {
-
 	sem_init(&pmMutex, 0, 1);
 	int rc = -1;
 
@@ -91,7 +100,6 @@ PacketManager::PacketManager() {
 		rc = pthread_create(&workers[i], NULL, worker, (void*) &wargs[i]);
 		if (rc != 0) printf("failed\n");
 	}
-
 }
 
 PacketManager::~PacketManager() {
