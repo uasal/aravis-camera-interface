@@ -32,14 +32,28 @@ At the moment, there are many other dependencies because the software must be st
 * resolv
 
 ## Building the Package
-The software uses CMake to build source and test files. To build everything, simply perform
+The software uses CMake to build source and test files. To build everything, simply navigate to the root directory of the project and perform
 
 ```
+mkdir build
 cd build
 cmake ..
 ```
 
 ## Usage
+After building the project, the executable `hdcam` can be found in the `build/src/` folder. 
+
+```
+hdcam --help
+
+```
+will reveal a list of options that may be invoked with the software.
+
+Example: to stream the camera for 100 seconds with default features, invoke
+```
+hdcam -d 100
+
+```
 
 ## Future Tasks
 
