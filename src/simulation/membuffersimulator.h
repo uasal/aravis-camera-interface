@@ -1,3 +1,10 @@
+/**
+ * membuffersimulator.h
+ * Author: Bohan Li
+ * 
+ * Header for simulator class for ASDR memory buffer.
+ */
+
 #ifndef MEMBUFFERSIMULATOR_H
 #define MEMBUFFERSIMULATOR_H
 

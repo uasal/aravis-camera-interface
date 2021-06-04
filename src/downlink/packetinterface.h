@@ -1,8 +1,17 @@
+/**
+ * packetinterface.h
+ * Author: Bohan Li
+ * 
+ * Header file defining data format for downlink. Each data buffer
+ * will be packaged into a HEADER packet and several DATA packets.
+ * The HEADER packet will contain all metadata relating to the image
+ * and will define the number of DATA packets.
+ */
+
 #ifndef PACKETINTERFACE_H
 #define PACKETINTERFACE_H
 
 #include <time.h>
-#include <png.h> // Requires libpng1.2
 #include <vector>
 #include <iostream>
 #include <stdlib.h>
@@ -11,9 +20,15 @@
 #include "arv.h"
 #include "../config.h"
 
-// modify these as necessary to fill up all bytes for downlink packet size
-#define HEADER_PACKET_DATA_MAX_SIZE 63959
-#define DATA_PACKET_DATA_MAX_SIZE 63963
+/*
+	TODO: MODIFY THESE FOR INTEGRATION
+	
+	We assume here that the buffer size is 64000 bytes,
+	modify these as necessary to fill up all bytes for downlink packet size
+*/
+#define HEADER_PACKET_DATA_MAX_SIZE 63963
+#define DATA_PACKET_DATA_MAX_SIZE 63975
+
 
 #define PACKET_TYPE_HEADER 0
 #define PACKET_TYPE_DATA 1

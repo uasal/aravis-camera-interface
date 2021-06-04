@@ -1,3 +1,18 @@
+/**
+ * packetmanager.cpp
+ * Author: Bohan Li
+ *
+ * This class implements the interface to the
+ * memory buffers on the ASDR. For each buffer
+ * on the ASDR, this class maintains a thread
+ * that handles IO into the buffer. 
+ *
+ * The packet manager maintains a queue of image buffers
+ * as more buffers are written, selecting an open memory
+ * memory buffer as it becomes freed.
+ */
+
+
 #include "packetmanager.h"
 #include "../simulation/membuffersimulator.h"
 #include "../downlink/packetinterface.h"
@@ -13,7 +28,8 @@
 
 using namespace std;
 
-
+// here memoryAddrReady contains semaphores that block until
+// a buffer is being written to that particular buffer
 sem_t pmMutex, memoryAddrReady[NUM_DOWNLINK_BUFFERS];
 
 bool pmQuit = false;
@@ -27,6 +43,7 @@ typedef struct {
 
 WorkerArgs wargs[NUM_DOWNLINK_BUFFERS];
 
+/* Handler thread for a buffer indicated by its arg */
 void* worker(void *arg) {
 	WorkerArgs *args = (WorkerArgs*) arg;
 	int rc = -1;
@@ -72,7 +89,6 @@ void* worker(void *arg) {
 
 
 PacketManager::PacketManager() {
-
 	sem_init(&pmMutex, 0, 1);
 	int rc = -1;
 
@@ -86,7 +102,6 @@ PacketManager::PacketManager() {
 		rc = pthread_create(&workers[i], NULL, worker, (void*) &wargs[i]);
 		if (rc != 0) printf("failed\n");
 	}
-
 }
 
 PacketManager::~PacketManager() {
@@ -106,6 +121,9 @@ PacketManager::~PacketManager() {
 	sem_destroy(&pmMutex);
 }
 
+/* 
+	Primary interface with other classes, adds a buffer to the queue 
+*/
 int PacketManager::writeBufferToMemory(ArvBuffer *buffer) {
 	sem_wait(&pmMutex);
 
@@ -122,7 +140,11 @@ int PacketManager::writeBufferToMemory(ArvBuffer *buffer) {
 	return MEM_WRITE_SUCCESS;
 }
 
+/* 
+	Helper function to write data buffer to memory buffer.
 
+	TODO: MODIFY THIS FOR INTEGRATION WITH ASDR
+*/
 int PacketManager::writePacket(char *data, size_t size, int addr) {
 	int rc = memory.writeToBuffer(data, size, addr);
 	if (SUCCESS != rc) { // TODO: add more sophisticated error checking
@@ -137,7 +159,12 @@ int PacketManager::writePacket(char *data, size_t size, int addr) {
 	return SUCCESS;
 }
 
+/*
+	Helper function to check if there is a free memory buffer, readying
+	the next corresponding data buffer
 
+	TODO: MODIFY THIS FOR INTEGRATION WITH ASDR 
+*/
 void PacketManager::readyNextBuffer() {
 	sem_wait(&pmMutex);
 

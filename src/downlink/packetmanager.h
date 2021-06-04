@@ -1,3 +1,12 @@
+/**
+ * packetmanager.h
+ * 
+ * Author: Bohan Li
+ * 
+ * Header file for packet manager, class designed to interface with
+ * memory buffer on the ASDR.
+ */
+
 #ifndef PACKETMANAGER_H
 #define PACKETMANAGER_H
 
@@ -28,7 +37,6 @@ private:
 	pthread_t workers[NUM_DOWNLINK_BUFFERS];
 	queue<ArvBuffer*> bufferQueue;
 	MemBufferSimulator memory = MemBufferSimulator(MEMORY_SIMULATION_LATENCY);
-
 
 };
 

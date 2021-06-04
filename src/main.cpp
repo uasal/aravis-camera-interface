@@ -4,12 +4,9 @@
 #include <inttypes.h>
 #include <iostream>
 #include <unistd.h>
-#include <stdlib.h>     /* srand, rand */
+#include <stdlib.h>
 #include <time.h>
-#include <png.h> // Requires libpng1.2
 #include <stdio.h>
-
-int arv_save_png(ArvBuffer * buffer, const char * filename);
 
 using namespace std;
 
@@ -28,6 +25,7 @@ gdouble gain = DEFAULT_CAMERA_GAIN;
 gint xoffset = DEFAULT_CAMERA_X_OFFSET;
 gint yoffset = DEFAULT_CAMERA_Y_OFFSET;
 gboolean togglePixelFormatMono16 = FALSE;
+gboolean failOnFeatureIOError = FALSE;
 
 /*
 	Definition of command line entries. Each describes a command line option to be read into the given 		variable. If an option is not presented, the default value is retained. The second argument (type 		char) indicates the short hand alias for the option.
@@ -54,40 +52,46 @@ static const GOptionEntry cameraCommandOptionEntries[] =
 	{ "x-offset", 'x', 0, G_OPTION_ARG_INT, &xoffset, "Camera x-offset, in pixels", NULL},
 	{ "y-offset", 'y', 0, G_OPTION_ARG_INT, &yoffset, "Camera y-offset, in pixels", NULL},
 	{ "mono-16", 'm', 0, G_OPTION_ARG_NONE, &togglePixelFormatMono16, "Makes pixel format mono 16, default is mono 8", NULL },
-	{ NULL }
+	{ "fail-on-feature-error", 'e', 0, G_OPTION_ARG_NONE, &failOnFeatureIOError, "Causes program to terminate whenever a feature write fails, default off", NULL},
+    { NULL }
 };
 
+
 int main(int argc, char *argv[]) {
-	
+	cout << "Starting camera application..." << endl;
+
 	// parse command
 	GError *error = NULL;
 	GOptionContext *context = g_option_context_new("Camera configuration parameters");
 	g_option_context_add_main_entries(context, cameraCommandOptionEntries, NULL);
 	
+	cout << "Created command line option context..." << endl;
 	if (!g_option_context_parse(context, &argc, &argv, &error)) {
 		g_print("Could not properly parse command line argument: %s\n", error->message);
 		return ERROR_COMMAND_LINE_PARSE_FAILED; 
 	}
 	
+	cout << "Parsed command line context, connecting with camera..." << endl;
+
 	int status = -1;
 	HDCamera camera = HDCamera(&status, ethernetPacketSize);
 	if (SUCCESS != status) return status;
 	
 	status = camera.setFrameRate(frameRate);
-	if (SUCCESS != status) return status;
+	if (SUCCESS != status && failOnFeatureIOError) return status;
 	
 	status = camera.setGain(gain);
-	if (SUCCESS != status) return status;
+	if (SUCCESS != status && failOnFeatureIOError) return status;
 	
 	status = camera.setRegion(xoffset, yoffset, windowWidth, windowHeight);
-	if (SUCCESS != status) return status;
+	if (SUCCESS != status && failOnFeatureIOError) return status;
 
 	status = camera.setExposureTime(exposureTime);
-	if (SUCCESS != status) return status;
+	if (SUCCESS != status && failOnFeatureIOError) return status;
 
 	const char *pixelFormat = togglePixelFormatMono16 ? "Mono16" : "Mono8";
 	status = camera.setPixelFormat(pixelFormat);
-	if (SUCCESS != status) return status;
+	if (SUCCESS != status && failOnFeatureIOError) return status;
 
 	if (snapshotMode) {
 		ArvBuffer *buffer = NULL;
@@ -95,7 +99,7 @@ int main(int argc, char *argv[]) {
 		if (SUCCESS != status) return status;
 
 		if (NULL != buffer) {
-			status = arv_save_png(buffer, "buffer.png");
+			// status = arv_save_png(buffer, "buffer.png");
 			if (SUCCESS != status) return status;
 		}
 	} else {
@@ -108,56 +112,5 @@ int main(int argc, char *argv[]) {
 		if (SUCCESS != status) return status;
 	}
 	
-	return SUCCESS;
-}
-
-int arv_save_png(ArvBuffer * buffer, const char * filename)
-{
-	size_t buffer_size = 0;
-	char * buffer_data = (char*)arv_buffer_get_data(buffer, &buffer_size); 
-	int width = -1; int height = -1;
-	arv_buffer_get_image_region(buffer, NULL, NULL, &width, &height); 
-	int bit_depth = ARV_PIXEL_FORMAT_BIT_PER_PIXEL(arv_buffer_get_image_pixel_format(buffer)); 
-
-	int arv_row_stride = width * bit_depth/8; 
-	int color_type = PNG_COLOR_TYPE_GRAY; 
-
-	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-	if (!png_ptr) {
-		printf("Error: creation of png write struct failed\n");
-		return ERROR_IMAGE_WRITE_FAILURE;
-	}
-
-	png_infop info_ptr = png_create_info_struct(png_ptr);
-	if (!info_ptr) {
-		printf("Error: creation of png info struct failed\n");
-		png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
-		return ERROR_IMAGE_WRITE_FAILURE;
-	}
-
-	FILE * f = fopen(filename, "wb");
-	if (!f) {
-		printf("Error: file %s failed to open for writing\n", filename);
-		return ERROR_FILESYSTEM_FAILURE;
-	}
-
-	png_init_io(png_ptr, f);
-	png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth, color_type,
-	PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
-	png_write_info(png_ptr, info_ptr);
-	
-	// Need to create pointers to each row of pixels for libpng
-	png_bytepp rows = (png_bytepp)(png_malloc(png_ptr, height*sizeof(png_bytep)));
-	for (int i = 0; i < height; ++i) {
-		rows[i] = (png_bytep)(buffer_data + (height - i)*arv_row_stride);
-	}
-
-	png_write_image(png_ptr, rows);
-
-	png_write_end(png_ptr, NULL);
-	png_free(png_ptr, rows);
-	png_destroy_write_struct(&png_ptr, &info_ptr);
-
-	fclose(f);
 	return SUCCESS;
 }

@@ -1,3 +1,11 @@
+/**
+ * hdcamera.cpp
+ * 
+ * Author: Bohan Li
+ * This file is the primary interface to the camera, handling camera discovery,
+ * feature IO, and starting and stopping the stream.
+ */
+
 #include <stdlib.h>
 #include <signal.h>
 #include <stdio.h>
@@ -14,6 +22,7 @@
 
 using namespace std;
 
+/* Data structure for application during stream handler*/
 typedef struct {
 	GMainLoop *mainLoop;
 	int bufferCount;
@@ -22,6 +31,10 @@ typedef struct {
 
 static gboolean cancel = FALSE;
 PacketManager packetManager = PacketManager();
+
+/**************************************************************/
+/* Handlers for stream callbacks                              */
+/**************************************************************/
 
 static void setCancel(int signal)
 {
@@ -73,6 +86,8 @@ static void controlLostCallback(ArvGvDevice *gvDevice)
 	cancel = TRUE;
 }
 
+/**********************************************************************/
+
 /*
 	Parameters: status code, packet size of UDP data packets, optional name identifier for the camera
  */
@@ -80,17 +95,20 @@ HDCamera::HDCamera(int *status, int packetSize, char *name) {
 	*status = SUCCESS;
 	created = false;
 	
-	arvCamera = arv_camera_new(name);
+	cout << "Attempting to locate camera..." << endl;
+	arvCamera = arv_camera_new("10.130.0.46", NULL);
 	
 	if (!ARV_IS_CAMERA(arvCamera)) {
+		cout << "Could not find camera." << endl;
 		*status = ERROR_CAMERA_NOT_FOUND;
 	} else {
+		cout << "Found camera, initializing connection..." << endl;
 		device = arv_camera_get_device(arvCamera); // TODO: Error check this line?
-		arv_camera_gv_set_packet_size(arvCamera, packetSize);
-		arv_camera_set_trigger(arvCamera, "Software");
+		arv_camera_gv_set_packet_size(arvCamera, packetSize, NULL);
+		arv_camera_set_trigger(arvCamera, "Software", NULL);
 		created = true;
+		cout << "Successfully initialized camera." << endl;
   	}
-
 }
 
 HDCamera::~HDCamera() {
@@ -110,9 +128,9 @@ HDCamera::~HDCamera() {
  */
 int HDCamera::startStream(guint64 duration) {
 	void (*oldSigintHandler)(int) = NULL;
-	gint payload = arv_camera_get_payload (arvCamera);
+	gint payload = arv_camera_get_payload (arvCamera, NULL);
 
-	ArvStream *stream = arv_camera_create_stream (arvCamera, NULL, NULL);
+	ArvStream *stream = arv_camera_create_stream (arvCamera, NULL, NULL, NULL);
 	if (!ARV_IS_STREAM (stream)) {
 		printf ("Stream thread was unintialized (check if the device is not already used, or if stream was configured)\n");
 		return ERROR_STREAM_START_FAILED;
@@ -124,7 +142,7 @@ int HDCamera::startStream(guint64 duration) {
 
 	ApplicationData data = { NULL, 0 };
 
-	arv_camera_start_acquisition (arvCamera);
+	arv_camera_start_acquisition (arvCamera, NULL);
 
 	// Connect the new-buffer signal
 	g_signal_connect (stream, "new-buffer", G_CALLBACK (newBufferCallback), &data);
@@ -149,7 +167,7 @@ int HDCamera::startStream(guint64 duration) {
 	signal (SIGINT, oldSigintHandler);
 
 	g_main_loop_unref (data.mainLoop);
-	arv_camera_stop_acquisition (arvCamera);
+	arv_camera_stop_acquisition (arvCamera, NULL);
 
 	// Signal must be inhibited to avoid stream thread running after the last unref
 	arv_stream_set_emit_signals (stream, FALSE);
@@ -166,17 +184,17 @@ int HDCamera::startStream(guint64 duration) {
  */
 int HDCamera::getSnapshot(guint64 timeout, ArvBuffer **buffer) {
 	ArvStream *stream = NULL;
-	gint payload = arv_camera_get_payload(arvCamera);
+	gint payload = arv_camera_get_payload(arvCamera, NULL);
 
-	stream = arv_camera_create_stream(arvCamera, NULL, NULL);
+	stream = arv_camera_create_stream(arvCamera, NULL, NULL, NULL);
 	if (NULL == stream) {
 		return ERROR_SNAPSHOT_FAILED;
 	}
 
 	arv_stream_push_buffer(stream, arv_buffer_new(payload, NULL));
-	arv_camera_start_acquisition(arvCamera);
+	arv_camera_start_acquisition(arvCamera, NULL);
     
-	arv_camera_software_trigger(arvCamera);
+	arv_camera_software_trigger(arvCamera, NULL);
 
 	if (NULL != buffer) {
 		*buffer = arv_stream_timeout_pop_buffer(stream, timeout);
@@ -190,7 +208,7 @@ int HDCamera::getSnapshot(guint64 timeout, ArvBuffer **buffer) {
 	else {
 		usleep(timeout);
 	}
-	arv_camera_stop_acquisition(arvCamera);
+	arv_camera_stop_acquisition(arvCamera, NULL);
 	g_object_unref(stream);
 	return SUCCESS;
 }
@@ -200,10 +218,10 @@ int HDCamera::getSnapshot(guint64 timeout, ArvBuffer **buffer) {
 */
 int HDCamera::setFrameRate(double frameRate) {
 	// must first do a get, otherwise camera doesn't let frame rate write for some reason
-	arv_camera_get_frame_rate(arvCamera);
+	arv_camera_get_frame_rate(arvCamera, NULL);
 
 	double min = 10000, max = -1;
-	arv_camera_get_frame_rate_bounds(arvCamera, &min, &max);
+	arv_camera_get_frame_rate_bounds(arvCamera, &min, &max, NULL);
 	if (min > frameRate || max < frameRate) {
 		// log error somehow
 		printf("Error: frame rate is not within camera bounds [%lf, %lf]\n", min, max);	
@@ -213,14 +231,15 @@ int HDCamera::setFrameRate(double frameRate) {
 		// log success somehow
 		printf("Frame rate successfully passed validation.\n");
   	}
-
-	arv_camera_set_frame_rate(arvCamera, frameRate);
+    
+    printf("Attempting to write camera frame rate: %lf\n", frameRate);
+	arv_camera_set_frame_rate(arvCamera, frameRate, NULL);
 
 	// make sure value was written
-	double readFrameRate = arv_camera_get_frame_rate(arvCamera);
+	double readFrameRate = arv_camera_get_frame_rate(arvCamera, NULL);
 	if (frameRate != readFrameRate) {
  		// log error somehow
-		printf("Error: frame rate failed to write\n");
+		printf("Error: frame rate failed to write, read value: %lf\n", readFrameRate);
 		return ERROR_FEATURE_WRITE_FAILED;
   	}
 
@@ -237,7 +256,7 @@ int HDCamera::setGain(double gain) {
   
 
 	// like frame rate, must do an empty get for the gain before the camera lets us change it
-	arv_device_get_float_feature_bounds(device, FEATURE_GAIN, &min, &max);
+	arv_device_get_float_feature_bounds(device, FEATURE_GAIN, &min, &max, NULL);
   
 	if (min > gain || max < gain) {
 		// log error somehow
@@ -249,10 +268,10 @@ int HDCamera::setGain(double gain) {
 		printf("Gain successfully passed validation.\n");
   	}
 
-  	arv_device_set_float_feature_value(device, FEATURE_GAIN, gain);
+  	arv_device_set_float_feature_value(device, FEATURE_GAIN, gain, NULL);
 
 	// make sure value was written
-	double readFeature = arv_device_get_float_feature_value(device, FEATURE_GAIN);
+	double readFeature = arv_device_get_float_feature_value(device, FEATURE_GAIN, NULL);
 	if (readFeature != gain) {
   		// log error somehow
 		printf("Error: gain failed to write\n");
@@ -274,25 +293,25 @@ int HDCamera::setRegion(int x, int y, int width, int height) {
 
 	int status = SUCCESS;
 
-	arv_camera_get_x_offset_bounds(arvCamera, &min, &max);
+	arv_camera_get_x_offset_bounds(arvCamera, &min, &max, NULL);
 	if (x < min || x > max) {
 		printf("Error: x-offset out of bounds [%d, %d]\n", min, max);
 		status = ERROR_FEATURE_OUT_OF_BOUNDS;
 	}
 
-	arv_camera_get_y_offset_bounds(arvCamera, &min, &max);
+	arv_camera_get_y_offset_bounds(arvCamera, &min, &max, NULL);
 	if (y < min || y > max) {
 		printf("Error: y-offset out of bounds [%d, %d]\n", min, max);
 		status = ERROR_FEATURE_OUT_OF_BOUNDS;
 	}
 	
-	arv_camera_get_width_bounds(arvCamera, &min, &max);
+	arv_camera_get_width_bounds(arvCamera, &min, &max, NULL);
 	if (width < min || width > max) {
 		printf("Error: width out of bounds [%d, %d]\n", min, max);
 		status = ERROR_FEATURE_OUT_OF_BOUNDS;
 	}
 
-	arv_camera_get_height_bounds(arvCamera, &min, &max);
+	arv_camera_get_height_bounds(arvCamera, &min, &max, NULL);
 	if (height < min || height > max) {
 		printf("Error: height out of bounds [%d, %d]\n", min, max);
 		status = ERROR_FEATURE_OUT_OF_BOUNDS;
@@ -302,12 +321,12 @@ int HDCamera::setRegion(int x, int y, int width, int height) {
 
 	printf("Camera region successfully passed validation\n");
 
-	arv_camera_set_region(arvCamera, x, y, width, height);
+	arv_camera_set_region(arvCamera, x, y, width, height, NULL);
 
 	int readX, readY, readWidth, readHeight;
 	readX = readY = readWidth = readHeight = -1;
 
-	arv_camera_get_region(arvCamera, &readX, &readY, &readWidth, &readHeight);
+	arv_camera_get_region(arvCamera, &readX, &readY, &readWidth, &readHeight, NULL);
 	if (x == readX && y == readY && width == readWidth && height == readHeight){
 		printf("Successfully wrote region (x, y, width, height) = (%d, %d, %d, %d)\n", x, y, width, height);
 	} else {
@@ -323,10 +342,10 @@ int HDCamera::setRegion(int x, int y, int width, int height) {
 */
 int HDCamera::setExposureTime(double exposureTime) {
 	// must first do a get, otherwise camera doesn't let frame rate write for some reason
-	arv_camera_get_exposure_time(arvCamera);
+	arv_camera_get_exposure_time(arvCamera, NULL);
 
 	double min = 10000, max = -1;
-	arv_camera_get_exposure_time_bounds(arvCamera, &min, &max);
+	arv_camera_get_exposure_time_bounds(arvCamera, &min, &max, NULL);
 	if (min > exposureTime || max < exposureTime) {
 		// log error somehow
 		printf("Error: exposure time is not within camera bounds [%lf, %lf]\n", min, max);
@@ -337,10 +356,10 @@ int HDCamera::setExposureTime(double exposureTime) {
 		printf("Exposure time successfully passed validation.\n");
 	}
 	
-	arv_camera_set_exposure_time(arvCamera, exposureTime);
+	arv_camera_set_exposure_time(arvCamera, exposureTime, NULL);
 	
 	// make sure value was written
-	double readExposureTime = arv_camera_get_exposure_time(arvCamera);
+	double readExposureTime = arv_camera_get_exposure_time(arvCamera, NULL);
 	if (exposureTime != readExposureTime) {
 		// log error somehow
 		printf("Error: exposure time failed to write\n");
@@ -359,10 +378,10 @@ int HDCamera::setExposureTime(double exposureTime) {
 */
 int HDCamera::setPixelFormat(const char *pixelFormat) {
 	// do empty get: camera doesn't let pixel format write without this get, returns timeout error
-	arv_camera_get_pixel_format_as_string(arvCamera);
+	arv_camera_get_pixel_format_as_string(arvCamera, NULL);
 
 	guint nPixelFormats = 0;
-	const char **pixelFormats = arv_camera_get_available_pixel_formats_as_strings(arvCamera, &nPixelFormats);
+	const char **pixelFormats = arv_camera_dup_available_pixel_formats_as_strings(arvCamera, &nPixelFormats, NULL);
 
 	int isPixelFormat = FALSE;
 	for (unsigned int i = 0; i < nPixelFormats; i++) {
@@ -380,9 +399,9 @@ int HDCamera::setPixelFormat(const char *pixelFormat) {
 		printf("Pixel format passed validation\n");
 	}
   
-	arv_camera_set_pixel_format_from_string(arvCamera, pixelFormat);
+	arv_camera_set_pixel_format_from_string(arvCamera, pixelFormat, NULL);
 
-	const char *readPixelFormat = arv_camera_get_pixel_format_as_string(arvCamera);
+	const char *readPixelFormat = arv_camera_get_pixel_format_as_string(arvCamera, NULL);
 	if (NULL == readPixelFormat || strcmp(readPixelFormat, pixelFormat) != 0) {
 		printf("Error: pixel format failed to write\n");
 		return ERROR_FEATURE_WRITE_FAILED;
@@ -391,7 +410,7 @@ int HDCamera::setPixelFormat(const char *pixelFormat) {
 	return SUCCESS;
 }
 
-ArvCamera* HDCamera::getArvInstance() { return arvCamera; }
+ArvCamera* HDCamera::getArvInstance() { return arvCamera; } // for debugging
 
 
 
