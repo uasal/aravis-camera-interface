@@ -30,13 +30,15 @@ set(
 	downlink/packetmanager.h
 )
 
-add_library(srcfs ${src_files})
+add_library(srcfs STATIC ${src_files})
 target_link_libraries(${PROJECT_NAME} srcfs)
 
 # package dependencies
+link_directories(${CMAKE_SOURCE_DIR}/include/lib)
 
 find_package( aravis REQUIRED)
 include_directories(${aravis_INCLUDE_DIR})
+
 string(REGEX REPLACE "[.]so$" ".a" aravis_lib ${aravis_LIBRARIES}) 
 target_link_libraries(${PROJECT_NAME} ${aravis_lib} -static)
 message("ARAVIS-LIB : " ${aravis_lib})
