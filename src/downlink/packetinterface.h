@@ -26,8 +26,8 @@
 	We assume here that the buffer size is 64000 bytes,
 	modify these as necessary to fill up all bytes for downlink packet size
 */
-#define HEADER_PACKET_DATA_MAX_SIZE 63959
-#define DATA_PACKET_DATA_MAX_SIZE 63963
+#define HEADER_PACKET_DATA_MAX_SIZE 63963
+#define DATA_PACKET_DATA_MAX_SIZE 63975
 
 
 #define PACKET_TYPE_HEADER 0

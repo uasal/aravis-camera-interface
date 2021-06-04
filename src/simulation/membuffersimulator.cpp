@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <time.h>
 
 using namespace std;
 
@@ -93,15 +94,15 @@ MemBufferSimulator::~MemBufferSimulator() {
 	sem_wait(&mutex);
 	quit = true;
 	sem_post(&mutex);
+
+    timespec spec = { 2, 0 }; // wait two secs
+
 	for (int i = 0; i < NUM_DOWNLINK_BUFFERS; i++) {
 		sem_post(&dataReady[i]);
 	}
 	cout << "before joins" << endl;
 	for (int i = 0; i < NUM_DOWNLINK_BUFFERS; i++) {
-		if (!terminated[i]) {
-			pthread_join(handlers[i], NULL);
-		}
-		cout << "joined " << i << endl;
+		pthread_timedjoin_np(handlers[i], NULL, &spec);
 	}
 	cout << "after joins" << endl;
 	for (int i = 0; i < NUM_DOWNLINK_BUFFERS; i++) {
